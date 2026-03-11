@@ -1,9 +1,9 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
 import js from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
-import unusedImports from 'eslint-plugin-unused-imports';
-import importPlugin from 'eslint-plugin-import';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 const eslintConfig = defineConfig([
   js.configs.recommended,
@@ -54,7 +54,7 @@ const eslintConfig = defineConfig([
       ],
     },
   },
-  eslintConfigPrettier,//스타일 관련 규칙은 Prettier가 전담하도록
+  eslintConfigPrettier,
   globalIgnores([
     '.next/**',
     'out/**',
