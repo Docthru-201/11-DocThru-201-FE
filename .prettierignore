@@ -3,7 +3,6 @@ dist
 .env*
 .cache
 build
-package-lock.json
-pnpm-lock.yaml
+
 .next/
 public/
