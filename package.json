@@ -1,0 +1,36 @@
+{
+  "name": "docthru-201-fe",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,mjs,json,md}": [
+      "npx prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@vanilla-extract/css": "^1.18.0",
+    "@vanilla-extract/next-plugin": "^2.4.17",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3"
+  }
+}
