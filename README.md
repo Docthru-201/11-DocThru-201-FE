@@ -5,9 +5,9 @@
 실행하기
 
 ```bash
-git clone https://github.com/Docthru-201/11-DocThru-201-BE.git
+git clone https://github.com/Docthru-201/11-DocThru-201-FE.git
 
-cd 11-DocThru-201-BE
+cd 11-DocThru-201-FE
 
 pnpm install
 
