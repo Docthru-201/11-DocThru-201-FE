@@ -10,6 +10,11 @@ import localFont from 'next/font/local';
 export const pretendard = localFont({
   src: [
     {
+      path: '../../node_modules/@fontsource/pretendard/files/pretendard-latin-400-normal.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
       path: '../../node_modules/@fontsource/pretendard/files/pretendard-latin-500-normal.woff2',
       weight: '500',
       style: 'normal',
