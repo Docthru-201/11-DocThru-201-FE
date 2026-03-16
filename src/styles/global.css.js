@@ -17,31 +17,25 @@ globalStyle('body', {
   wordBreak: 'keep-all',
 });
 
-/* 기본 포커스 스타일
-   컴포넌트에서 개별 포커스 스타일을 덮어써도 됨 */
 globalStyle(':focus-visible', {
   outline: `2px solid ${vars.color.gray[400]}`,
   outlineOffset: '2px',
 });
 
-/* placeholder */
 globalStyle('input::placeholder, textarea::placeholder', {
   color: vars.color.gray[400],
 });
 
-/* hr */
 globalStyle('hr', {
   border: 0,
   borderTop: `1px solid ${vars.color.gray[200]}`,
 });
 
-/* 선택(드래그) 영역 스타일 */
 globalStyle('::selection', {
   backgroundColor: vars.color.gray[200],
   color: vars.color.gray[800],
 });
 
-/* 스크롤바 (선택 사항, Webkit) */
 globalStyle('::-webkit-scrollbar', {
   width: vars.space.sm,
   height: vars.space.sm,
