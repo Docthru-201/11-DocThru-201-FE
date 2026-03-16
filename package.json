@@ -14,13 +14,15 @@
     ]
   },
   "dependencies": {
+    "@fontsource/pretendard": "^5.2.5",
     "@vanilla-extract/css": "^1.18.0",
     "@vanilla-extract/next-plugin": "^2.4.17",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
