@@ -1,3 +1,5 @@
+// TODO: 추후 반응형 작업. 현재는 임시용.
+
 // 미디어 쿼리에서는 CSS 변수(var(--xxx)) 사용 불가
 export const breakpoint = {
   sm: '(min-width: 480px)',
