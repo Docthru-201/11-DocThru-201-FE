@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 // import { Slot } from '@radix-ui/react-slot';
 import * as styles from './Button.css.js';
-import { Spinner } from '../Spinner/Spinner';
+import { Spinner } from '../Spinner';
 
 export function Button({
   // type = 'button',
