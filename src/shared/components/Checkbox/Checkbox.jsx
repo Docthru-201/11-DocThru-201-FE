@@ -1,6 +1,5 @@
 'use client';
 
-import clsx from 'clsx';
 import * as styles from './Checkbox.css.js';
 
 export function Checkbox({

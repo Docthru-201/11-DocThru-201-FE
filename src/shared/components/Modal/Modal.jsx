@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import clsx from 'clsx';
 import { Icon } from '@/shared/components/Icon';
 import { Button } from '@/shared/components';
 import * as styles from './Modal.css.js';

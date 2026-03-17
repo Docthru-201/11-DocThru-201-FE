@@ -6,15 +6,7 @@ import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './GNB.css.js';
 
-/**
- * Figma 4711-52571 GNB (Global Navigation Bar)
- * 반응형: ~767px small, 768px~ large (미디어 쿼리)
- * 로고 클릭 시 '/' 이동
- * @param {'guest'|'member'|'admin'} status - guest: 로그인 버튼(/login 이동) | member: 알림+멤버 프로필 | admin: 탭+관리자 프로필
- * @param {Array<{ label: string, active?: boolean, href?: string, onClick?: function }>} [tabs] - admin일 때 탭 목록
- * @param {function} [onTabChange] - 탭 클릭 시 (admin일 때)
- */
-export function GNB({ status = 'guest', className }) {
+export function GNB({ status = 'guest', className, tabs = [], onTabChange }) {
   const isAdmin = status === 'admin';
   const isMember = status === 'member';
 
