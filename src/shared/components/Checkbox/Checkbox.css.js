@@ -6,6 +6,7 @@ export const root = style({
   width: '24px',
   height: '24px',
   flexShrink: 0,
+  cursor: 'pointer',
 });
 
 export const input = style({

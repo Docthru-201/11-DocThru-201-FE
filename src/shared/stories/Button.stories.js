@@ -150,7 +150,7 @@ export const IconRight = () => (
 export const OutlineIconWithArrow = () => (
   <Button
     variant="outlineIcon"
-    icon={<Icon name="arrowCircleRight" width={20} height={20} aria-hidden />}
+    icon={<Icon name="arrowRight" width={20} height={20} aria-hidden />}
     iconPosition="right"
   >
     도전 계속하기
@@ -289,9 +289,7 @@ export const AllVariants = () => (
         </Button>
         <Button
           variant="outlineIcon"
-          icon={
-            <Icon name="arrowCircleRight" width={20} height={20} aria-hidden />
-          }
+          icon={<Icon name="arrowRight" width={20} height={20} aria-hidden />}
           iconPosition="right"
         >
           도전 계속하기

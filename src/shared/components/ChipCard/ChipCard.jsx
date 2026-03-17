@@ -4,12 +4,12 @@ import { chipCard, chipCardLabel } from './ChipCard.css.js';
 const CHIP_STATUS = {
   recruitEnd: {
     label: '모집이 완료된 상태에요',
-    iconName: 'person-yellow',
+    iconName: 'personWhiteSmall',
     alt: '모집 종료',
   },
   dateEnd: {
     label: '챌린지가 마감되었어요',
-    iconName: 'deadline-black',
+    iconName: 'deadlineWhiteSmall',
     alt: '챌린지 마감',
   },
 };

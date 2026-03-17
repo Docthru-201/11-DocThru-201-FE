@@ -61,6 +61,7 @@ export const editButton = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  borderRadius: vars.radius.md,
 });
 
 export const chipsRow = style({

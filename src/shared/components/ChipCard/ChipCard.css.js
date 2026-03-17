@@ -19,8 +19,8 @@ const chipCardBase = style({
   wordWrap: 'break-word',
   '@media': {
     [breakpoint.lg]: {
-      width: '163px',
-      maxWidth: '163px',
+      width: '170px', // 잘려서 사이즈 수정
+      maxWidth: '170px',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
     },

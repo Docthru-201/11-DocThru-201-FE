@@ -26,18 +26,19 @@ function formatDeadlineText(deadline) {
 }
 
 export function Card({
+  study,
   status: statusProp,
   title: titleProp,
   chipType: chipTypeProp,
   chipCategory: chipCategoryProp,
   deadlineText: deadlineTextProp,
   personText: personTextProp,
+
   ctaLabel = '도전 계속하기',
   onCtaClick,
   showCta = true,
   showEditMenu = false,
   onEditClick,
-  study,
 }) {
   let status = statusProp;
   let title = titleProp;
@@ -79,14 +80,14 @@ export function Card({
         <div className={styles.titleBlock}>
           {status != null && <ChipCard status={status} />}
           {showEditMenu && (
-            <Button
+            <button
               type="button"
               className={styles.editButton}
               onClick={onEditClick}
               aria-label="더보기 메뉴"
             >
               <Icon name="meatballsMenu" aria-hidden />
-            </Button>
+            </button>
           )}
           {title != null && title !== '' && (
             <h2 className={styles.title}>{title}</h2>

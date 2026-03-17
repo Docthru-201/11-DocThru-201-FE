@@ -33,17 +33,17 @@ export const variant = styleVariants({
     backgroundColor: vars.color.gray[800],
     color: vars.color.white,
     selectors: {
+      // shadcn-like: subtle hover shadow
       '&:hover:not(:disabled)': {
         backgroundColor: vars.color.gray[900],
-        boxShadow:
-          '0 8px 20px -4px rgba(0,0,0,0.25), 0 4px 10px -2px rgba(0,0,0,0.2)',
+        boxShadow: vars.shadow.sm,
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.gray[800]}40`,
+        boxShadow: `0 0 0 2px ${vars.color.gray[900]}40`,
       },
       '&:active:not(:disabled)': {
         backgroundColor: vars.color.gray[900],
-        boxShadow: vars.shadow.md,
+        boxShadow: 'none',
       },
     },
     '@media': {
@@ -85,14 +85,17 @@ export const variant = styleVariants({
     borderRadius: vars.radius.lg,
     selectors: {
       '&:hover:not(:disabled)': {
-        backgroundColor: vars.color.gray[100],
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        backgroundColor: vars.color.gray[50],
+        borderColor: vars.color.gray[700],
+        boxShadow: 'none',
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.gray[800]}40`,
+        boxShadow: `0 0 0 2px ${vars.color.gray[800]}26`,
       },
       '&:active:not(:disabled)': {
-        backgroundColor: vars.color.gray[200],
+        backgroundColor: vars.color.gray[100],
+        borderColor: vars.color.gray[800],
+        boxShadow: 'none',
       },
     },
   },
@@ -102,13 +105,14 @@ export const variant = styleVariants({
     selectors: {
       '&:hover:not(:disabled)': {
         backgroundColor: '#ffc9c9',
-        boxShadow: `0 4px 14px ${vars.color.semantic.error}50`,
+        boxShadow: vars.shadow.xs,
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.semantic.error}59`,
+        boxShadow: `0 0 0 2px ${vars.color.semantic.error}33`,
       },
       '&:active:not(:disabled)': {
-        backgroundColor: '#ffc0c0',
+        backgroundColor: '#ffb8b8',
+        boxShadow: 'none',
       },
     },
   },
@@ -122,14 +126,15 @@ export const variant = styleVariants({
     fontWeight: vars.fontWeight.bold,
     selectors: {
       '&:hover:not(:disabled)': {
-        backgroundColor: 'rgba(212, 218, 224, 0.95)',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+        backgroundColor: 'rgba(228, 232, 236, 0.9)',
+        boxShadow: 'none',
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.gray[700]}33`,
+        boxShadow: `0 0 0 2px ${vars.color.gray[400]}40`,
       },
       '&:active:not(:disabled)': {
-        backgroundColor: 'rgba(200, 206, 212, 1)',
+        backgroundColor: 'rgba(218, 224, 230, 1)',
+        boxShadow: 'none',
       },
     },
     '@media': {
@@ -150,15 +155,15 @@ export const variant = styleVariants({
     borderRadius: vars.radius.lg,
     selectors: {
       '&:hover:not(:disabled)': {
-        backgroundColor: '#e6ad15',
-        boxShadow: '0 6px 16px rgba(255, 193, 23, 0.45)',
+        backgroundColor: '#f2b61a',
+        boxShadow: vars.shadow.sm,
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.brand.point}80`,
+        boxShadow: `0 0 0 2px ${vars.color.brand.point}40`,
       },
       '&:active:not(:disabled)': {
-        backgroundColor: '#cc9a12',
-        boxShadow: vars.shadow.md,
+        backgroundColor: '#e0a715',
+        boxShadow: 'none',
       },
     },
   },
@@ -173,14 +178,15 @@ export const variant = styleVariants({
     borderRadius: vars.radius.full,
     selectors: {
       '&:hover:not(:disabled)': {
-        backgroundColor: vars.color.gray[100],
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        backgroundColor: vars.color.gray[50],
+        boxShadow: 'none',
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.gray[800]}40`,
+        boxShadow: `0 0 0 2px ${vars.color.gray[800]}26`,
       },
       '&:active:not(:disabled)': {
-        backgroundColor: vars.color.gray[200],
+        backgroundColor: vars.color.gray[100],
+        boxShadow: 'none',
       },
     },
   },
@@ -196,14 +202,15 @@ export const variant = styleVariants({
     borderRadius: vars.radius.lg,
     selectors: {
       '&:hover:not(:disabled)': {
-        backgroundColor: vars.color.gray[100],
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        backgroundColor: vars.color.gray[50],
+        boxShadow: 'none',
       },
       '&:focus-visible': {
-        boxShadow: `0 0 0 3px ${vars.color.gray[400]}40`,
+        boxShadow: `0 0 0 2px ${vars.color.gray[400]}26`,
       },
       '&:active:not(:disabled)': {
-        backgroundColor: vars.color.gray[200],
+        backgroundColor: vars.color.gray[100],
+        boxShadow: 'none',
       },
     },
   },
@@ -216,8 +223,14 @@ export const variant = styleVariants({
       ...base.selectors,
       '&:hover:not(:disabled)': {
         backgroundColor: vars.color.gray[900],
-        boxShadow:
-          '0 8px 20px -4px rgba(0,0,0,0.25), 0 4px 10px -2px rgba(0,0,0,0.2)',
+        boxShadow: vars.shadow.sm,
+      },
+      '&:focus-visible': {
+        boxShadow: `0 0 0 2px ${vars.color.gray[900]}33`,
+      },
+      '&:active:not(:disabled)': {
+        backgroundColor: vars.color.gray[900],
+        boxShadow: 'none',
       },
     },
   },

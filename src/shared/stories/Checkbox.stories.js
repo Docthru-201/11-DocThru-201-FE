@@ -10,13 +10,17 @@ export default {
   },
 };
 
-export const Unchecked = () => (
-  <Checkbox checked={false} onChange={() => {}} aria-label="선택" />
-);
+export const Unchecked = () => {
+  const [checked, setChecked] = useState(false);
+  return <Checkbox checked={checked} onChange={setChecked} aria-label="선택" />;
+};
 
-export const Checked = () => (
-  <Checkbox checked onChange={() => {}} aria-label="선택됨" />
-);
+export const Checked = () => {
+  const [checked, setChecked] = useState(true);
+  return (
+    <Checkbox checked={checked} onChange={setChecked} aria-label="선택됨" />
+  );
+};
 
 export const Interactive = () => {
   const [checked, setChecked] = useState(false);

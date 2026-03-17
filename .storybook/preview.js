@@ -1,3 +1,6 @@
+import '@fontsource/pretendard';
+import '@fontsource/quantico';
+
 /** @type { import('@storybook/nextjs-vite').Preview } */
 const preview = {
   parameters: {
