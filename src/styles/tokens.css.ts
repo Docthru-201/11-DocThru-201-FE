@@ -1,12 +1,11 @@
 import { createGlobalTheme } from '@vanilla-extract/css';
 
 export const vars = createGlobalTheme(':root', {
-  /** 전역 기본 폰트: pretendard / 로고·타이틀·칩 타입 등 일부 폰트: quantico */
   fontFamily: {
     pretendard:
       'var(--font-pretendard), Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
     quantico:
-      'var(--font-quantico, Quantico, -apple-system, BlinkMacSystemFont, system-ui, sans-serif)',
+      'var(--font-quantico), Quantico, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
   },
 
   fontSize: {

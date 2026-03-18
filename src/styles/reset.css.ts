@@ -1,4 +1,4 @@
-import { style, globalStyle } from '@vanilla-extract/css';
+import { globalStyle } from '@vanilla-extract/css';
 
 import { vars } from './tokens.css';
 
@@ -89,7 +89,3 @@ globalStyle('fieldset', {
 globalStyle('button, [role="button"]', {
   WebkitTapHighlightColor: 'transparent',
 });
-
-// vanilla-extract는 globalStyle만 있는 파일에 대해 출력 파일을 만들지 않아
-// 최소 하나의 style()을 두어야 vanilla-extract가 이 파일을 인식 가능
-export const _resetScope = style({});
