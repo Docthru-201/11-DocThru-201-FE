@@ -1,4 +1,6 @@
-import { globalStyle } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
+
+import { vars } from './tokens.css';
 
 globalStyle('*, *::before, *::after', {
   boxSizing: 'border-box',
@@ -11,6 +13,7 @@ globalStyle('*', {
 
 globalStyle('html', {
   WebkitTextSizeAdjust: '100%',
+  scrollBehavior: 'smooth',
 });
 
 globalStyle('html, body', {
@@ -21,6 +24,14 @@ globalStyle('body', {
   minHeight: '100vh',
   lineHeight: 1.5,
   textRendering: 'optimizeLegibility',
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.regular,
+  color: vars.color.gray[800],
+  backgroundColor: vars.color.white,
+  WebkitFontSmoothing: 'antialiased',
+  MozOsxFontSmoothing: 'grayscale',
+  wordBreak: 'keep-all',
 });
 
 globalStyle('h1, h2, h3, h4, h5, h6', {
@@ -74,7 +85,11 @@ globalStyle('fieldset', {
   border: 'none',
 });
 
-/* 모바일 기본 하이라이트 제거 */
+// 모바일 기본 하이라이트 제거
 globalStyle('button, [role="button"]', {
   WebkitTapHighlightColor: 'transparent',
 });
+
+// vanilla-extract는 globalStyle만 있는 파일에 대해 출력 파일을 만들지 않아
+// 최소 하나의 style()을 두어야 vanilla-extract가 이 파일을 인식 가능
+export const _resetScope = style({});

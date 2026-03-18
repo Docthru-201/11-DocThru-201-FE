@@ -2,21 +2,7 @@ import { globalStyle } from '@vanilla-extract/css';
 
 import { vars } from './tokens.css';
 
-globalStyle('html', {
-  scrollBehavior: 'smooth',
-});
-
-globalStyle('body', {
-  fontFamily: vars.fontFamily.pretendard,
-  fontSize: vars.fontSize.base,
-  fontWeight: vars.fontWeight.regular,
-  color: vars.color.gray[800],
-  backgroundColor: vars.color.white,
-  WebkitFontSmoothing: 'antialiased',
-  MozOsxFontSmoothing: 'grayscale',
-  wordBreak: 'keep-all',
-});
-
+// Global styling
 globalStyle(':focus-visible', {
   outline: `2px solid ${vars.color.gray[400]}`,
   outlineOffset: '2px',
