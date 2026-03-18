@@ -16,10 +16,15 @@
     }
   },
   "include": [
-    "next-env.d.ts", 
-    "**/*.js", 
-    "**/*.jsx", 
-    "**/*.mjs" 
+    "next-env.d.ts",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs",
+    "src/styles/breakpoints.css.ts",
+    "src/styles/global.css.ts",
+    "src/styles/reset.css.ts",
+    "src/styles/tokens.css.ts",
+    "src/shared/providers/toast.css.ts"
   ],
-  "exclude": ["node_modules", ".next"] 
+  "exclude": ["node_modules", ".next"]
 }

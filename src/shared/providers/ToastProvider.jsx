@@ -2,7 +2,7 @@
 
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './toast.css.js';
+import './toast.css';
 
 export default function ToastProvider() {
   return (
