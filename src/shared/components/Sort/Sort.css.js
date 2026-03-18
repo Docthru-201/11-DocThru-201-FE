@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
-import { breakpoint } from '@/styles/breakpoints.css.js';
+import { vars } from '@/styles/tokens.css.ts';
+import { breakpoint } from '@/styles/breakpoints.css.ts';
 
 export const root = style({
   display: 'flex',

@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
-import { breakpoint } from '@/styles/breakpoints.css.js';
+import { vars } from '@/styles/tokens.css.ts';
+import { breakpoint } from '@/styles/breakpoints.css.ts';
 
 /* Figma chip-card-status: px-12 py-8, rounded-24, gap-4, Pretendard Medium 13px (next/font --font-pretendard 사용) */
 const chipCardBase = style({

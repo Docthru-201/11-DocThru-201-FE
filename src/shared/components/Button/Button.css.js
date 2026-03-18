@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { breakpoint } from '@/styles/breakpoints.css.js';
-import { vars } from '@/styles/tokens.css.js';
+import { breakpoint } from '@/styles/breakpoints.css.ts';
+import { vars } from '@/styles/tokens.css.ts';
 
 const transition = `background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, border-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, box-shadow ${vars.transition.duration.normal} ${vars.transition.timing.ease}, transform ${vars.transition.duration.fast} ${vars.transition.timing.ease}`;
 

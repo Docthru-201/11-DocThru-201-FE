@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { breakpoint } from '@/styles/breakpoints.css.js';
-import { vars } from '@/styles/tokens.css.js';
+import { breakpoint } from '@/styles/breakpoints.css.ts';
+import { vars } from '@/styles/tokens.css.ts';
 
 /* Chip 타입: Quantico / Chip 상태 등: Pretendard (tokens.fontFamily) */
 const chipBase = style({

@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
+import { vars } from '@/styles/tokens.css.ts';
 
 export const list = style({
   display: 'flex',
