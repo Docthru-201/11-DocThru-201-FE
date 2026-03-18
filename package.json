@@ -6,7 +6,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "lint-staged": {
     "*.{js,jsx,mjs,json,md}": [
@@ -15,24 +17,44 @@
   },
   "dependencies": {
     "@fontsource/pretendard": "^5.2.5",
+    "@fontsource/quantico": "^5.2.7",
+    "@radix-ui/react-slot": "^1.2.4",
     "@vanilla-extract/css": "^1.18.0",
     "@vanilla-extract/next-plugin": "^2.4.17",
+    "@vanilla-extract/vite-plugin": "^5.2.0",
+    "@vitejs/plugin-react": "^5.2.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "next": "16.1.6",
+    "prop-types": "^15.8.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.0.1",
     "@eslint/js": "^10.0.1",
+    "@storybook/addon-a11y": "^10.2.19",
+    "@storybook/addon-docs": "^10.2.19",
+    "@storybook/addon-onboarding": "^10.2.19",
+    "@storybook/addon-vitest": "^10.2.19",
+    "@storybook/nextjs-vite": "^10.2.19",
+    "@vitest/browser-playwright": "^4.1.0",
+    "@vitest/coverage-v8": "^4.1.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-storybook": "^10.2.19",
     "eslint-plugin-unused-imports": "^4.4.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.3.3"
+    "lint-staged": "^16.3.3",
+    "playwright": "^1.58.2",
+    "prettier": "^3.8.1",
+    "storybook": "^10.2.19",
+    "storybook-addon-designs": "^6.3.1",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.0"
   }
 }
