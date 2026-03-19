@@ -60,7 +60,8 @@ export const signupSchema = z
     password: passwordSchema,
     confirmPassword: z
       .string()
-      .trim.min(1, { message: '비밀번호 확인을 입력해주세요.' }),
+      .trim()
+      .min(1, { message: '비밀번호 확인을 입력해주세요.' }),
   })
   .strict()
   .refine((data) => data.password === data.confirmPassword, {
