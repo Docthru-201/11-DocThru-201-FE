@@ -31,9 +31,7 @@ export const PageIndicator = ({ current, total, onChange }) => {
   return (
     <div className={styles.pageIndicator}>
       <Button
-        type="button"
         variant="transparent"
-        className={styles.arrowButton}
         onClick={handlePrev}
         disabled={!canPrev}
         aria-label="이전 페이지"
@@ -55,13 +53,12 @@ export const PageIndicator = ({ current, total, onChange }) => {
         );
       })}
       <Button
-        type="button"
         variant="transparent"
-        className={styles.arrowButton}
         onClick={handleNext}
         disabled={!canNext}
-        aria-label="다음 페이지"
-        icon={<Icon name="arrowRight" width={40} height={40} aria-hidden />}
+        icon={
+          <Icon name="chevronRightActive" width={40} height={40} aria-hidden />
+        }
       />
     </div>
   );

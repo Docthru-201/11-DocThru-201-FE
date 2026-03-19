@@ -1,10 +1,7 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.ts';
-import { breakpoint } from '@/styles/breakpoints.css.ts';
+import { vars } from '@/styles/tokens.css';
+import { breakpoint } from '@/styles/breakpoints.css';
 
-/**
- * Card: small(기본) → medium(768px~) → large(1024px~) 미디어 쿼리로 반응형 적용
- */
 export const card = style({
   display: 'flex',
   flexDirection: 'column',

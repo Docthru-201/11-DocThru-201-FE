@@ -6,16 +6,13 @@ import * as styles from './Button.css.js';
 import { Spinner } from '../Spinner';
 
 export function Button({
-  // type = 'button',
-  // asChild = false,
   variant = 'solid',
-  icon,
+  icon = undefined,
   iconPosition = 'right',
   loading = false,
   fullWidth = false,
   disabled = false,
-  children,
-  className,
+  children = undefined,
   ...props
 }) {
   const isDisabled = disabled || loading;
@@ -26,18 +23,10 @@ export function Button({
     styles.variant[variant],
     fullWidth && styles.fullWidth,
     isDisabled && styles.disabled,
-    className,
   );
 
-  // const Component = asChild ? Slot : 'button';
-
   return (
-    <button
-      // type={!asChild ? type : undefined}
-      // disabled={!asChild ? isDisabled : undefined}
-      className={classes}
-      {...props}
-    >
+    <button className={classes} {...props}>
       {showIcon && iconPosition === 'left' && (
         <span className={styles.icon}>{icon}</span>
       )}
