@@ -9,7 +9,7 @@ import { signupSchema } from '@/features/auth/schema/auth.schema'; // 미리 만
 import { useSignup } from '@/features/auth/hooks/useSignup'; // 미리 만든 Hook
 
 // Vanilla Extract 스타일 import (준비되었다고 가정)
-import * as s from './signup.css';
+import * as s from './signup.css.ts';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -29,15 +29,24 @@ export default function SignupPage() {
   } = useForm({
     resolver: zodResolver(signupSchema),
     mode: 'onChange', // 실시간 검증 활성화
+    defaultValues: {
+      email: '',
+      nickname: '',
+      password: '',
+      confirmPassword: '',
+    },
   });
 
   // (4) 폼 제출 시 실행될 함수
-  const onSubmit = (data) => {
-    // confirmPassword 제거 후 서버로 보낼 규격으로 정제
+  const onSubmit = async (data) => {
     const { confirmPassword, ...payload } = data;
 
-    // 이 한 줄로 Zod 검증 -> Hook -> Service -> API가 호출됩니다.
-    signup(payload);
+    try {
+      await signup(payload);
+      router.push('/login'); // 회원가입 성공 후 로그인 페이지 이동
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
