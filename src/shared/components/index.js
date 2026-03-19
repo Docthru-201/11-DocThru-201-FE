@@ -1,6 +1,7 @@
 export * from './Button';
 export * from './Card';
 export * from './Checkbox';
+export * from './Container';
 export * from './Chip';
 export * from './ChipCard';
 export * from './Dropdown';
