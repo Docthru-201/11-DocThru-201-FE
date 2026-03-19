@@ -99,7 +99,7 @@ export const apiMockMap = {
     messageOnly('알림 삭제 성공'),
   'POST /notifications': () => notificationDetailResponseMock,
 
-  // applications (개별 조회)
+  // applications
   'GET /applications/:applicationId': () => applicationDetailResponseMock,
 
   // admin
