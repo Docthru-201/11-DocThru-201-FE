@@ -1,34 +1,26 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'; // (1)
-import { zodResolver } from '@hookform/resolvers/zod'; // (2)
-import { signupSchema } from '@/features/auth/schema/auth.schema'; // 미리 만든 Zod
-import { useSignup } from '@/features/auth/hooks/useSignup'; // 미리 만든 Hook
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-// Vanilla Extract 스타일 import (준비되었다고 가정)
+import { signupSchema } from '@/features/auth/schema/auth.schema';
+import { useSignup } from '@/features/auth/hooks/useSignup';
+
 import * as s from './signup.css.ts';
 
 export default function SignupPage() {
   const router = useRouter();
-
-  // 비밀번호 보이기/숨기기 상태 관리
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // TanStack Query 기반의 커스텀 훅 사용
   const { signup, isPending } = useSignup();
 
-  // (3) React Hook Form 초기화 (Zod 스키마 연결)
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid }, // isValid: 모든 필드가 올바른지 여부
+    formState: { errors, isValid },
   } = useForm({
     resolver: zodResolver(signupSchema),
-    mode: 'onChange', // 실시간 검증 활성화
+    mode: 'onChange',
     defaultValues: {
       email: '',
       nickname: '',
@@ -37,13 +29,12 @@ export default function SignupPage() {
     },
   });
 
-  // (4) 폼 제출 시 실행될 함수
   const onSubmit = async (data) => {
     const { confirmPassword, ...payload } = data;
 
     try {
       await signup(payload);
-      router.push('/login'); // 회원가입 성공 후 로그인 페이지 이동
+      router.push('/login');
     } catch (error) {
       console.error(error);
     }
@@ -51,22 +42,28 @@ export default function SignupPage() {
 
   return (
     <main className={s.container}>
-      {/* 로고 영역 */}
+      {/* 로고 */}
       <div className={s.logoWrapper}>
-        <Image src="/logo.svg" alt="Docthru 로고" width={180} height={40} />
+        <Image
+          src="/images/img_logo.png" // public을 생략하고 /images부터 시작합니다.
+          alt="Docthru 로고"
+          width={320}
+          height={72}
+          priority // 로고는 페이지에서 가장 먼저 보여야 하므로 priority를 주는 것이 좋습니다.
+          style={{ objectFit: 'contain' }}
+        />
       </div>
 
+      {/* 회원가입 폼 */}
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
         {/* 이메일 */}
         <div className={s.inputGroup}>
-          <label htmlFor="email" className={s.label}>
-            이메일
-          </label>
+          <label className={s.label}>이메일</label>
           <input
-            id="email"
-            {...register('email')} // (5) RHF에 필드 등록
+            type="email"
             placeholder="이메일을 입력해주세요"
-            className={`${s.input} ${errors.email ? s.inputError : ''}`}
+            className={s.input}
+            {...register('email')}
           />
           {errors.email && (
             <p className={s.errorMessage}>{errors.email.message}</p>
@@ -75,14 +72,12 @@ export default function SignupPage() {
 
         {/* 닉네임 */}
         <div className={s.inputGroup}>
-          <label htmlFor="nickname" className={s.label}>
-            닉네임
-          </label>
+          <label className={s.label}>닉네임</label>
           <input
-            id="nickname"
-            {...register('nickname')}
+            type="text"
             placeholder="닉네임을 입력해주세요"
-            className={`${s.input} ${errors.nickname ? s.inputError : ''}`}
+            className={s.input}
+            {...register('nickname')}
           />
           {errors.nickname && (
             <p className={s.errorMessage}>{errors.nickname.message}</p>
@@ -91,27 +86,13 @@ export default function SignupPage() {
 
         {/* 비밀번호 */}
         <div className={s.inputGroup}>
-          <label htmlFor="password" className={s.label}>
-            비밀번호
-          </label>
-          <div className={s.passwordInputWrapper}>
-            <input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              {...register('password')}
-              placeholder="비밀번호를 입력해주세요"
-              className={`${s.input} ${errors.password ? s.inputError : ''}`}
-            />
-            {/* 눈 아이콘 버튼 (비밀번호 보이기/숨기기) */}
-            <button
-              type="button"
-              className={s.eyeIcon}
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? '🐵' : '🙈'}{' '}
-              {/* 실제 프로젝트에서는 아이콘 SVG 사용 추천 */}
-            </button>
-          </div>
+          <label className={s.label}>비밀번호</label>
+          <input
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            className={s.input}
+            {...register('password')}
+          />
           {errors.password && (
             <p className={s.errorMessage}>{errors.password.message}</p>
           )}
@@ -119,25 +100,13 @@ export default function SignupPage() {
 
         {/* 비밀번호 확인 */}
         <div className={s.inputGroup}>
-          <label htmlFor="confirmPassword" className={s.label}>
-            비밀번호 확인
-          </label>
-          <div className={s.passwordInputWrapper}>
-            <input
-              id="confirmPassword"
-              type={showConfirmPassword ? 'text' : 'password'}
-              {...register('confirmPassword')}
-              placeholder="비밀번호를 한번 더 입력해주세요"
-              className={`${s.input} ${errors.confirmPassword ? s.inputError : ''}`}
-            />
-            <button
-              type="button"
-              className={s.eyeIcon}
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? '🐵' : '🙈'}
-            </button>
-          </div>
+          <label className={s.label}>비밀번호 확인</label>
+          <input
+            type="password"
+            placeholder="비밀번호를 한번 더 입력해주세요"
+            className={s.input}
+            {...register('confirmPassword')}
+          />
           {errors.confirmPassword && (
             <p className={s.errorMessage}>{errors.confirmPassword.message}</p>
           )}
@@ -147,24 +116,22 @@ export default function SignupPage() {
         <button
           type="submit"
           className={s.submitButton}
-          disabled={!isValid || isPending} // 유효하지 않거나 로딩 중이면 비활성화
+          disabled={!isValid || isPending}
         >
           {isPending ? '처리 중...' : '가입하기'}
         </button>
       </form>
 
-      {/* 로그인 링크 */}
+      {/* 하단 로그인 */}
       <footer className={s.footer}>
-        <p>
-          회원이신가요?
-          <button
-            type="button"
-            onClick={() => router.push('/auth/login')}
-            className={s.loginLink}
-          >
-            로그인하기
-          </button>
-        </p>
+        <span>회원이신가요?</span>
+        <button
+          type="button"
+          className={s.loginLink}
+          onClick={() => router.push('/auth/login')}
+        >
+          로그인하기
+        </button>
       </footer>
     </main>
   );
