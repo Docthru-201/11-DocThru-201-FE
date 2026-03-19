@@ -4,11 +4,9 @@ import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './List.css.js';
 
-/**
- * @param {'admin'|'member'} [profileType] - 전문가(admin)면 profile_admin, 일반 멤버면 profile_member. 없으면 role이 '전문가'일 때 admin
- */
 export function ListRow({
   badgeLabel,
+  badgeRank,
   name,
   role,
   profileType,
@@ -19,13 +17,16 @@ export function ListRow({
 }) {
   const isExpert =
     profileType === 'admin' || (profileType == null && role === '전문가');
-  const profileIconName = isExpert ? 'profile-admin' : 'profile-member';
+  const profileIconName = isExpert ? 'profileAdmin' : 'profileMember';
+  const showCrown = badgeRank === 1;
 
   return (
     <div className={styles.row}>
       {showBadge && badgeLabel != null && (
         <span className={styles.badge}>
-          <Icon name="crown" width={16} height={16} aria-hidden />
+          {showCrown && (
+            <Icon name="crown" width={16} height={16} aria-hidden />
+          )}
           {badgeLabel}
         </span>
       )}
