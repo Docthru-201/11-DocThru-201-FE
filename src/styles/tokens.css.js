@@ -6,7 +6,7 @@ export const vars = createGlobalTheme(':root', {
     pretendard:
       'var(--font-pretendard), Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
     quantico:
-      'var(--font-quantico), Quantico, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+      'var(--font-quantico, Quantico, -apple-system, BlinkMacSystemFont, system-ui, sans-serif)',
   },
 
   fontSize: {
