@@ -12,7 +12,7 @@ export const useSignup = () => {
     // 성공했을 때 실행할 로직
     onSuccess: (data) => {
       alert('회원가입에 성공했습니다! 로그인 페이지로 이동합니다.');
-      router.push('/auth/login'); // 로그인 페이지로 리다이렉트
+      router.push('/login'); // 로그인 페이지로 리다이렉트
     },
 
     // 실패했을 때 실행할 로직

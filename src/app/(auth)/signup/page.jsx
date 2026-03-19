@@ -128,7 +128,7 @@ export default function SignupPage() {
         <button
           type="button"
           className={s.loginLink}
-          onClick={() => router.push('/auth/login')}
+          onClick={() => router.push('/login')}
         >
           로그인하기
         </button>
