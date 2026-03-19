@@ -20,7 +20,7 @@ export const logoWrapper = style({
   height: '4.5rem',
   justifyContent: 'center',
   alignItems: 'center',
-  marginBottom: '4rem', // 로고를 좀 더 아래로 배치
+  marginBottom: '2rem', // 로고를 좀 더 아래로 배치
 });
 
 /* 3. 폼 전체 (너비 유지 및 버튼 그룹화를 위한 flex 설정) */

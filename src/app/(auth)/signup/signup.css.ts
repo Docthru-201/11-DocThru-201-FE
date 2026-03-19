@@ -14,14 +14,14 @@ export const container = style({
 });
 
 /* 2. 로고 영역 */
+/* 2. 로고 영역 */
 export const logoWrapper = style({
-  display: 'flex',
-  width: '20rem',
+  width: '20rem', // 부모 박스 크기 고정
   height: '4.5rem',
-  padding: '0 0.96244rem 0 0.89988rem',
+  display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginBottom: '2rem', // 폼과의 간격 조절
+  marginBottom: '2rem',
 });
 
 /* 3. 폼 전체 */
