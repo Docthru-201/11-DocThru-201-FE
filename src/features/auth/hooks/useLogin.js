@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '../api/auth.service'; // 서비스 함수 임포트
+import { toast } from 'react-toastify'; // 추가
 
 export const useLogin = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ export const useLogin = () => {
     // 성공했을 때 실행할 로직
     onSuccess: (data) => {
       // 1. 성공 알림
-      alert('로그인에 성공했습니다! 메인 페이지로 이동합니다.');
+      toast.success('로그인에 성공했습니다!');
 
       // 2. 페이지 리다이렉트 (대시보드 또는 메인)
       router.push('/');
@@ -24,7 +25,7 @@ export const useLogin = () => {
     // 실패했을 때 실행할 로직
     onError: (error) => {
       // service에서 throw한 에러 메시지를 활용합니다.
-      alert(error.message || '로그인 중 오류가 발생했습니다.');
+      toast.error(error.message || '로그인 중 오류가 발생했습니다.');
     },
   });
 

@@ -28,13 +28,8 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = async (data) => {
-    try {
-      await login(data); // 로그인 실행
-      router.push('/'); // 로그인 성공 시 메인 또는 대시보드로 이동
-    } catch (error) {
-      console.error('로그인 실패:', error);
-    }
+  const onSubmit = (data) => {
+    login(data); // 로그인 실행
   };
 
   const handleGoogleLogin = () => {

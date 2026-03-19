@@ -29,15 +29,9 @@ export default function SignupPage() {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     const { confirmPassword, ...payload } = data;
-
-    try {
-      await signup(payload);
-      router.push('/login');
-    } catch (error) {
-      console.error(error);
-    }
+    signup(payload);
   };
 
   return (
