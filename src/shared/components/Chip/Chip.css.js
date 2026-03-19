@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { breakpoint } from '@/styles/breakpoints.css';
+// import { breakpoint } from '@/styles/breakpoints.css';
 import { vars } from '@/styles/tokens.css';
 
 const chipBase = style({
