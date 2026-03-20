@@ -14,16 +14,34 @@ export const container = style({
 });
 
 /* 2. 로고 영역 */
-/* 2. 로고 영역 */
-export const logoWrapper = style({
-  width: '20rem', // 부모 박스 크기 고정
-  height: '4.5rem',
+export const logoBlock = style({
   display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center',
-  marginBottom: '2rem',
+  justifyContent: 'center',
+  marginBottom: '2.5rem', // 40px (팀원 가이드 반영)
+  textDecoration: 'none',
+  gap: '0.8rem', // 아이콘과 텍스트 사이 적절한 간격
 });
 
+export const logo = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.9rem',
+
+  // 주신 텍스트 스타일 그대로 반영
+  color: '#525252', // var(--gray-gray600)
+  textAlign: 'justify',
+  fontFamily: 'Quantico, sans-serif',
+  fontSize: '3.6rem',
+  fontStyle: 'normal',
+  fontWeight: 700,
+  lineHeight: 'normal',
+  letterSpacing: '0.065rem',
+
+  // 상세 폰트 설정
+  fontFeatureSettings: "'liga' off, 'clig' off",
+  textDecoration: 'none',
+});
 /* 3. 폼 전체 */
 export const form = style({
   width: '32.38rem', // 120 - (43.81 * 2) 한 나머지 공간
