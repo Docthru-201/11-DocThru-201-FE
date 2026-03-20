@@ -38,6 +38,7 @@ export const fieldDate = style({
   borderRadius: vars.radius.lg,
   backgroundColor: vars.color.white,
   border: `1px solid ${vars.color.gray[200]}`,
+  cursor: 'pointer',
   selectors: {
     '&:focus-within': {
       borderColor: vars.color.brand.background,
@@ -91,7 +92,7 @@ export const inputDate = style([
   input,
   {
     color: 'transparent',
-    caretColor: vars.color.gray[900],
+    caretColor: 'transparent',
     selectors: {
       '&::-webkit-calendar-picker-indicator': {
         opacity: 0,
@@ -101,7 +102,27 @@ export const inputDate = style([
         height: 0,
         pointerEvents: 'none',
       },
+      /* 포커스 시에도 네이티브 연/월/일·구분자가 비치지 않도록 (한글 로케일과 오버레이 이중 표시 방지) */
       '&::-webkit-datetime-edit': {
+        color: 'transparent',
+      },
+      '&:focus::-webkit-datetime-edit': {
+        color: 'transparent',
+      },
+      '&::-webkit-datetime-edit-fields-wrapper': {
+        backgroundColor: 'transparent',
+        padding: 0,
+      },
+      '&::-webkit-datetime-edit-text': {
+        color: 'transparent',
+      },
+      '&::-webkit-datetime-edit-month-field': {
+        color: 'transparent',
+      },
+      '&::-webkit-datetime-edit-day-field': {
+        color: 'transparent',
+      },
+      '&::-webkit-datetime-edit-year-field': {
         color: 'transparent',
       },
     },

@@ -1,21 +1,7 @@
-import { useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '@/shared/components/Button';
-import {
-  dateDisplay,
-  dateDisplayFilled,
-  dateIconWrap,
-  dateInputArea,
-  field,
-  fieldDate,
-  fieldDateError,
-  helperText,
-  iconButton,
-  input,
-  inputDate,
-  inputRoot,
-  label as labelStyle,
-} from './Input.css.js';
+import * as styles from './Input.css.js';
 import { Icon } from '@/shared/components/Icon';
 
 function formatDateToYYMMDD(value) {
@@ -39,6 +25,8 @@ export const Input = ({
   ...rest
 }) => {
   const [visible, setVisible] = useState(false);
+  const dateInputId = useId();
+  const dateInputRef = useRef(null);
   const isPassword = type === 'password';
 
   const inputType =
@@ -48,74 +36,105 @@ export const Input = ({
   const dateDisplayText = isDate ? formatDateToYYMMDD(value) : '';
   const showDatePlaceholder = isDate && !dateDisplayText;
 
+  function openDatePicker() {
+    const el = dateInputRef.current;
+    if (!el) return;
+    if (typeof el.showPicker === 'function') {
+      try {
+        el.showPicker();
+        return;
+      } catch {
+        /* 보안 제한 등 — focus로 폴백 */
+      }
+    }
+    el.focus();
+    el.click();
+  }
+
   return (
-    <div className={clsx(inputRoot, className)}>
-      {label && <label className={labelStyle}>{label}</label>}
-      <div
-        className={
-          isDate
-            ? error
-              ? fieldDateError
-              : fieldDate
-            : field[error ? 'error' : 'default']
-        }
-      >
-        {isDate ? (
-          <>
-            <div className={dateInputArea}>
-              <span
-                className={clsx(
-                  dateDisplay,
-                  dateDisplayText && dateDisplayFilled,
-                )}
-                aria-hidden
-              >
-                {showDatePlaceholder ? datePlaceholder : dateDisplayText}
-              </span>
-              <input
-                className={inputDate}
-                type="date"
-                value={value}
-                onChange={onChange}
-                {...rest}
-              />
-            </div>
-            <span className={dateIconWrap} aria-hidden>
-              <Icon name="dateCalendar" width={32} height={32} />
-            </span>
-          </>
+    <div className={clsx(styles.inputRoot, className)}>
+      {label &&
+        (isDate ? (
+          <label className={styles.label} htmlFor={dateInputId}>
+            {label}
+          </label>
         ) : (
+          <label className={styles.label}>{label}</label>
+        ))}
+      {isDate ? (
+        <div
+          className={error ? styles.fieldDateError : styles.fieldDate}
+          onMouseDown={(e) => {
+            const inputEl = dateInputRef.current;
+            if (
+              inputEl &&
+              e.target !== inputEl &&
+              !inputEl.contains(e.target)
+            ) {
+              e.preventDefault();
+              openDatePicker();
+            }
+          }}
+        >
+          <div className={styles.dateInputArea}>
+            <span
+              className={clsx(
+                styles.dateDisplay,
+                dateDisplayText && styles.dateDisplayFilled,
+              )}
+              aria-hidden
+            >
+              {showDatePlaceholder ? datePlaceholder : dateDisplayText}
+            </span>
+            <input
+              ref={dateInputRef}
+              id={dateInputId}
+              className={styles.inputDate}
+              type="date"
+              value={value}
+              onChange={onChange}
+              {...rest}
+            />
+          </div>
+          <span className={styles.dateIconWrap} aria-hidden>
+            <Icon name="dateCalendar" width={32} height={32} />
+          </span>
+        </div>
+      ) : (
+        <div className={styles.field[error ? 'error' : 'default']}>
           <input
-            className={input}
+            className={styles.input}
             type={inputType}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
             {...rest}
           />
-        )}
-        {isPassword && showPasswordToggle && (
-          <Button
-            type="button"
-            variant="transparent"
-            className={iconButton}
-            onClick={() => setVisible((prev) => !prev)}
-            aria-label={visible ? '비밀번호 숨기기' : '비밀번호 보기'}
-            icon={
-              <Icon
-                name={
-                  visible ? 'passwordVisibilityOn' : 'passwordVisibilityOff'
-                }
-                width={24}
-                height={24}
-                aria-hidden
-              />
-            }
-          />
-        )}
-      </div>
+          {isPassword && showPasswordToggle && (
+            <Button
+              type="button"
+              variant="transparent"
+              className={styles.iconButton}
+              onClick={() => setVisible((prev) => !prev)}
+              aria-label={visible ? '비밀번호 숨기기' : '비밀번호 보기'}
+              icon={
+                <Icon
+                  name={
+                    visible ? 'passwordVisibilityOn' : 'passwordVisibilityOff'
+                  }
+                  width={24}
+                  height={24}
+                  aria-hidden
+                />
+              }
+            />
+          )}
+        </div>
+      )}
       {helper && (
-        <p className={helperText[error ? 'error' : 'default']}>{helper}</p>
+        <p className={styles.helperText[error ? 'error' : 'default']}>
+          {helper}
+        </p>
       )}
     </div>
   );

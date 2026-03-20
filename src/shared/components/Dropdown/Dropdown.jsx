@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './Dropdown.css.js';
 
@@ -34,26 +33,23 @@ export function Dropdown({
 
   return (
     <div className={styles.root} ref={ref}>
-      <Button
+      <button
         type="button"
-        variant="outline"
         className={styles.trigger[open ? 'active' : 'default']}
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={label}
-        icon={
-          <Icon
-            name={open ? 'toggle_up' : 'toggle_down'}
-            width={24}
-            height={24}
-            aria-hidden
-          />
-        }
-        iconPosition="right"
       >
         <span className={styles.triggerLabel}>{displayText}</span>
-      </Button>
+        <span className={styles.triggerIcon} aria-hidden>
+          <Icon
+            name={open ? 'toggleUp' : 'toggleDown'}
+            width={24}
+            height={24}
+          />
+        </span>
+      </button>
       {open && (
         <ul className={styles.list} role="listbox" aria-label={label}>
           {options.map((opt) => {
