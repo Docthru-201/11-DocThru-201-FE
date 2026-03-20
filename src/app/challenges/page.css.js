@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
-import { breakpoint } from '@/styles/breakpoints.css.js';
+import { vars } from '@/styles/tokens.css';
+import { breakpoint } from '@/styles/breakpoints.css';
 
 export const page = style({
   minHeight: '100vh',

@@ -13,7 +13,7 @@ import {
   PageIndicator,
   Icon,
 } from '@/shared/components';
-import * as styles from '@/shared/styles/challenges.css.js';
+import * as styles from './page.css';
 
 //여길 나중에 바꿔야 fetch
 const MOCK_CHALLENGES = [
