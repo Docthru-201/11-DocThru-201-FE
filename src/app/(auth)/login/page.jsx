@@ -33,10 +33,14 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = () => {
-    // 구글 로그인은 API 서버의 경로로 직접 이동하는 방식이 일반적입니다.
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
-  };
+    const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    const REDIRECT_URI = `${window.location.origin}/auth/google/callback`; // 우리가 만들 콜백 주소
 
+    // 구글 인증 페이지 주소 (인가 코드를 받기 위함)
+    const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=email profile`;
+
+    window.location.href = GOOGLE_AUTH_URL;
+  };
   return (
     <main className={s.container}>
       {/* 로고 */}

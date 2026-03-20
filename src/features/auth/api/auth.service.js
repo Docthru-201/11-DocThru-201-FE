@@ -1,5 +1,12 @@
 // src/features/auth/api/auth.service.js
-import { signup, login, logout, logoutAll, refreshToken } from '@/apis/auth';
+import {
+  signup,
+  login,
+  logout,
+  logoutAll,
+  refreshToken,
+  googleLogin,
+} from '@/apis/auth';
 
 /**
  * 회원가입 서비스 로직
@@ -67,6 +74,18 @@ export const refreshUserToken = async (rt) => {
     return await refreshToken(rt);
   } catch (error) {
     throw new Error('세션이 만료되었습니다. 다시 로그인해주세요.', {
+      cause: error,
+    });
+  }
+};
+
+export const googleLoginUser = async (code) => {
+  try {
+    const response = await googleLogin(code);
+
+    return response;
+  } catch (error) {
+    throw new Error(error.message || '로그인 처리 중 오류가 발생했습니다.', {
       cause: error,
     });
   }
