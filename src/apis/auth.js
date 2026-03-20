@@ -1,36 +1,82 @@
 /**
  * 인증 관련 fetch 함수
- * 현재는 `src/mock/*` 목 응답을 그대로 반환합니다.
  */
 
-import { loginResponseMock, signupResponseMock } from '@/mock/auth';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
-const messageOnly = (message) => ({
-  message,
-  data: undefined,
-});
+// 공통 에러 처리 함수
+async function handleResponse(response, defaultMessage) {
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || defaultMessage);
+  }
 
+  return response.json();
+}
+
+// 로그인
 export async function login(body) {
-  // TODO: body 검증/라우팅 후 fetch로 전환
-  return loginResponseMock;
+  const response = await fetch(`${BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+
+  return handleResponse(response, '로그인에 실패했습니다.');
 }
 
+// 회원가입
 export async function signup(body) {
-  // TODO: body 검증/라우팅 후 fetch로 전환
-  return signupResponseMock;
+  const response = await fetch(`${BASE_URL}/auth/signup`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+
+  return handleResponse(response, '회원가입에 실패했습니다.');
 }
 
-export async function logout() {
-  return messageOnly('로그아웃 성공');
+// 로그아웃
+export async function logout(accessToken) {
+  const response = await fetch(`${BASE_URL}/auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return handleResponse(response, '로그아웃에 실패했습니다.');
 }
 
-export async function logoutAll() {
-  return messageOnly('모든 기기 로그아웃 성공');
+// 모든 기기 로그아웃
+export async function logoutAll(accessToken) {
+  const response = await fetch(`${BASE_URL}/auth/logout-all`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return handleResponse(response, '전체 로그아웃에 실패했습니다.');
 }
 
-export async function refreshToken() {
-  return {
-    message: '토큰 재발급 성공',
-    data: { accessToken: 'mock-refreshed-access-token' },
-  };
+// 토큰 재발급
+export async function refreshToken(refreshToken) {
+  const response = await fetch(`${BASE_URL}/auth/refresh`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ refreshToken }),
+  });
+
+  return handleResponse(response, '토큰 재발급에 실패했습니다.');
 }
