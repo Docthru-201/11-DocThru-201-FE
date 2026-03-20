@@ -77,15 +77,3 @@ export const refreshUserToken = async (rt) => {
     });
   }
 };
-
-export const googleLoginUser = async (code) => {
-  try {
-    const response = await googleLogin(code);
-
-    return response;
-  } catch (error) {
-    throw new Error(error.message || '로그인 처리 중 오류가 발생했습니다.', {
-      cause: error,
-    });
-  }
-};
