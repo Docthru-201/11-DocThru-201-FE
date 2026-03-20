@@ -33,7 +33,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5001/auth/google/login';
+    window.location.href = 'http://localhost:5001/api/auth/google/login';
   };
   return (
     <main className={s.container}>
