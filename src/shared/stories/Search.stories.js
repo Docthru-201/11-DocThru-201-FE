@@ -13,10 +13,13 @@ export default {
 export const Default = () => {
   const [value, setValue] = useState('');
   return (
-    <Search
-      placeholder="챌린지 이름을 검색해보세요"
-      value={value}
-      onChange={setValue}
-    />
+    <div style={{ width: 375 }}>
+      <Search
+        className={undefined}
+        placeholder="챌린지 이름을 검색해보세요"
+        value={value}
+        onChange={setValue}
+      />
+    </div>
   );
 };

@@ -6,6 +6,7 @@ export const iconPaths = {
 
   // 로그인, 회원가입
   signupCalendar: `${ICON_BASE_PATH}/signup-calendar.svg`,
+  dateCalendar: `${ICON_BASE_PATH}/calender.svg`,
   loginGoogle: `${ICON_BASE_PATH}/login-google.svg`,
   passwordVisibilityOff: `${ICON_BASE_PATH}/password-visibility-off.svg`,
   passwordVisibilityOn: `${ICON_BASE_PATH}/password_visibility-on.svg`,

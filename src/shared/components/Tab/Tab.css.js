@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
+import { vars } from '@/styles/tokens.css';
 
 export const list = style({
   display: 'flex',
@@ -14,8 +14,11 @@ const itemBase = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
-  padding: `${vars.space.lg} ${vars.space.xl}`,
+  justifyContent: 'flex-start',
+  paddingTop: vars.space.lg,
+  paddingLeft: vars.space.xl,
+  paddingRight: vars.space.xl,
+  paddingBottom: 0,
   minHeight: '53px',
   fontSize: vars.fontSize.md,
   fontWeight: vars.fontWeight.semibold,
@@ -23,7 +26,6 @@ const itemBase = style({
   cursor: 'pointer',
   background: 'none',
   border: 'none',
-  gap: '13px',
   transition: `color ${vars.transition.duration.fast} ${vars.transition.timing.ease}`,
   selectors: {
     '&:hover': {
@@ -47,4 +49,20 @@ export const indicator = style({
   height: '3px',
   backgroundColor: vars.color.gray[800],
   borderRadius: 0,
+  display: 'block',
+  alignSelf: 'stretch',
+  flexShrink: 0,
+});
+
+export const indicatorInactive = style({
+  backgroundColor: 'transparent',
+});
+
+export const content = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  gap: '13px',
+  width: '100%',
 });

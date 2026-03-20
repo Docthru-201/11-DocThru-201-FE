@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
+import { vars } from '@/styles/tokens.css';
 
 export const root = style({
   position: 'relative',

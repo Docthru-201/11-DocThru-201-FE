@@ -4,7 +4,7 @@ import { ChipCard, Chip, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './Card.css.js';
 
-const STUDY_TYPE_TO_CHIP = {
+const TYPE = {
   NEXT_JS: 'next',
   API: 'api',
   CAREER: 'career',
@@ -12,7 +12,7 @@ const STUDY_TYPE_TO_CHIP = {
   WEB: 'web',
 };
 
-const STUDY_CATEGORY_TO_CHIP = {
+const CATEGORY = {
   DOCUMENT: 'docs',
   BLOG: 'blog',
 };
@@ -34,7 +34,6 @@ export function Card({
   deadlineText: deadlineTextProp,
   personText: personTextProp,
 
-  ctaLabel = '도전 계속하기',
   onCtaClick,
   showCta = true,
   showEditMenu = false,
@@ -57,10 +56,9 @@ export function Card({
           ? 'recruitEnd'
           : null);
     title = title ?? study.title;
-    chipType = chipType ?? (study.type ? STUDY_TYPE_TO_CHIP[study.type] : null);
+    chipType = chipType ?? (study.type ? TYPE[study.type] : null);
     chipCategory =
-      chipCategory ??
-      (study.category ? STUDY_CATEGORY_TO_CHIP[study.category] : null);
+      chipCategory ?? (study.category ? CATEGORY[study.category] : null);
     deadlineText =
       deadlineText ??
       (study.deadline ? formatDeadlineText(study.deadline) : '');
@@ -122,7 +120,7 @@ export function Card({
               variant="outlineIcon"
               icon={<Icon name="arrowRight" />}
               iconPosition="right"
-              status
+              onClick={onCtaClick}
             >
               도전 계속하기
             </Button>

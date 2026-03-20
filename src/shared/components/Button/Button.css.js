@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { breakpoint } from '@/styles/breakpoints.css.js';
-import { vars } from '@/styles/tokens.css.js';
+import { breakpoint } from '@/styles/breakpoints.css';
+import { vars } from '@/styles/tokens.css';
 
 const transition = `background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, border-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, box-shadow ${vars.transition.duration.normal} ${vars.transition.timing.ease}, transform ${vars.transition.duration.fast} ${vars.transition.timing.ease}`;
 
@@ -33,7 +33,6 @@ export const variant = styleVariants({
     backgroundColor: vars.color.gray[800],
     color: vars.color.white,
     selectors: {
-      // shadcn-like: subtle hover shadow
       '&:hover:not(:disabled)': {
         backgroundColor: vars.color.gray[900],
         boxShadow: vars.shadow.sm,
@@ -190,7 +189,7 @@ export const variant = styleVariants({
       },
     },
   },
-  /** 흰 배경 + 연한 테두리 (예: Google로 시작하기) */
+
   secondary: {
     height: '48px',
     padding: `0 ${vars.space.xl}`,
@@ -220,7 +219,6 @@ export const variant = styleVariants({
     backgroundColor: vars.color.gray[800],
     color: vars.color.white,
     selectors: {
-      ...base.selectors,
       '&:hover:not(:disabled)': {
         backgroundColor: vars.color.gray[900],
         boxShadow: vars.shadow.sm,
@@ -231,6 +229,7 @@ export const variant = styleVariants({
       '&:active:not(:disabled)': {
         backgroundColor: vars.color.gray[900],
         boxShadow: 'none',
+        transform: 'scale(0.98)',
       },
     },
   },

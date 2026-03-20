@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
+import { vars } from '@/styles/tokens.css.ts';
 
 export const row = style({
   display: 'flex',
@@ -14,8 +14,11 @@ export const row = style({
 export const badge = style({
   display: 'inline-flex',
   alignItems: 'center',
+  justifyContent: 'center',
   gap: '2px',
-  padding: '2px 7px',
+  height: '21px',
+  width: '51px',
+  padding: 0,
   backgroundColor: vars.color.gray[800],
   borderRadius: vars.radius.xl,
   fontSize: vars.fontSize.sm,

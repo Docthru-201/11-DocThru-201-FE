@@ -1,24 +1,14 @@
 import { style, styleVariants, globalStyle } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
-import { breakpoint } from '@/styles/breakpoints.css.js';
-
-/**
- * Figma GNB 4711-52571
- * 미디어 쿼리: small(~767px) 좌우 16 | medium(768px~) 좌우 24 | large(1024px~) 좌우 360
- * status: guest | member | admin
- * 로고 폰트: next/font --font-quantico 사용
- */
+import { vars } from '@/styles/tokens.css';
+import { breakpoint } from '@/styles/breakpoints.css';
 
 export const gnb = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
   width: '100%',
   minHeight: '56px',
   paddingLeft: vars.space.lg,
   paddingRight: vars.space.lg,
   backgroundColor: vars.color.white,
-  borderBottom: `1px solid ${vars.color.gray[100]}`,
+  borderBottom: `1px solid ${vars.color.gray[200]}`,
   boxSizing: 'border-box',
   '@media': {
     [breakpoint.md]: {
@@ -27,16 +17,33 @@ export const gnb = style({
       paddingRight: vars.space.xl,
     },
     [breakpoint.lg]: {
+      minHeight: '60px',
       paddingLeft: '360px',
       paddingRight: '360px',
     },
   },
 });
 
+export const inner = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  minHeight: 'inherit',
+  boxSizing: 'border-box',
+});
+
 export const left = style({
   display: 'flex',
   alignItems: 'center',
-  gap: vars.space.xl,
+  gap: 24,
+  flexShrink: 0,
+});
+
+export const right = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
   flexShrink: 0,
 });
 
@@ -76,13 +83,6 @@ globalStyle(`${logoIcon} img`, {
   width: '100%',
   height: '100%',
   objectFit: 'contain',
-});
-
-export const center = style({
-  display: 'flex',
-  alignItems: 'center',
-  flex: 1,
-  minWidth: 0,
 });
 
 export const tabs = style({
@@ -135,27 +135,25 @@ export const tab = styleVariants({
   ],
 });
 
-export const right = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: vars.space.lg,
-  flexShrink: 0,
-});
-
 const loginTransition = `background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, box-shadow ${vars.transition.duration.normal} ${vars.transition.timing.ease}`;
 
-const loginButtonBase = style({
-  padding: `2px ${vars.space.lg} 3px`,
+export const loginButton = style({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: vars.color.white,
-  border: `1px solid ${vars.color.gray[800]}`,
+  height: '32px',
+  padding: '2px 16px 3px',
+  fontSize: vars.fontSize.sm,
   fontWeight: vars.fontWeight.semibold,
   color: vars.color.gray[800],
+  backgroundColor: vars.color.white,
+  border: `1px solid ${vars.color.gray[800]}`,
+  borderRadius: '10px',
   cursor: 'pointer',
   transition: loginTransition,
   outline: 'none',
+  textDecoration: 'none',
+  boxSizing: 'border-box',
   selectors: {
     '&:hover': {
       backgroundColor: vars.color.gray[50],
@@ -168,23 +166,14 @@ const loginButtonBase = style({
       backgroundColor: vars.color.gray[200],
     },
   },
-});
-
-export const loginButton = style([
-  loginButtonBase,
-  {
-    height: '32px',
-    fontSize: vars.fontSize.sm,
-    borderRadius: vars.radius.md,
-    '@media': {
-      [breakpoint.md]: {
-        height: '40px',
-        fontSize: vars.fontSize.base,
-        borderRadius: vars.radius.lg,
-      },
+  '@media': {
+    [breakpoint.md]: {
+      height: '40px',
+      fontSize: vars.fontSize.base,
+      borderRadius: vars.radius.lg,
     },
   },
-]);
+});
 
 export const profileWrap = style({
   display: 'flex',

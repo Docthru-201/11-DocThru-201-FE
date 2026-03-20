@@ -2,7 +2,6 @@ import { globalStyle } from '@vanilla-extract/css';
 
 import { vars } from './tokens.css';
 
-// Global styling
 globalStyle(':focus-visible', {
   outline: `2px solid ${vars.color.gray[400]}`,
   outlineOffset: '2px',

@@ -1,18 +1,7 @@
-// src/app/challenges/loading.jsx
-
-export default function Loading() {
+export default function ChallengesLoading() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontSize: '1.2rem',
-        color: '#666',
-      }}
-    >
-      <p>데이터를 불러오는 중입니다...</p>
+    <div style={{ padding: 24, textAlign: 'center' }}>
+      챌린지 목록을 불러오는 중...
     </div>
   );
 }
