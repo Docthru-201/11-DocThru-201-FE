@@ -80,17 +80,3 @@ export async function refreshToken(refreshToken) {
 
   return handleResponse(response, '토큰 재발급에 실패했습니다.');
 }
-
-// 구글 로그인
-export async function googleLogin(code) {
-  const response = await fetch(`${BASE_URL}/auth/login/google`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify({ code }),
-  });
-
-  return handleResponse(response, '구글 로그인에 실패했습니다.');
-}
