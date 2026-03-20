@@ -2,7 +2,7 @@
   "name": "docthru-201-fe",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -25,6 +25,8 @@
     "@vitejs/plugin-react": "^5.2.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.20",
+    "jose": "^6.2.1",
     "next": "16.1.6",
     "prop-types": "^15.8.1",
     "react": "19.2.3",

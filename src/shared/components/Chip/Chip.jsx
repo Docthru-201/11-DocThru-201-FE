@@ -1,20 +1,20 @@
 import { chipType, chipCategory, chipStatus } from './Chip.css.js';
 
 const TYPE_LABEL = {
-  next: 'Next.js',
+  next_js: 'Next.js',
   api: 'API',
   career: 'Career',
-  modernJs: 'Modern JS',
+  modern_js: 'Modern JS',
   web: 'Web',
 };
 
 const CATEGORY_LABEL = {
-  docs: '공식문서',
+  document: '공식문서',
   blog: '블로그',
 };
 
 const STATUS_LABEL = {
-  wait: '승인 대기',
+  pending: '승인 대기',
   rejected: '신청 거절',
   approved: '신청 승인',
   deleted: '챌린지 삭제',

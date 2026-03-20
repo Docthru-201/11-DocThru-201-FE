@@ -23,7 +23,7 @@ const chipBase = style({
 });
 
 export const chipType = styleVariants({
-  next: [
+  next_js: [
     chipBase,
     {
       height: '26px',
@@ -66,7 +66,7 @@ export const chipType = styleVariants({
       wordWrap: 'break-word',
     },
   ],
-  modernJs: [
+  modern_js: [
     chipBase,
     {
       height: '26px',
@@ -117,7 +117,7 @@ export const chipCategory = styleVariants({
 });
 
 export const chipStatus = styleVariants({
-  wait: [
+  pending: [
     chipBase,
     {
       height: '24px',
