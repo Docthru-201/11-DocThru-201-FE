@@ -1,8 +1,9 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 
 export const container = style({
   padding: '40px',
   backgroundColor: '#ffffff',
+  minHeight: '100vh',
 });
 
 export const title = style({
@@ -12,135 +13,95 @@ export const title = style({
   color: '#1a1a1a',
 });
 
-export const table = style({
-  width: '100%',
-  borderCollapse: 'collapse',
-  marginTop: '20px',
-});
-
-export const tableHeader = style({
-  backgroundColor: '#f8f9fa',
-  borderBottom: '2px solid #e9ecef',
-});
-
-export const headerCell = style({
-  padding: '15px',
-  textAlign: 'left',
-  fontWeight: '600',
-  color: '#495057',
-});
-
-export const tableRow = style({
-  borderBottom: '1px solid #eee',
-  cursor: 'pointer', // 상세 이동을 위해 추가
-  selectors: {
-    '&:hover': {
-      backgroundColor: '#fcfcfc', // 기존 유지
-    },
-  },
-});
-
-export const tableCell = style({
-  padding: '15px',
-  fontSize: '14px',
-  color: '#333',
-});
-
-// export const fieldTag = style({
-//   background: '#e7f5ff',
-//   color: '#1971c2',
-//   padding: '4px 8px',
-//   borderRadius: '4px',
-//   fontSize: '12px',
-// });
-
-export const statusBadge = style({
-  background: '#f1f3f5',
-  padding: '4px 10px',
-  borderRadius: '20px',
-  fontSize: '12px',
-  color: '#666',
-});
-
-/* --- 추가된 페이지네이션 스타일 --- */
-export const paginationContainer = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '10px',
-  marginTop: '40px',
-});
-
-export const pageButton = style({
-  padding: '8px 14px',
-  border: '1px solid #dee2e6',
-  borderRadius: '4px',
-  backgroundColor: '#ffffff',
-  color: '#495057',
-  cursor: 'pointer',
-  fontSize: '14px',
-  transition: 'all 0.2s ease',
-  selectors: {
-    '&:disabled': {
-      opacity: 0.4,
-      cursor: 'not-allowed',
-    },
-    '&:hover:not(:disabled)': {
-      backgroundColor: '#f8f9fa',
-    },
-  },
-});
-
-export const activePageButton = style([
-  pageButton,
-  {
-    backgroundColor: '#1971c2', // fieldTag와 톤을 맞춘 블루 계열
-    color: '#ffffff',
-    borderColor: '#1971c2',
-    fontWeight: '600',
-  },
-]);
-
-export const loadingWrapper = style({
-  display: 'flex',
-  justifyContent: 'center',
-  padding: '100px 0',
-});
-
-/* --- 검색 / 정렬 영역 --- */
 export const searchSortWrapper = style({
   display: 'grid',
-  gridTemplateColumns: '2.5fr 1fr',
-  gap: '12px',
-  marginBottom: '16px',
+  gridTemplateColumns: '1fr auto',
+  gap: '16px',
+  marginBottom: '24px',
+  alignItems: 'center',
+  position: 'relative',
+  zIndex: 100,
+});
 
-  '@media': {
-    'screen and (min-width: 768px)': {
-      gridTemplateColumns: '3.5fr 1fr',
-      marginBottom: '24px',
-    },
-    'screen and (min-width: 1280px)': {
-      gridTemplateColumns: '5fr 1fr',
-    },
-  },
+export const searchInput = style({
+  width: '100%',
+});
+
+globalStyle(`${searchSortWrapper} > div:first-child`, {
+  maxWidth: 'none !important',
+  width: '100% !important',
 });
 
 export const sortWrapper = style({
   position: 'relative',
+  minWidth: '140px',
   display: 'flex',
-  alignItems: 'center',
   justifyContent: 'flex-end',
 });
 
-export const dropdown = style({
+export const sortPopover = style({
   position: 'absolute',
+  top: 'calc(100% + 4px)',
   right: 0,
-  marginTop: '8px',
-  zIndex: 10,
+  width: '160px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #d1d5db',
+  borderRadius: '8px',
+  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  zIndex: 101,
+});
+
+export const sortOptionButton = style({
+  width: '100%',
+  padding: '12px 16px',
+  fontSize: '14px',
+  textAlign: 'left',
+  border: 'none',
+  borderBottom: '1px solid #e5e7eb',
+  backgroundColor: '#ffffff',
+  cursor: 'pointer',
+  color: '#4b5563',
+  transition: 'background-color 0.2s ease',
+  selectors: {
+    '&:last-child': { borderBottom: 'none' },
+    '&:hover': { backgroundColor: '#f9fafb' },
+  },
+});
+
+export const activeOption = style({
+  color: '#111827',
+  fontWeight: '600',
+  backgroundColor: '#f3f4f6',
+});
+
+export const listSection = style({
+  position: 'relative',
+  zIndex: 1,
+});
+
+export const loadingWrapper = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '100px 0',
 });
 
 export const emptyState = style({
   textAlign: 'center',
-  padding: '60px',
-  color: '#888',
+  padding: '100px 0',
+  color: '#a0aec0',
+  fontSize: '16px',
+  backgroundColor: '#f9fafb',
+  borderRadius: '8px',
+  marginTop: '20px',
+});
+
+export const paginationContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: '40px',
+  paddingBottom: '40px',
 });

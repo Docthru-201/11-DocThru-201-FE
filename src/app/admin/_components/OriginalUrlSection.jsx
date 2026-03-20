@@ -1,7 +1,6 @@
-// import BtnText from '@/components/btn/text/BtnText';
-// import BtnText from '@/components/btn/text/BtnText';
 import React from 'react';
 
+import { Button } from '@/shared/components/Button';
 import * as styles from './OriginalUrlSection.css';
 
 export default function OriginalUrlSection({ originalPageUrl }) {
@@ -10,30 +9,24 @@ export default function OriginalUrlSection({ originalPageUrl }) {
       <h4 className={styles.title}>원문 링크</h4>
       <div className={styles.relativeWrapper}>
         <div className={styles.buttonPos}>
-          <button
-            type="button"
-            onClick={() => {
-              window.open(originalPageUrl, '_blank');
-            }}
+          <Button
+            variant="Icon Right" //Icon Riht 사용법?? - swlee
+            icon={null}
             className={styles.linkBtn}
-          >
-            링크 열기
-          </button>
-          {/* <BtnText
-            theme="link"
-            className="h-8"
             onClick={() => {
-              window.open(originalPageUrl, "_blank");
+              if (originalPageUrl) {
+                window.open(originalPageUrl, '_blank');
+              }
             }}
           >
             링크 열기
-          </BtnText> */}
+          </Button>
         </div>
         {originalPageUrl && (
           <iframe
             src={originalPageUrl}
             title="원문 페이지"
-            className={styles.previewIframe} // ✅ 스타일 객체만 적용
+            className={styles.previewIframe}
             loading="lazy"
             allow="clipboard-read; clipboard-write"
             sandbox="allow-same-origin allow-scripts allow-popups allow-forms"

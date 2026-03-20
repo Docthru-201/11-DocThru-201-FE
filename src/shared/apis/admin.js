@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 // import { BASE_URL } from "@/shared/constants/file.js"; //환경변수 못 읽어오는데 확인 필요
 const BASE_URL = 'http://localhost:5001/api';
-
+console.log('BASE_URL:', BASE_URL);
 // 관리자 - 신청 목록 전체 조회
 export async function getChallengesAction({ params = {} }) {
   const cookieStore = await cookies();

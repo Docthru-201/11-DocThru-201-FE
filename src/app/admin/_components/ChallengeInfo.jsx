@@ -1,9 +1,8 @@
-import Image from 'next/image';
 import React from 'react';
+import { Icon } from '@/shared/components/Icon';
+import { Chip } from '@/shared/components/Chip';
 
 import { formatDeadline } from '@/app/admin/_components/formatDate';
-import clock from '@/app/admin/_components/ic_clock.svg';
-import challengers from '@/app/admin/_components/ic_person.svg';
 
 import * as styles from './ChallengeInfo.css';
 
@@ -12,12 +11,11 @@ export default function ChallengeInfo({ challenge }) {
     title,
     description,
     category,
-    docType,
+    type,
     deadline,
-    participants,
-    maxParticipant,
+    participants = [],
+    maxParticipants,
     status,
-    id,
   } = challenge || {};
 
   return (
@@ -25,21 +23,19 @@ export default function ChallengeInfo({ challenge }) {
       <div className={styles.titleWrapper}>
         <h2 className={styles.titleText}>{title}</h2>
       </div>
-
       <div className={styles.chipWrapper}>
-        {/* {categoryChipMap[category] ?? null}
-        {typeChipMap[docType] ?? null} */}
+        {type && <Chip type={type.toLowerCase()} />}
+        {category && <Chip category={category.toLowerCase()} />}
       </div>
-
       <p className={styles.descriptionText}>{description}</p>
 
       <div className={styles.infoRow}>
-        <Image src={clock} alt="시계 아이콘" width={24} height={24} />
+        <Icon name="deadlineBlack" alt="마감일" />
         {formatDeadline(deadline)} 마감
-        <Image src={challengers} alt="참가자 아이콘" width={24} height={24} />
+        <Icon name="personYellow" alt="참가자" />
         {status === 'APPROVED'
-          ? `${participants}/${maxParticipant}`
-          : `${maxParticipant}명`}
+          ? `${participants?.length || 0}/${maxParticipants}명`
+          : `${maxParticipants}명`}
       </div>
     </article>
   );

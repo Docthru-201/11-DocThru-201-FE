@@ -1,10 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { useMemo } from 'react';
 
-import leftArrow from './ic_arrow_left.svg';
-import rightArrow from './ic_arrow_right.svg';
+import { Icon } from '@/shared/components/Icon';
 import * as styles from './Pagination.css';
 
 const pagesPerGroup = 5;
@@ -46,7 +44,7 @@ function Pagination({ totalCount, currentPage, pageSize, onPageChange }) {
         onClick={handlePrev}
         disabled={!paginationData.hasPrev}
       >
-        <Image src={leftArrow} alt="왼쪽 화살표" width={40} height={40} />
+        <Icon name="chevronLeftActive" alt="이전" />
       </button>
 
       {paginationData.pages.map((page) => (
@@ -70,7 +68,7 @@ function Pagination({ totalCount, currentPage, pageSize, onPageChange }) {
         onClick={handleNext}
         disabled={!paginationData.hasNext}
       >
-        <Image src={rightArrow} alt="오른쪽 화살표" width={40} height={40} />
+        <Icon name="chevronRightActive" alt="다음" />
       </button>
     </div>
   );

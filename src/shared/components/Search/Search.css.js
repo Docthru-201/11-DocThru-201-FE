@@ -4,7 +4,7 @@ import { vars } from '@/styles/tokens.css.js';
 export const root = style({
   position: 'relative',
   width: '100%',
-  maxWidth: '375px',
+  // maxWidth: '375px',  //챌린저 관리에서 크기 이슈 발생하여 해제하였음
 });
 
 export const inputWrap = style({
