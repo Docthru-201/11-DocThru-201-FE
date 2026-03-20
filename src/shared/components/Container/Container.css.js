@@ -1,4 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 
 export const container = styleVariants({
@@ -119,13 +119,6 @@ export const buttonsWrap = styleVariants({
     gap: '8px',
     width: '100%',
     alignSelf: 'stretch',
-    selectors: {
-      '& > button': {
-        flex: '1 0 0',
-        width: 'auto',
-        minWidth: '0',
-      },
-    },
   },
   medium: {
     display: 'flex',
@@ -133,11 +126,6 @@ export const buttonsWrap = styleVariants({
     gap: '8px',
     width: '219px',
     alignSelf: 'center',
-    selectors: {
-      '& > button': {
-        width: '100%',
-      },
-    },
   },
   large: {
     display: 'flex',
@@ -145,12 +133,22 @@ export const buttonsWrap = styleVariants({
     gap: '8px',
     width: '253px',
     alignSelf: 'center',
-    selectors: {
-      '& > button': {
-        width: '100%',
-      },
-    },
   },
+});
+
+/** vanilla-extract는 `& > button` 같은 타입 셀렉터를 style 블록에 둘 수 없어 globalStyle 사용 */
+globalStyle(`${buttonsWrap.small} > button`, {
+  flex: '1 0 0',
+  width: 'auto',
+  minWidth: '0',
+});
+
+globalStyle(`${buttonsWrap.medium} > button`, {
+  width: '100%',
+});
+
+globalStyle(`${buttonsWrap.large} > button`, {
+  width: '100%',
 });
 
 export const originalButton = style({
