@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { challengeItemsMock } from '@/mock/challenges';
 import {
@@ -12,15 +12,50 @@ import {
   Icon,
   Button,
 } from '@/shared/components';
+import {
+  ChallengeFilterPopover,
+  DEFAULT_CHALLENGE_FILTER,
+  filterChallengeItems,
+  hasActiveChallengeFilter,
+} from './_components/ChallengeFilterPopover';
 import * as styles from './page.css.js';
 
 const CHALLENGES_FROM_MOCK = challengeItemsMock;
 
 export default function ChallengesPage() {
   const [searchValue, setSearchValue] = useState('');
-  const [sortActive, setSortActive] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [appliedFilter, setAppliedFilter] = useState(DEFAULT_CHALLENGE_FILTER);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 3;
+
+  const filterWrapRef = useRef(null);
+
+  useEffect(() => {
+    if (!filterOpen) return undefined;
+    function handlePointerDown(event) {
+      const el = filterWrapRef.current;
+      const target = event.target;
+      if (el && target instanceof Node && !el.contains(target)) {
+        setFilterOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+    };
+  }, [filterOpen]);
+
+  const filteredChallenges = useMemo(
+    () =>
+      filterChallengeItems(CHALLENGES_FROM_MOCK, appliedFilter, searchValue),
+    [appliedFilter, searchValue],
+  );
+
+  const filterButtonActive =
+    filterOpen || hasActiveChallengeFilter(appliedFilter);
 
   return (
     <div className={styles.page}>
@@ -40,11 +75,20 @@ export default function ChallengesPage() {
         </header>
 
         <div className={styles.toolbar}>
-          <Sort
-            label="필터"
-            active={sortActive}
-            onClick={() => setSortActive((prev) => !prev)}
-          />
+          <div className={styles.filterSlot} ref={filterWrapRef}>
+            <Sort
+              variant="filter"
+              label="필터"
+              active={filterButtonActive}
+              onClick={() => setFilterOpen((prev) => !prev)}
+            />
+            <ChallengeFilterPopover
+              open={filterOpen}
+              applied={appliedFilter}
+              onApply={setAppliedFilter}
+              onClose={() => setFilterOpen(false)}
+            />
+          </div>
           <Search
             className={styles.searchField}
             placeholder="챌린지 이름을 검색해보세요"
@@ -54,8 +98,13 @@ export default function ChallengesPage() {
         </div>
 
         <div className={styles.cardList}>
-          {CHALLENGES_FROM_MOCK.map((study, i) => (
-            <Card key={i} study={study} onCtaClick={() => {}} showEditMenu />
+          {filteredChallenges.map((study) => (
+            <Card
+              key={study.id}
+              study={study}
+              onCtaClick={() => {}}
+              showEditMenu
+            />
           ))}
         </div>
 

@@ -52,6 +52,11 @@ export const toolbar = style({
   marginBottom: 20,
 });
 
+export const filterSlot = style({
+  position: 'relative',
+  flexShrink: 0,
+});
+
 export const searchField = style({
   flex: 1,
   minWidth: 0,
