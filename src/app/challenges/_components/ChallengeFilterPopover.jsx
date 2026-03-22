@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Checkbox } from '@/shared/components/Checkbox';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './ChallengeFilterPopover.css.js';
@@ -29,14 +29,10 @@ const STATUS_OPTIONS = [
   { value: 'closed', label: '마감' },
 ];
 
-export function ChallengeFilterPopover({ open, applied, onApply, onClose }) {
+// 열릴 때만 부모에서 마운트
+// 닫히면 언마운트되어 다음에 열 때 applied 기준으로 draft가 다시 초기화 됨
+export function ChallengeFilterPopover({ applied, onApply, onClose }) {
   const [draft, setDraft] = useState(() => applied ?? DEFAULT_CHALLENGE_FILTER);
-
-  useEffect(() => {
-    if (open) setDraft(applied ?? DEFAULT_CHALLENGE_FILTER);
-  }, [open, applied]);
-
-  if (!open) return null;
 
   function toggleType(typeValue, nextChecked) {
     setDraft((d) => {

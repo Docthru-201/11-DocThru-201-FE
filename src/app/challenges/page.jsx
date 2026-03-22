@@ -82,12 +82,13 @@ export default function ChallengesPage() {
               active={filterButtonActive}
               onClick={() => setFilterOpen((prev) => !prev)}
             />
-            <ChallengeFilterPopover
-              open={filterOpen}
-              applied={appliedFilter}
-              onApply={setAppliedFilter}
-              onClose={() => setFilterOpen(false)}
-            />
+            {filterOpen && (
+              <ChallengeFilterPopover
+                applied={appliedFilter}
+                onApply={setAppliedFilter}
+                onClose={() => setFilterOpen(false)}
+              />
+            )}
           </div>
           <Search
             className={styles.searchField}
