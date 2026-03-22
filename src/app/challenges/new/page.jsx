@@ -1,16 +1,10 @@
 'use client';
 
-//신규 챌린지 신청
-
 import { useState } from 'react';
-import Link from 'next/link';
 import { GNB, Button, Input, Dropdown, TextBox } from '@/shared/components';
 import * as styles from './page.css'; // 스타일 파일은 어디에, 어떻게 만들것인가? 왜 ts?
 
-//이게 뭐람
-
 export default function NewChallengePage() {
-  //각 입력창을 저장할 상태들 (상태안좋음)
   const [title, setTitle] = useState('');
   const [link, setLink] = useState('');
   const [category, setCategory] = useState(null);
@@ -32,8 +26,6 @@ export default function NewChallengePage() {
     { value: 'MODERN_JS', label: 'Modern JS' },
     { value: 'WEB', label: 'Web' },
   ];
-
-  //왜 죄다 빨갛누
 
   return (
     <div className={styles.page}>
