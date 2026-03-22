@@ -68,6 +68,7 @@ export default function NewChallengePage() {
             options={categoryOptions}
             value={category}
             onChange={setCategory}
+            showLabel
           />
           {/* 문서 타입 (드롭다운) */}
           <Dropdown
@@ -76,6 +77,7 @@ export default function NewChallengePage() {
             options={docTypeOptions}
             value={docType}
             onChange={setDocType}
+            showLabel
           />
           {/* 마감일 (Date Input) */}
           <Input

@@ -79,7 +79,7 @@ export default function AdminManagementPage() {
             setKeyword(v);
             setPage(1);
           }}
-          placeholder="챌린지 명을 검색하세요"
+          placeholder="챌린지 이름을 검색해보세요"
         />
 
         <div className={styles.sortWrapper} ref={popoverRef}>

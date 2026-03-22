@@ -92,7 +92,7 @@ export const loadingWrapper = style({
 export const emptyState = style({
   textAlign: 'center',
   padding: '100px 0',
-  color: '#a0aec0',
+  color: '#737373',
   fontSize: '16px',
   backgroundColor: '#f9fafb',
   borderRadius: '8px',

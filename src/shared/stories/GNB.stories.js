@@ -17,23 +17,25 @@ const meta = {
   },
   args: {
     status: 'guest',
+    onLogout: () => {},
   },
 };
 
 export default meta;
 
-export const Member = (args) => <GNB {...args} status="guest" />;
-export const MemberLogin = (args) => <GNB {...args} status="member" />;
+export const Guest = (args) => <GNB {...args} status="guest" />;
+export const Member = (args) => <GNB {...args} status="member" />;
 export const Admin = (args) => <GNB {...args} status="admin" />;
 
 export const AllStatuses = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-    <GNB status="guest" />
+    <GNB status="guest" onLogout={() => {}} />
     <div style={{ padding: 16, background: '#f5f5f5' }} />
-    <GNB status="member" />
+    <GNB status="member" onLogout={() => {}} />
     <div style={{ padding: 16, background: '#f5f5f5' }} />
     <GNB
       status="admin"
+      onLogout={() => {}}
       tabs={[
         { label: '챌린지 관리', active: true },
         { label: '챌린지 목록', active: false },

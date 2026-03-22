@@ -1,78 +1,20 @@
-//challenge 전체 리스트
-
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { challengeItemsMock } from '@/mock/challenges';
 import {
   GNB,
-  Button,
   Search,
   Sort,
   Card,
   PageIndicator,
   Icon,
+  Button,
 } from '@/shared/components';
-import * as styles from './page.css';
+import * as styles from './page.css.js';
 
-//여길 나중에 바꿔야 fetch
-const MOCK_CHALLENGES = [
-  {
-    isRecruitmentFull: true,
-    isDeadlinePassed: false,
-    title: 'Next.js - App Router: Routing Fundamentals',
-    type: 'NEXT_JS',
-    category: 'DOCUMENT',
-    deadline: '2024-03-03',
-    maxParticipants: 5,
-    currentParticipants: 5,
-    isParticipating: true,
-  },
-  {
-    isRecruitmentFull: false,
-    isDeadlinePassed: false,
-    title: 'API 설계 베스트 프랙티스',
-    type: 'API',
-    category: 'BLOG',
-    deadline: '2024-03-15',
-    maxParticipants: 8,
-    currentParticipants: 3,
-    isParticipating: false,
-  },
-  {
-    isRecruitmentFull: false,
-    isDeadlinePassed: false,
-    title: '모던 자바스크립트 Deep Dive',
-    type: 'MODERN_JS',
-    category: 'DOCUMENT',
-    deadline: '2024-04-01',
-    maxParticipants: 10,
-    currentParticipants: 7,
-    isParticipating: true,
-  },
-  {
-    isRecruitmentFull: true,
-    isDeadlinePassed: false,
-    title: 'React Server Components 실전 활용',
-    type: 'NEXT_JS',
-    category: 'BLOG',
-    deadline: '2024-02-28',
-    maxParticipants: 6,
-    currentParticipants: 6,
-    isParticipating: false,
-  },
-  {
-    isRecruitmentFull: false,
-    isDeadlinePassed: true,
-    title: '웹 접근성 A11y 마스터',
-    type: 'WEB',
-    category: 'DOCUMENT',
-    deadline: '2024-01-10',
-    maxParticipants: 5,
-    currentParticipants: 4,
-    isParticipating: false,
-  },
-];
+const CHALLENGES_FROM_MOCK = challengeItemsMock;
 
 export default function ChallengesPage() {
   const [searchValue, setSearchValue] = useState('');
@@ -82,18 +24,19 @@ export default function ChallengesPage() {
 
   return (
     <div className={styles.page}>
-      <GNB status="guest" />
+      <GNB status="member" />
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>
-          <Button
-            asChild
-            variant="solid"
-            icon={<Icon name="plus" width={24} height={24} />}
-            iconPosition="right"
-          >
-            <Link href="/challenges/new">신규 챌린지 신청</Link>
-          </Button>
+          <Link href="/challenges/new">
+            <Button
+              variant="solidIcon"
+              icon={<Icon name="plus" width={16} height={16} aria-hidden />}
+              iconPosition="right"
+            >
+              신규 챌린지 신청
+            </Button>
+          </Link>
         </header>
 
         <div className={styles.toolbar}>
@@ -111,7 +54,7 @@ export default function ChallengesPage() {
         </div>
 
         <div className={styles.cardList}>
-          {MOCK_CHALLENGES.map((study, i) => (
+          {CHALLENGES_FROM_MOCK.map((study, i) => (
             <Card key={i} study={study} onCtaClick={() => {}} showEditMenu />
           ))}
         </div>

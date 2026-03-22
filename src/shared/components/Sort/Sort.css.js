@@ -6,7 +6,7 @@ export const root = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  width: '140px',
+  width: '170px',
   padding: `${vars.space.sm} ${vars.space.sm} ${vars.space.sm} 10px`,
   backgroundColor: vars.color.white,
   border: `1px solid ${vars.color.gray[300]}`,

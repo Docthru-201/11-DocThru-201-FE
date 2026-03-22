@@ -5,7 +5,7 @@ export const inputRoot = style({
   display: 'flex',
   flexDirection: 'column',
   gap: vars.space.sm,
-  width: '350px',
+  width: '100%',
 });
 
 export const label = style({
@@ -18,7 +18,8 @@ export const label = style({
 const fieldBase = style({
   display: 'flex',
   alignItems: 'center',
-  padding: '11px 20px',
+  height: '48px',
+  padding: '0 20px',
   borderRadius: vars.radius.lg,
   backgroundColor: vars.color.white,
   border: `1px solid ${vars.color.gray[200]}`,

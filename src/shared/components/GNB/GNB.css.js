@@ -183,3 +183,157 @@ export const profileWrap = style({
   height: 32,
   flexShrink: 0,
 });
+
+/** 멤버 프로필(노란 아이콘) + 드롭다운 */
+export const memberMenu = style({
+  position: 'relative',
+  flexShrink: 0,
+});
+
+export const memberTrigger = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 32,
+  height: 32,
+  padding: 0,
+  margin: 0,
+  border: 'none',
+  background: 'transparent',
+  cursor: 'pointer',
+  borderRadius: vars.radius.full,
+  outline: 'none',
+  selectors: {
+    '&:focus-visible': {
+      boxShadow: `0 0 0 2px ${vars.color.gray[400]}`,
+    },
+  },
+});
+
+const figmaGray100 = '#F5F5F5';
+
+export const memberDropdown = style({
+  position: 'absolute',
+  top: 'calc(100% + 8px)',
+  right: 0,
+  zIndex: 100,
+  width: '152px',
+  overflow: 'hidden',
+  backgroundColor: vars.color.white,
+  borderRadius: vars.radius.md,
+  border: `1px solid ${vars.color.gray[200]}`,
+  boxShadow: vars.shadow.md,
+  boxSizing: 'border-box',
+});
+
+export const memberDropdownHeader = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  gap: vars.space.sm,
+  padding: vars.space.lg,
+  borderBottom: `1px solid ${figmaGray100}`,
+});
+
+export const memberDropdownAvatar = style({
+  display: 'flex',
+  flexShrink: 0,
+  width: 32,
+  height: 32,
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+export const memberDropdownMeta = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: '2px',
+  minWidth: 0,
+});
+
+export const memberDropdownName = style({
+  margin: 0,
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize.sm,
+  fontWeight: vars.fontWeight.medium,
+  lineHeight: vars.lineHeight.normal,
+  color: vars.color.gray[800],
+  whiteSpace: 'nowrap',
+});
+
+export const memberDropdownGrade = style({
+  margin: 0,
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize['2xs'],
+  fontWeight: vars.fontWeight.medium,
+  lineHeight: vars.lineHeight.normal,
+  color: vars.color.gray[500],
+  whiteSpace: 'nowrap',
+});
+
+export const memberDropdownList = style({
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  width: '100%',
+});
+
+export const memberDropdownItem = style({
+  margin: 0,
+  padding: 0,
+  width: '100%',
+});
+
+const menuItemBase = style({
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  minHeight: '32px',
+  paddingLeft: '14px',
+  paddingRight: vars.space.sm,
+  boxSizing: 'border-box',
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.medium,
+  lineHeight: vars.lineHeight.normal,
+  textAlign: 'left',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  border: 'none',
+  backgroundColor: vars.color.white,
+  borderLeft: `2px solid ${figmaGray100}`,
+  borderRight: `2px solid ${figmaGray100}`,
+  outline: 'none',
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.color.gray[50],
+    },
+    '&:focus-visible': {
+      boxShadow: `inset 0 0 0 2px ${vars.color.gray[300]}`,
+    },
+  },
+});
+
+export const memberDropdownLink = style([
+  menuItemBase,
+  {
+    color: vars.color.gray[600],
+  },
+]);
+
+export const memberDropdownLogout = style([
+  menuItemBase,
+  {
+    color: vars.color.gray[400],
+    borderTop: `1px solid ${figmaGray100}`,
+  },
+]);
+
+/** 어드민 드롭다운: 하단 메뉴가 로그아웃만 있을 때(상단 구분선 아래 단일 행) */
+export const adminDropdownLogout = style([
+  menuItemBase,
+  {
+    color: vars.color.gray[400],
+  },
+]);

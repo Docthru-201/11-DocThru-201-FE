@@ -14,7 +14,7 @@ export const main = style({
   width: '100%',
   maxWidth: '996px',
   margin: '0 auto',
-  padding: `0 16px vars.space['2xl']`,
+  padding: `0 16px ${vars.space['2xl']}`,
   boxSizing: 'border-box',
   '@media': {
     [breakpoint.md]: {
