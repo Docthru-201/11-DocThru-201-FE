@@ -30,7 +30,7 @@ export default function NewChallengePage() {
 
   return (
     <div className={styles.page}>
-      <GNB status="member" />
+      <GNBContainer />
 
       <main className={styles.main}>
         <h1 className={styles.title}>신규 챌린지 신청</h1>
