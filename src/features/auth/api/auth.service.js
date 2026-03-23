@@ -1,12 +1,5 @@
 // src/features/auth/api/auth.service.js
-import {
-  signup,
-  login,
-  logout,
-  logoutAll,
-  refreshToken,
-  googleLogin,
-} from '@/apis/auth';
+import { signup, login, logout, logoutAll, refreshToken } from '@/apis/auth';
 
 /**
  * 회원가입 서비스 로직
