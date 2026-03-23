@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { GNB, Button, Input, Dropdown, TextBox } from '@/shared/components';
+import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
+import { Button, Input, Dropdown, TextBox } from '@/shared/components';
 import * as styles from './page.css'; // 스타일 파일은 어디에, 어떻게 만들것인가? 왜 ts?
 
 export default function NewChallengePage() {
