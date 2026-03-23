@@ -1,22 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react'; // useEffect 추가
+import { useState, useEffect } from 'react';
 import { GNB, Search, Tab, Card } from '@/shared/components';
-import * as styles from './page.css.js';
+import * as styles from './page.css.js'; // 확장자 .ts로 수정
 
 export default function MyChallengesPage() {
   const [myChallenges, setMyChallenges] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
     const fetchMyChallenges = async () => {
       try {
-        // 실제 API 주소로 요청 (예시 주소입니다)
+        setIsLoading(true);
+        // 1. Swagger 주소 적용
         const response = await fetch('/users/me/challenges?status=APPROVED');
-        const data = await response.json();
+        const result = await response.json();
 
-        setMyChallenges(result.data.items);
+        // 2. 변수명 통일 (result.data.items)
+        if (result?.data?.items) {
+          setMyChallenges(result.data.items);
+        }
       } catch (error) {
         console.error('데이터를 불러오는데 실패했어요:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -26,17 +33,19 @@ export default function MyChallengesPage() {
   return (
     <div className={styles.page}>
       <GNB status="member" />
+
       <main className={styles.main}>
         <h1 className={styles.title}>나의 챌린지</h1>
 
-        {/* 탭 메뉴 (피그마 참고) */}
-        <Tab tabs={['참여중인 챌린지', '완료한 챌린지', '신청한 챌린지']} />
-
-        <Search placeholder="챌린지 이름을 검색해보세요" />
+        <div className={styles.filterSection}>
+          <Tab tabs={['참여중인 챌린지', '완료한 챌린지', '신청한 챌린지']} />
+          <Search placeholder="챌린지 이름을 검색해보세요" />
+        </div>
 
         <div className={styles.cardList}>
-          {/* 3. 서버에서 받아온 데이터로 카드 그리기 */}
-          {myChallenges.length > 0 ? (
+          {isLoading ? (
+            <p>로딩 중입니다...</p>
+          ) : myChallenges.length > 0 ? (
             myChallenges.map((challenge) => (
               <Card
                 key={challenge.id}
