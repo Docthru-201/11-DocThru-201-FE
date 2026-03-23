@@ -13,6 +13,8 @@ export function Button({
   fullWidth = false,
   disabled = false,
   children = undefined,
+  className = undefined,
+  asChild: _asChild = undefined,
   ...props
 }) {
   const isDisabled = disabled || loading;
@@ -23,6 +25,7 @@ export function Button({
     styles.variant[variant],
     fullWidth && styles.fullWidth,
     isDisabled && styles.disabled,
+    className,
   );
 
   return (
