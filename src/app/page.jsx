@@ -9,13 +9,16 @@ const heroBackground = '/images/hero-background.png';
 const landingImg1 = '/images/landing-challenge.png';
 const landingImg2 = '/images/landing-translation.png';
 const landingImg3 = '/images/landing-feedback.png';
+const trophy = '/icons/landing-trophy.svg';
+const heart = '/icons/landing-heart.svg';
+const feedback = '/icons/landing-feedback.svg';
 
 const HERO_HEADLINE = `함께 번역하며 성장하는\n개발자의 새로운 영어 습관`;
 
 const SECTIONS = [
   {
     id: 'challenge',
-    icon: 'trophy',
+    icon: trophy,
     title: '혼자서는 막막했던 번역,\n챌린지로 함께 완성하기',
     description:
       '중요한 건 꺾이지 않는 마음! 동료들과 함께\n기술 문서를 번역해 보세요.',
@@ -26,7 +29,7 @@ const SECTIONS = [
   },
   {
     id: 'participate',
-    icon: 'heart',
+    icon: heart,
     title: '내가 좋아하는 기술 번역,\n내가 필요한 기술 번역',
     description:
       '이미 진행 중인 번역 챌린지에 참여하거나,\n새로운 번역 챌린지를 시작해 보세요.',
@@ -37,7 +40,7 @@ const SECTIONS = [
   },
   {
     id: 'feedback',
-    icon: 'feedback',
+    icon: feedback,
     title: '피드백으로 함께 성장하기',
     description:
       '번역 작업물에 대해 피드백을 주고 받으며\n영어 실력은 물론, 개발 실력까지 키워 보세요',
@@ -80,8 +83,9 @@ export default function LandingPage() {
             <article className={styles.section}>
               <div className={styles.sectionContent}>
                 <span className={styles.sectionIcon} aria-hidden>
-                  <Icon
-                    name={section.icon}
+                  <Image
+                    src={section.icon}
+                    alt="섹션 로고"
                     width={24}
                     height={24}
                     aria-hidden
@@ -92,6 +96,7 @@ export default function LandingPage() {
                   {section.description}
                 </p>
               </div>
+
               <Image
                 src={section.image}
                 alt={section.alt}
@@ -101,6 +106,7 @@ export default function LandingPage() {
                 sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </article>
+
             {section.id !== 'feedback' && <hr className={styles.divider} />}
           </div>
         ))}
@@ -112,6 +118,25 @@ export default function LandingPage() {
           </Button>
         </div>
       </main>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerInner}>
+          <span className={styles.footerLogo}>
+            <Icon name="docthruLogo" width={24} height={24} aria-hidden />
+            Docthru
+          </span>
+
+          <p className={styles.footerText}>
+            개발자를 위한 번역 챌린지 플랫폼
+            {'\n'}
+            함께 번역하고, 함께 성장하세요.
+          </p>
+
+          <p className={styles.footerCopyright}>
+            © 2026 Docthru. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -34,10 +34,6 @@ export const heroContent = style({
 });
 
 export const heroLogo = style({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, calc(-50% - 75px))',
   display: 'inline-flex',
   alignItems: 'center',
   gap: vars.space.sm,
@@ -46,6 +42,7 @@ export const heroLogo = style({
   fontSize: '22.68px',
   color: '#d8d8d8',
   letterSpacing: '0.2889px',
+  marginBottom: '8px', // 👈 중요
 });
 
 export const heroHeadline = style({
@@ -160,4 +157,53 @@ export const ctaTitle = style({
   color: vars.color.gray[900],
   textAlign: 'center',
   letterSpacing: '0.39px',
+});
+
+export const footer = style({
+  width: '100%',
+  borderTop: `1px solid ${vars.color.gray[200]}`,
+  backgroundColor: vars.color.white,
+});
+
+export const footerInner = style({
+  maxWidth: 996,
+  margin: '0 auto',
+  padding: '32px 16px 40px',
+  boxSizing: 'border-box',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 12,
+  '@media': {
+    [breakpoint.md]: {
+      paddingLeft: 24,
+      paddingRight: 24,
+    },
+  },
+});
+
+export const footerLogo = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 8,
+  fontFamily: vars.fontFamily.quantico,
+  fontWeight: vars.fontWeight.bold,
+  fontSize: vars.fontSize.base,
+  color: vars.color.gray[900],
+});
+
+export const footerText = style({
+  margin: 0,
+  fontWeight: vars.fontWeight.regular,
+  fontSize: vars.fontSize.sm,
+  lineHeight: 1.6,
+  color: vars.color.gray[600],
+  whiteSpace: 'pre-line',
+});
+
+export const footerCopyright = style({
+  margin: 0,
+  fontWeight: vars.fontWeight.regular,
+  fontSize: vars.fontSize.xs,
+  lineHeight: 1.5,
+  color: vars.color.gray[500],
 });
