@@ -45,10 +45,9 @@ export const loginUser = async (loginData) => {
 /**
  * 3. 로그아웃
  */
-export const logoutUser = async (token) => {
+export const logoutUser = async () => {
   try {
-    const data = await logout(token);
-    // 로컬의 사용자 정보/토큰 삭제 로직 추가 가능
+    const data = await logout();
     return data;
   } catch (error) {
     throw new Error(error.message || '로그아웃 실패', { cause: error });

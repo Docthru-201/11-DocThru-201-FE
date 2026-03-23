@@ -50,6 +50,7 @@ export async function logout(accessToken) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
+    credentials: 'include',
   });
 
   return handleResponse(response, '로그아웃에 실패했습니다.');

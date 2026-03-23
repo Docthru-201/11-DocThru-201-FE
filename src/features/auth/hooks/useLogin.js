@@ -2,9 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '../api/auth.service'; // 서비스 함수 임포트
 import { toast } from 'react-toastify'; // 추가
+import { useAuthStore } from '@/shared/store/useAuthStore';
 
 export const useLogin = () => {
   const router = useRouter();
+  const { setUser } = useAuthStore();
 
   // useMutation: 로그인 API 호출에 최적화된 훅
   const loginMutation = useMutation({
@@ -12,14 +14,12 @@ export const useLogin = () => {
 
     // 성공했을 때 실행할 로직
     onSuccess: (data) => {
+      setUser(data);
       // 1. 성공 알림
       toast.success('로그인에 성공했습니다!');
 
       // 2. 페이지 리다이렉트 (대시보드 또는 메인)
       router.push('/');
-
-      // 3. 상태 업데이트를 위해 페이지 새로고침 (필요 시)
-      router.refresh();
     },
 
     // 실패했을 때 실행할 로직
