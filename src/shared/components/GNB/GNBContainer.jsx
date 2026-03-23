@@ -7,9 +7,10 @@ import { useMe } from '@/features/auth/hooks/useMe';
 
 export function GNBContainer({ tabs = [], onTabChange = undefined }) {
   useMe();
-  const { user, isLoggedIn } = useAuthStore(); // ✅ store에서 꺼냄
+  const user = useAuthStore((state) => state.user);
   const { logout } = useLogout(); // ✅ 로그아웃 훅
 
+  const isLoggedIn = !!user;
   const status = !isLoggedIn
     ? 'guest'
     : user?.role === 'ADMIN'

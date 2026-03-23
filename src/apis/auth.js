@@ -11,6 +11,8 @@ async function handleResponse(response, defaultMessage) {
     throw new Error(errorData.message || defaultMessage);
   }
 
+  if (response.status === 204) return; // ✅ 204 처리 추가
+
   return response.json();
 }
 
@@ -45,27 +47,19 @@ export async function signup(body) {
 export async function logout() {
   const response = await fetch(`${BASE_URL}/auth/logout`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include', // ✅ 쿠키 자동 전송
+    credentials: 'include',
   });
-  // ✅ 204는 body가 없으므로 json() 호출 안 함
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || '로그아웃에 실패했습니다.');
-  }
 
-  return; // ✅ 그냥 반환
+  return handleResponse(response, '로그아웃에 실패했습니다.');
 }
 // 모든 기기 로그아웃
-export async function logoutAll(accessToken) {
+export async function logoutAll() {
   const response = await fetch(`${BASE_URL}/auth/logout-all`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
     },
+    credentials: 'include',
   });
 
   return handleResponse(response, '전체 로그아웃에 실패했습니다.');
@@ -74,9 +68,6 @@ export async function logoutAll(accessToken) {
 export async function getMe() {
   const response = await fetch(`${BASE_URL}/auth/me`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     credentials: 'include', // ✅ 쿠키 자동 전송
   });
 
@@ -84,13 +75,13 @@ export async function getMe() {
 }
 
 // 토큰 재발급
-export async function refreshToken(refreshToken) {
+export async function refreshToken() {
   const response = await fetch(`${BASE_URL}/auth/refresh`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ refreshToken }),
+    credentials: 'include',
   });
 
   return handleResponse(response, '토큰 재발급에 실패했습니다.');

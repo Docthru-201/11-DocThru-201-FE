@@ -1,5 +1,12 @@
 // src/features/auth/api/auth.service.js
-import { signup, login, logout, logoutAll, refreshToken } from '@/apis/auth';
+import {
+  signup,
+  login,
+  logout,
+  logoutAll,
+  refreshToken,
+  getMe,
+} from '@/apis/auth';
 
 /**
  * 회원가입 서비스 로직
@@ -50,15 +57,13 @@ export const logoutUser = async () => {
 /**
  * 4. 모든 기기 로그아웃 (보안용)
  */
-export const logoutAllDevices = async (token) => {
+export const logoutAllDevices = async () => {
   try {
-    return await logoutAll(token);
+    return await logoutAll();
   } catch (error) {
     throw new Error(error.message || '전체 로그아웃 실패', { cause: error });
   }
 };
-
-import { getMe } from '@/apis/auth';
 
 export const getMeUser = async () => {
   try {
@@ -71,9 +76,9 @@ export const getMeUser = async () => {
 /**
  * 5. 토큰 갱신 (Access Token 만료 시 자동 호출용)
  */
-export const refreshUserToken = async (rt) => {
+export const refreshUserToken = async () => {
   try {
-    return await refreshToken(rt);
+    return await refreshToken();
   } catch (error) {
     throw new Error('세션이 만료되었습니다. 다시 로그인해주세요.', {
       cause: error,

@@ -6,7 +6,7 @@ import { useAuthStore } from '@/shared/store/useAuthStore';
 
 export const useLogout = () => {
   const router = useRouter();
-  const { clearUser } = useAuthStore(); // ✅ store 초기화
+  const clearUser = useAuthStore((state) => state.clearUser);
 
   const logoutMutation = useMutation({
     mutationFn: logoutUser,
@@ -18,7 +18,9 @@ export const useLogout = () => {
     },
 
     onError: (error) => {
+      clearUser();
       toast.error(error.message || '로그아웃 중 오류가 발생했습니다.');
+      router.push('/login');
     },
   });
 

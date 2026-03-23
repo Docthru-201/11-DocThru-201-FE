@@ -6,7 +6,7 @@ import { useAuthStore } from '@/shared/store/useAuthStore';
 
 export const useLogin = () => {
   const router = useRouter();
-  const { setUser } = useAuthStore();
+  const setUser = useAuthStore((state) => state.setUser);
 
   // useMutation: 로그인 API 호출에 최적화된 훅
   const loginMutation = useMutation({
@@ -18,8 +18,7 @@ export const useLogin = () => {
       // 1. 성공 알림
       toast.success('로그인에 성공했습니다!');
 
-      // 2. 페이지 리다이렉트 (대시보드 또는 메인)
-      router.push('/');
+      router.replace('/challenges');
     },
 
     // 실패했을 때 실행할 로직

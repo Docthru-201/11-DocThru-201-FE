@@ -31,7 +31,7 @@ export default function SignupPage() {
   });
 
   const onSubmit = (data) => {
-    const { _confirmPassword, ...payload } = data;
+    const { confirmPassword, ...payload } = data;
     signup(payload);
   };
 

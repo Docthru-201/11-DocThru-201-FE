@@ -41,13 +41,14 @@ export default function LoginPage() {
   return (
     <main className={s.container}>
       {/* 로고 */}
-      <Link href="/challenges" className={s.logoBlock}>
-        <span className={s.logo} aria-hidden="true">
+      <Link href="/" className={s.logoBlock}>
+        <span className={s.logo}>
           {/* 주신 수치 반영 (약 47x54 px) */}
           <Icon
             name="docthruLogo"
             width={46.8} // 2.925 * 16
             height={54} // 3.375 * 16
+            aria-hidden="true"
           />
           Docthru
         </span>
