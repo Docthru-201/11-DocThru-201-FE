@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { GNB, Button, Icon } from '@/shared/components';
+import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
+import { Button, Icon } from '@/shared/components';
 import * as styles from './page.css';
 
 const heroBackground = '/images/hero-background.png';
@@ -51,7 +52,7 @@ const SECTIONS = [
 export default function LandingPage() {
   return (
     <div className={styles.page}>
-      <GNB status="guest" />
+      <GNBContainer />
 
       <section className={styles.hero}>
         <Image

@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { GNB } from '@/shared/components/GNB';
+import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import * as styles from './AdminLayout.css.js';
 
 export default function AdminLayout({ children }) {
@@ -22,12 +22,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className={styles.adminRoot}>
-      <GNB
-        status="admin"
-        tabs={adminTabs}
-        className=""
-        onTabChange={() => {}}
-      />
+      <GNBContainer tabs={adminTabs} />
 
       <main className={styles.adminMain}>
         <div className={styles.contentContainer}>{children}</div>
