@@ -28,9 +28,9 @@ export async function getChallengesAction({ params = {} }) {
     }
 
     return await res.json();
-  } catch (err) {
-    console.error('getChallengesAction 에러:', err);
-    throw err;
+  } catch (error) {
+    console.error('getChallengesAction 에러:', error);
+    throw error;
   }
 }
 
@@ -53,9 +53,9 @@ export async function getChallengeAction(challengeId) {
     }
 
     return await res.json();
-  } catch (err) {
-    console.error('getChallengeAction 에러:', err);
-    throw err;
+  } catch (error) {
+    console.error('getChallengeAction 에러:', error);
+    throw error;
   }
 }
 
@@ -90,9 +90,9 @@ export async function approveChallengeAction(challengeId) {
     }
 
     return await response.json();
-  } catch (err) {
-    console.error('서버 액션 - 챌린지 승인 오류:', err);
-    throw err;
+  } catch (error) {
+    console.error('서버 액션 - 챌린지 승인 오류:', error);
+    throw error;
   }
 }
 
@@ -128,9 +128,9 @@ export async function declineChallengeAction(challengeId, declineReason) {
     }
 
     return await response.json();
-  } catch (err) {
-    console.error('서버 액션 - 챌린지 거절 오류:', err);
-    throw err;
+  } catch (error) {
+    console.error('서버 액션 - 챌린지 거절 오류:', error);
+    throw error;
   }
 }
 

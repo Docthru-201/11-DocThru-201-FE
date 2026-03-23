@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'next/navigation';
+// import { useParams } from 'next/navigation';
 import dayjs from 'dayjs';
 
 import { Icon } from '@/shared/components/Icon';
