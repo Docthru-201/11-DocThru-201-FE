@@ -30,7 +30,7 @@ export default function MyChallengesPage() {
         <h1 className={styles.title}>나의 챌린지</h1>
 
         {/* 탭 메뉴 (피그마 참고) */}
-        <Tab items={['참여중인 챌린지', '완료한 챌린지', '신청한 챌린지']} />
+        <Tab tabs={['참여중인 챌린지', '완료한 챌린지', '신청한 챌린지']} />
 
         <Search placeholder="챌린지 이름을 검색해보세요" />
 
