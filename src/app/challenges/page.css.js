@@ -6,7 +6,7 @@ export const page = style({
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: vars.color.white,
+  backgroundColor: vars.color.gray[50],
 });
 
 export const main = style({
@@ -34,12 +34,12 @@ export const header = style({
   justifyContent: 'space-between',
   gap: vars.space.md,
   paddingTop: 24,
-  paddingBottom: 20,
+  paddingBottom: 16,
 });
 
 export const title = style({
   margin: 0,
-  fontSize: vars.fontSize['2xl'],
+  fontSize: vars.fontSize['lg'],
   fontWeight: vars.fontWeight.semibold,
   lineHeight: 1,
   color: vars.color.gray[800],

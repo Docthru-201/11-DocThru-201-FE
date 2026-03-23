@@ -8,7 +8,7 @@ export const gnb = style({
   paddingLeft: vars.space.lg,
   paddingRight: vars.space.lg,
   backgroundColor: vars.color.white,
-  borderBottom: `1px solid ${vars.color.gray[200]}`,
+  borderBottom: `1px solid ${vars.color.gray[100]}`,
   boxSizing: 'border-box',
   '@media': {
     [breakpoint.md]: {
@@ -82,7 +82,7 @@ export const logoIcon = style({
 });
 
 globalStyle(`${logoIcon} img`, {
-  width: '100%',
+  width: '95%',
   height: '100%',
   objectFit: 'contain',
 });
