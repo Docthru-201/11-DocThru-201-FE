@@ -47,10 +47,19 @@ export const right = style({
   flexShrink: 0,
 });
 
+// export const logowrapper = style({
+//   padding: '0 5.4px',
+//   display: 'flex',
+// });
+
 export const logo = style({
-  display: 'inline-flex',
+  width: '120px',
+  height: '27px',
+  display: 'flex',
   alignItems: 'center',
-  gap: vars.space.sm,
+  justifyContent: 'center',
+  padding: '0 5.4px',
+  gap: '5.4px',
   fontFamily: vars.fontFamily.quantico,
   fontWeight: vars.fontWeight.bold,
   color: vars.color.gray[600],
@@ -67,16 +76,9 @@ export const logo = style({
 });
 
 export const logoIcon = style({
-  display: 'inline-flex',
-  width: 20,
-  height: 20,
-  flexShrink: 0,
-  '@media': {
-    [breakpoint.md]: {
-      width: 28,
-      height: 28,
-    },
-  },
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
 });
 
 globalStyle(`${logoIcon} img`, {
@@ -138,41 +140,7 @@ export const tab = styleVariants({
 const loginTransition = `background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, box-shadow ${vars.transition.duration.normal} ${vars.transition.timing.ease}`;
 
 export const loginButton = style({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '32px',
-  padding: '2px 16px 3px',
-  fontSize: vars.fontSize.sm,
-  fontWeight: vars.fontWeight.semibold,
-  color: vars.color.gray[800],
-  backgroundColor: vars.color.white,
-  border: `1px solid ${vars.color.gray[800]}`,
-  borderRadius: '10px',
-  cursor: 'pointer',
-  transition: loginTransition,
-  outline: 'none',
-  textDecoration: 'none',
-  boxSizing: 'border-box',
-  selectors: {
-    '&:hover': {
-      backgroundColor: vars.color.gray[50],
-      boxShadow: vars.shadow.sm,
-    },
-    '&:focus-visible': {
-      boxShadow: `0 0 0 3px ${vars.color.gray[800]}40`,
-    },
-    '&:active': {
-      backgroundColor: vars.color.gray[200],
-    },
-  },
-  '@media': {
-    [breakpoint.md]: {
-      height: '40px',
-      fontSize: vars.fontSize.base,
-      borderRadius: vars.radius.lg,
-    },
-  },
+  width: '90px',
 });
 
 export const profileWrap = style({

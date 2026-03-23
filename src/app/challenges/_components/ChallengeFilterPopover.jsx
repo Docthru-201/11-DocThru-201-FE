@@ -4,6 +4,11 @@ import { useState } from 'react';
 import { Checkbox } from '@/shared/components/Checkbox';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './ChallengeFilterPopover.css.js';
+import {
+  TYPE_OPTIONS,
+  CATEGORY_OPTIONS,
+  STATUS_OPTIONS,
+} from '@/shared/constants/file.js';
 
 export const DEFAULT_CHALLENGE_FILTER = {
   types: [],
@@ -11,23 +16,23 @@ export const DEFAULT_CHALLENGE_FILTER = {
   status: null,
 };
 
-const TYPE_OPTIONS = [
-  { value: 'NEXT_JS', label: 'Next.js' },
-  { value: 'MODERN_JS', label: 'Modern JS' },
-  { value: 'API', label: 'API' },
-  { value: 'WEB', label: 'Web' },
-  { value: 'CAREER', label: 'Career' },
-];
+export function hasActiveChallengeFilter(f) {
+  return f.types.length > 0 || f.category != null || f.status != null;
+}
 
-const CATEGORY_OPTIONS = [
-  { value: 'DOCUMENT', label: '공식문서' },
-  { value: 'BLOG', label: '블로그' },
-];
-
-const STATUS_OPTIONS = [
-  { value: 'open', label: '진행중' },
-  { value: 'closed', label: '마감' },
-];
+export function filterChallengeItems(items, filter, searchQuery) {
+  const q = searchQuery.trim().toLowerCase();
+  return items.filter((item) => {
+    if (q && !item.title.toLowerCase().includes(q)) return false;
+    if (filter.types.length > 0 && !filter.types.includes(item.type))
+      return false;
+    if (filter.category != null && item.category !== filter.category)
+      return false;
+    if (filter.status === 'open' && item.isClosed) return false;
+    if (filter.status === 'closed' && !item.isClosed) return false;
+    return true;
+  });
+}
 
 // 열릴 때만 부모에서 마운트
 // 닫히면 언마운트되어 다음에 열 때 applied 기준으로 draft가 다시 초기화 됨
@@ -147,22 +152,4 @@ export function ChallengeFilterPopover({ applied, onApply, onClose }) {
       </footer>
     </div>
   );
-}
-
-export function hasActiveChallengeFilter(f) {
-  return f.types.length > 0 || f.category != null || f.status != null;
-}
-
-export function filterChallengeItems(items, filter, searchQuery) {
-  const q = searchQuery.trim().toLowerCase();
-  return items.filter((item) => {
-    if (q && !item.title.toLowerCase().includes(q)) return false;
-    if (filter.types.length > 0 && !filter.types.includes(item.type))
-      return false;
-    if (filter.category != null && item.category !== filter.category)
-      return false;
-    if (filter.status === 'open' && item.isClosed) return false;
-    if (filter.status === 'closed' && !item.isClosed) return false;
-    return true;
-  });
 }
