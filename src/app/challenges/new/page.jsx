@@ -53,7 +53,7 @@ export default function NewChallengePage() {
             onChange={(e) => setLink(e.target.value)}
           />
 
-          <div className={styles.row} />
+          {/* <div className={styles.row} /> */}
           {/*분야 (드롭다운)*/}
           <Dropdown
             label="분야"
@@ -104,8 +104,7 @@ export default function NewChallengePage() {
             <Button
               type="submit"
               variant="solid"
-              size="large"
-              width="full" // 너비 꽉 차게
+              fullWidth // 너비 꽉 차게
             >
               신청하기
             </Button>

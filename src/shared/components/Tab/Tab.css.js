@@ -28,9 +28,9 @@ const itemBase = style({
   border: 'none',
   transition: `color ${vars.transition.duration.fast} ${vars.transition.timing.ease}`,
   selectors: {
-    '&:hover': {
-      color: vars.color.gray[700],
-    },
+    // '&:hover': {
+    //   color: vars.color.gray[700],
+    // },
   },
 });
 
@@ -63,6 +63,6 @@ export const content = style({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'flex-start',
-  gap: '13px',
+  gap: '12px',
   width: '100%',
 });
