@@ -58,6 +58,16 @@ export const logoutAllDevices = async (token) => {
   }
 };
 
+import { getMe } from '@/apis/auth';
+
+export const getMeUser = async () => {
+  try {
+    return await getMe();
+  } catch (error) {
+    throw new Error(error.message || '유저 정보 조회 실패', { cause: error });
+  }
+};
+
 /**
  * 5. 토큰 갱신 (Access Token 만료 시 자동 호출용)
  */

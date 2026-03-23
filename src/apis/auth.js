@@ -71,6 +71,18 @@ export async function logoutAll(accessToken) {
   return handleResponse(response, '전체 로그아웃에 실패했습니다.');
 }
 
+export async function getMe() {
+  const response = await fetch(`${BASE_URL}/auth/me`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include', // ✅ 쿠키 자동 전송
+  });
+
+  return handleResponse(response, '유저 정보를 가져오는데 실패했습니다.');
+}
+
 // 토큰 재발급
 export async function refreshToken(refreshToken) {
   const response = await fetch(`${BASE_URL}/auth/refresh`, {

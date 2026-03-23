@@ -3,8 +3,10 @@
 import { GNB } from './GNB';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useMe } from '@/features/auth/hooks/useMe';
 
 export function GNBContainer({ tabs = [], onTabChange = undefined }) {
+  useMe();
   const { user, isLoggedIn } = useAuthStore(); // ✅ store에서 꺼냄
   const { logout } = useLogout(); // ✅ 로그아웃 훅
 
