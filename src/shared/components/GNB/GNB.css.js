@@ -8,7 +8,7 @@ export const gnb = style({
   paddingLeft: vars.space.lg,
   paddingRight: vars.space.lg,
   backgroundColor: vars.color.white,
-  borderBottom: `1px solid ${vars.color.gray[200]}`,
+  borderBottom: `1px solid ${vars.color.gray[100]}`,
   boxSizing: 'border-box',
   '@media': {
     [breakpoint.md]: {
@@ -47,10 +47,19 @@ export const right = style({
   flexShrink: 0,
 });
 
+// export const logowrapper = style({
+//   padding: '0 5.4px',
+//   display: 'flex',
+// });
+
 export const logo = style({
-  display: 'inline-flex',
+  width: '120px',
+  height: '27px',
+  display: 'flex',
   alignItems: 'center',
-  gap: vars.space.sm,
+  justifyContent: 'center',
+  padding: '0 5.4px',
+  gap: '5.4px',
   fontFamily: vars.fontFamily.quantico,
   fontWeight: vars.fontWeight.bold,
   color: vars.color.gray[600],
@@ -67,20 +76,13 @@ export const logo = style({
 });
 
 export const logoIcon = style({
-  display: 'inline-flex',
-  width: 20,
-  height: 20,
-  flexShrink: 0,
-  '@media': {
-    [breakpoint.md]: {
-      width: 28,
-      height: 28,
-    },
-  },
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
 });
 
 globalStyle(`${logoIcon} img`, {
-  width: '100%',
+  width: '95%',
   height: '100%',
   objectFit: 'contain',
 });
@@ -138,41 +140,7 @@ export const tab = styleVariants({
 const loginTransition = `background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, box-shadow ${vars.transition.duration.normal} ${vars.transition.timing.ease}`;
 
 export const loginButton = style({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '32px',
-  padding: '2px 16px 3px',
-  fontSize: vars.fontSize.sm,
-  fontWeight: vars.fontWeight.semibold,
-  color: vars.color.gray[800],
-  backgroundColor: vars.color.white,
-  border: `1px solid ${vars.color.gray[800]}`,
-  borderRadius: '10px',
-  cursor: 'pointer',
-  transition: loginTransition,
-  outline: 'none',
-  textDecoration: 'none',
-  boxSizing: 'border-box',
-  selectors: {
-    '&:hover': {
-      backgroundColor: vars.color.gray[50],
-      boxShadow: vars.shadow.sm,
-    },
-    '&:focus-visible': {
-      boxShadow: `0 0 0 3px ${vars.color.gray[800]}40`,
-    },
-    '&:active': {
-      backgroundColor: vars.color.gray[200],
-    },
-  },
-  '@media': {
-    [breakpoint.md]: {
-      height: '40px',
-      fontSize: vars.fontSize.base,
-      borderRadius: vars.radius.lg,
-    },
-  },
+  width: '90px',
 });
 
 export const profileWrap = style({
@@ -218,21 +186,26 @@ export const memberDropdown = style({
   right: 0,
   zIndex: 100,
   width: '152px',
+  height: '137px',
   overflow: 'hidden',
   backgroundColor: vars.color.white,
   borderRadius: vars.radius.md,
-  border: `1px solid ${vars.color.gray[200]}`,
+  border: `2px solid ${vars.color.gray[100]}`,
   boxShadow: vars.shadow.md,
-  boxSizing: 'border-box',
+  // boxSizing: 'border-box',
 });
 
 export const memberDropdownHeader = style({
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'flex-start',
+  // alignItems: 'flex-start',
+  width: '80%',
+  margin: '0 auto',
   gap: vars.space.sm,
-  padding: vars.space.lg,
-  borderBottom: `1px solid ${figmaGray100}`,
+  paddingTop: vars.space.md,
+  paddingBottom: vars.space.sm,
+  borderBottom: `2px solid ${vars.color.gray[100]}`,
+  alignItems: 'center',
 });
 
 export const memberDropdownAvatar = style({
@@ -248,7 +221,7 @@ export const memberDropdownMeta = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: '2px',
+  // gap: '2px',
   minWidth: 0,
 });
 
@@ -274,7 +247,7 @@ export const memberDropdownGrade = style({
 
 export const memberDropdownList = style({
   listStyle: 'none',
-  margin: 0,
+  margin: '8px 0',
   padding: 0,
   width: '100%',
 });
@@ -290,9 +263,8 @@ const menuItemBase = style({
   alignItems: 'center',
   width: '100%',
   minHeight: '32px',
-  paddingLeft: '14px',
-  paddingRight: vars.space.sm,
-  boxSizing: 'border-box',
+  paddingLeft: vars.space.lg,
+  // paddingRight: vars.space.sm,
   fontFamily: vars.fontFamily.pretendard,
   fontSize: vars.fontSize.base,
   fontWeight: vars.fontWeight.medium,
@@ -300,10 +272,7 @@ const menuItemBase = style({
   textAlign: 'left',
   cursor: 'pointer',
   textDecoration: 'none',
-  border: 'none',
   backgroundColor: vars.color.white,
-  borderLeft: `2px solid ${figmaGray100}`,
-  borderRight: `2px solid ${figmaGray100}`,
   outline: 'none',
   selectors: {
     '&:hover': {

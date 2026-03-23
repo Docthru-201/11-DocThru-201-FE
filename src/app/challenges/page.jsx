@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { challengeItemsMock } from '@/mock/challenges';
+import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import {
-  GNB,
   Search,
   Sort,
   Card,
@@ -59,7 +59,7 @@ export default function ChallengesPage() {
 
   return (
     <div className={styles.page}>
-      <GNB status="member" />
+      <GNBContainer />
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>

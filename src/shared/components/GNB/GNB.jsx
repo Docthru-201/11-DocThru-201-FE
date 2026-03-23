@@ -5,24 +5,23 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './GNB.css.js';
+import { Button } from '@/shared/components';
 
 function gradeToLabel(grade) {
   if (grade === 'EXPERT') return '전문가';
   return '일반';
 }
 
-function Logo({ className = undefined } = {}) {
+function Logo() {
   return (
-    <Link
-      href="/"
-      className={clsx(styles.logo, className)}
-      aria-label="Docthru 홈"
-    >
+    // <div className={styles.logowrapper}>
+    <Link href="/" className={clsx(styles.logo)} aria-label="Docthru 홈">
       <span className={styles.logoIcon}>
-        <Icon name="docthruLogo" width={28} height={28} aria-hidden />
+        <Icon name="docthruLogo" width={17.55} height={20.25} aria-hidden />
       </span>
       Docthru
     </Link>
+    // </div>
   );
 }
 
@@ -130,9 +129,9 @@ export function GNB({
 
         <div className={styles.right}>
           {isGuest && (
-            <Link href="/login" className={styles.loginButton}>
-              로그인
-            </Link>
+            <Button variant="outline" className={styles.loginButton}>
+              <Link href="/login">로그인</Link>
+            </Button>
           )}
           {isMember && (
             <>

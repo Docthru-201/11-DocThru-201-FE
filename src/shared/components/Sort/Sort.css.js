@@ -42,7 +42,7 @@ export const rootFilter = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  width: '140px',
+  width: '112px',
   height: '40px',
   padding: `8px 12px`,
   margin: 0,
