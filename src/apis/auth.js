@@ -24,7 +24,6 @@ export async function login(body) {
     credentials: 'include',
     body: JSON.stringify(body),
   });
-
   return handleResponse(response, '로그인에 실패했습니다.');
 }
 
@@ -43,19 +42,22 @@ export async function signup(body) {
 }
 
 // 로그아웃
-export async function logout(accessToken) {
+export async function logout() {
   const response = await fetch(`${BASE_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
     },
-    credentials: 'include',
+    credentials: 'include', // ✅ 쿠키 자동 전송
   });
+  // ✅ 204는 body가 없으므로 json() 호출 안 함
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || '로그아웃에 실패했습니다.');
+  }
 
-  return handleResponse(response, '로그아웃에 실패했습니다.');
+  return; // ✅ 그냥 반환
 }
-
 // 모든 기기 로그아웃
 export async function logoutAll(accessToken) {
   const response = await fetch(`${BASE_URL}/auth/logout-all`, {
