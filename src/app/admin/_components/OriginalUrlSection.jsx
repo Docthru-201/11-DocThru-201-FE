@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button } from '@/shared/components/Button';
+import { Icon } from '@/shared/components/Icon';
 import * as styles from './OriginalUrlSection.css';
 
 export default function OriginalUrlSection({ originalPageUrl }) {
@@ -10,9 +11,9 @@ export default function OriginalUrlSection({ originalPageUrl }) {
       <div className={styles.relativeWrapper}>
         <div className={styles.buttonPos}>
           <Button
-            variant="Icon Right" //Icon Riht 사용법?? - swlee
-            icon={null}
-            className={styles.linkBtn}
+            variant="transparent" //Icon Riht 사용법?? - swlee
+            icon={<Icon name="arrowClick" width={24} height={24} aria-hidden />}
+            iconPosition="right"
             onClick={() => {
               if (originalPageUrl) {
                 window.open(originalPageUrl, '_blank');

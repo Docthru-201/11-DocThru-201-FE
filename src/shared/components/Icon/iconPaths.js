@@ -93,4 +93,5 @@ export const iconPaths = {
   checkCircle: `${ICON_BASE_PATH}/check-circle.svg`,
   crown: `${ICON_BASE_PATH}/crown.svg`,
   plus: `${ICON_BASE_PATH}/plus.svg`,
+  bestMedal: `${ICON_BASE_PATH}/best-medal.svg`,
 };
