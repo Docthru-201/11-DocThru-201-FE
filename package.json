@@ -2,11 +2,7 @@
   "name": "docthru-201-fe",
   "version": "0.1.0",
   "scripts": {
-<<<<<<< feature/challenge-api-dolby527
-    "dev": "next dev",
-=======
     "dev": "next dev --turbopack",
->>>>>>> develop
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
