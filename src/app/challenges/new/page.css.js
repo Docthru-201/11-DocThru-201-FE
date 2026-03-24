@@ -35,6 +35,5 @@ export const row = style({
 });
 
 export const buttonWrap = style({
-  // marginTop: '24px',
   marginBottom: '37px',
 });
