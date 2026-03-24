@@ -51,27 +51,32 @@ export const sortDropdown = style({
   position: 'absolute',
   right: 0,
   marginTop: '4px',
+  width: '139px',
   backgroundColor: '#ffffff',
-  borderRadius: '12px',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  borderRadius: '8px',
+  border: '1px solid #E5E5E5',
   overflow: 'hidden',
   zIndex: 10,
 });
 
 export const sortOption = style({
+  color: '#737373',
   display: 'block',
-  width: '180px',
-  padding: '10px 16px',
+  width: '100%',
+  height: '43px',
+  padding: '0 16px',
   textAlign: 'left',
   border: 'none',
   backgroundColor: '#ffffff',
   fontSize: '14px',
+  lineHeight: '43px',
+  cursor: 'pointer',
   selectors: {
     '&:not(:last-child)': {
-      borderBottom: '1px solid #eeeeee',
+      borderBottom: '1px solid #EEEEEE',
     },
     '&:hover': {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: '#F5F5F5',
     },
   },
 });
@@ -91,6 +96,11 @@ export const search = style({
 });
 export const sort = style({
   height: '40px',
+  fontSize: '16px',
+  width: '139px',
+  color: '#A3A3A3',
+  whiteSpace: 'nowrap',
+  paddingLeft: '8px',
 });
 
 export const headerCell = style({
