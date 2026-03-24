@@ -1,4 +1,6 @@
-export const challengeItemsMock = [
+import { participantItemsMock } from './participants';
+
+const challengeItemsMockBase = [
   {
     id: '01HVCHALLENGE000000000001',
     authorId: '01HVUSER000000000000001',
@@ -120,6 +122,21 @@ export const challengeItemsMock = [
     },
   },
 ];
+
+export const challengeItemsMock = challengeItemsMockBase.map((challenge) => ({
+  ...challenge,
+  currentParticipants: participantItemsMock.filter(
+    (participant) => participant.challengeId === challenge.id,
+  ).length,
+  // Card 컴포넌트에서 기대하는 형태로 변환
+  deadline: challenge.deadline.slice(0, 10), // YYYY-MM-DD
+  isDeadlinePassed: new Date(challenge.deadline) < new Date(),
+  isRecruitmentFull:
+    participantItemsMock.filter(
+      (participant) => participant.challengeId === challenge.id,
+    ).length >= challenge.maxParticipants,
+  isParticipating: false,
+}));
 
 // response
 export const challengeListResponseMock = {

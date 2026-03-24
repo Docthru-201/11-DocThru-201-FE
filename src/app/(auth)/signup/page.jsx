@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema } from '@/features/auth/schema/auth.schema';
 import { useSignup } from '@/features/auth/hooks/useSignup';
 
+import Link from 'next/link'; // Next.js의 Link 컴포넌트
+import { Icon } from '@/shared/components/Icon';
 import * as s from './signup.css.ts';
 
 export default function SignupPage() {
@@ -36,17 +37,18 @@ export default function SignupPage() {
 
   return (
     <main className={s.container}>
-      {/* 로고 */}
-      <div className={s.logoWrapper}>
-        <Image
-          src="/images/img_logo.png" // public을 생략하고 /images부터 시작합니다.
-          alt="Docthru 로고"
-          width={320}
-          height={72}
-          priority // 로고는 페이지에서 가장 먼저 보여야 하므로 priority를 주는 것이 좋습니다.
-          style={{ objectFit: 'contain' }}
-        />
-      </div>
+      {/* 로고 영역 */}
+      <Link href="/challenges" className={s.logoBlock}>
+        <span className={s.logo} aria-hidden="true">
+          {/* 주신 수치 반영 (약 47x54 px) */}
+          <Icon
+            name="docthruLogo"
+            width={46.8} // 2.925 * 16
+            height={54} // 3.375 * 16
+          />
+          Docthru
+        </span>
+      </Link>
 
       {/* 회원가입 폼 */}
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>

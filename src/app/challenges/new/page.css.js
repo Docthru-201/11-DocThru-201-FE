@@ -1,25 +1,25 @@
-// page.css.js
 import { style } from '@vanilla-extract/css';
+import { vars } from '@/styles/tokens.css';
 
 export const page = style({
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh',
-  backgroundColor: '#f9f9f9',
+  backgroundColor: vars.color.white,
 });
 
 export const main = style({
   width: '100%',
   maxWidth: '600px',
   margin: '0 auto',
-  padding: '40px 20px',
+  padding: '0 20px',
 });
 
 export const title = style({
-  fontSize: '24px',
-  fontWeight: 'bold',
-  marginBottom: '32px',
-  textAlign: 'center',
+  fontSize: vars.fontSize['lg'],
+  fontWeight: vars.fontWeight.semibold,
+  margin: '24px 0',
+  textAlign: 'left',
 });
 
 export const form = style({
@@ -35,5 +35,6 @@ export const row = style({
 });
 
 export const buttonWrap = style({
-  marginTop: '40px',
+  // marginTop: '24px',
+  marginBottom: '37px',
 });

@@ -1,12 +1,12 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.js';
-import { breakpoint } from '@/styles/breakpoints.css.js';
+import { vars } from '@/styles/tokens.css';
+import { breakpoint } from '@/styles/breakpoints.css';
 
 export const page = style({
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: vars.color.white,
+  backgroundColor: vars.color.gray[50],
 });
 
 export const main = style({
@@ -14,7 +14,7 @@ export const main = style({
   width: '100%',
   maxWidth: '996px',
   margin: '0 auto',
-  padding: `0 16px vars.space['2xl']`,
+  padding: `0 16px ${vars.space['2xl']}`,
   boxSizing: 'border-box',
   '@media': {
     [breakpoint.md]: {
@@ -34,12 +34,12 @@ export const header = style({
   justifyContent: 'space-between',
   gap: vars.space.md,
   paddingTop: 24,
-  paddingBottom: 20,
+  paddingBottom: 16,
 });
 
 export const title = style({
   margin: 0,
-  fontSize: vars.fontSize['2xl'],
+  fontSize: vars.fontSize['lg'],
   fontWeight: vars.fontWeight.semibold,
   lineHeight: 1,
   color: vars.color.gray[800],
@@ -50,6 +50,11 @@ export const toolbar = style({
   alignItems: 'center',
   gap: 12,
   marginBottom: 20,
+});
+
+export const filterSlot = style({
+  position: 'relative',
+  flexShrink: 0,
 });
 
 export const searchField = style({

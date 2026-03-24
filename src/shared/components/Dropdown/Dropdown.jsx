@@ -5,11 +5,12 @@ import { Icon } from '@/shared/components/Icon';
 import * as styles from './Dropdown.css.js';
 
 export function Dropdown({
-  label = '카테고리',
+  label,
   options = [],
   value,
   onChange,
   placeholder,
+  showLabel = false,
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -33,6 +34,7 @@ export function Dropdown({
 
   return (
     <div className={styles.root} ref={ref}>
+      {showLabel && label && <p className={styles.label}>{label}</p>}
       <button
         type="button"
         className={styles.trigger[open ? 'active' : 'default']}

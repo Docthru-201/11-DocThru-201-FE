@@ -15,6 +15,7 @@ export const arrowButton = style({
   justifyContent: 'center',
   padding: 0,
   border: 'none',
+  backgroundColor: 'transparent',
   cursor: 'pointer',
   transition,
   outline: 'none',
@@ -22,6 +23,9 @@ export const arrowButton = style({
     '&:disabled': {
       opacity: vars.opacity.inactive,
       cursor: 'not-allowed',
+    },
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
     '&:focus-visible': {
       borderRadius: vars.radius.md,

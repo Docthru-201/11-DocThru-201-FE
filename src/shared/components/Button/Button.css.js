@@ -215,7 +215,9 @@ export const variant = styleVariants({
   },
   solidIcon: {
     height: '39px',
-    borderRadius: vars.radius['2xl'],
+    width: '155px',
+    borderRadius: '19.5px',
+    padding: 0,
     backgroundColor: vars.color.gray[800],
     color: vars.color.white,
     selectors: {

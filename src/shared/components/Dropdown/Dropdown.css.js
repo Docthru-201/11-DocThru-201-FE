@@ -4,7 +4,10 @@ import { vars } from '@/styles/tokens.css.ts';
 export const root = style({
   position: 'relative',
   width: '100%',
-  maxWidth: '800px',
+  gap: vars.space.sm,
+  maxWidth: 'none',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 const transition = `background-color ${vars.transition.duration.fast} ${vars.transition.timing.ease}, color ${vars.transition.duration.fast} ${vars.transition.timing.ease}`;
@@ -38,6 +41,13 @@ export const trigger = styleVariants({
 
 export const triggerLabel = style({
   flex: 1,
+});
+
+export const label = style({
+  fontSize: vars.fontSize.sm,
+  fontWeight: vars.fontWeight.medium,
+  lineHeight: vars.lineHeight.normal,
+  color: vars.color.gray[900],
 });
 
 export const triggerIcon = style({

@@ -2,7 +2,11 @@
   "name": "docthru-201-fe",
   "version": "0.1.0",
   "scripts": {
+<<<<<<< feature/challenge-api-dolby527
     "dev": "next dev",
+=======
+    "dev": "next dev --turbopack",
+>>>>>>> develop
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -34,7 +38,8 @@
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.2",
     "react-toastify": "^11.0.5",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",
