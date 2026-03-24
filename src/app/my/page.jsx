@@ -1,10 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { GNB } from '@/shared/components/GNB';
-import { Button, Search, Sort, Tab, Chip } from '@/shared/components/index.js';
+import {
+  Button,
+  Search,
+  Sort,
+  Tab,
+  Chip,
+  Icon,
+} from '@/shared/components/index.js';
 import * as styles from './page.css.js';
-import Image from 'next/image.js';
+import { GNBContainer } from './GNBContainer.jsx';
 
 const Tabs = [
   { value: 'participating', label: '참여중인 챌린지' },
@@ -12,26 +18,19 @@ const Tabs = [
   { value: 'applied', label: '신청한 챌린지' },
 ];
 
-// const sortOptions = [
-//   { value: 'pending', label: '승인 대기' },
-//   { value: 'approved', label: '신청 승인' },
-//   { value: 'rejected', label: '신청 거절' },
-//   { value: 'apply_asc', label: '신청 시간 빠른순' },
-//   { value: 'apply_desc', label: '신청 시간 느린순' },
-//   { value: 'deadline_asc', label: '마감 기한 빠른순' },
-//   { value: 'deadline_desc', label: '마감 기한 느린순' },
-// ];
+const sortOptions = [
+  { value: 'all', label: '승인 대기' },
+  { value: 'approved', label: '신청 승인' },
+  { value: 'rejected', label: '신청 거절' },
+  { value: 'apply_asc', label: '신청 시간 빠른순' },
+  { value: 'apply_desc', label: '신청 시간 느린순' },
+  { value: 'deadline_asc', label: '마감 기한 빠른순' },
+  { value: 'deadline_desc', label: '마감 기한 느린순' },
+];
 
-const mapStatusChip = (status) => {
-  switch (status) {
-    case 'PENDING':
-    case 'APPROVED':
-    case 'REJECTED':
-    case 'DELETED':
-      return status.toLowerCase();
-    default:
-      return 'pending';
-  }
+const statusChip = (status) => {
+  if (!status) return 'pending';
+  return status.toLowerCase();
 };
 
 const type = (type) => {
@@ -46,6 +45,8 @@ const type = (type) => {
       return 'Modern JS';
     case 'WEB':
       return 'Web';
+    default:
+      return type;
   }
 };
 
@@ -72,13 +73,12 @@ const formatDate = (value) => {
 };
 
 export default function MyChallengePage() {
-  const isLoggedIn = true; // TODO: 내일의 나에게
-  const isAdminUser = false;
   const [tabValue, setTabValue] = useState('participating');
-  const [searchValue, setSearchValue] = useState(''); // TODO: 검색
-  const [sortValue, setSortValue] = useState('pending'); // TODO: 정렬
+  const [searchValue, setSearchValue] = useState('');
+  const [sortValue, setSortValue] = useState('all');
+  const [sortOpen, setSortOpen] = useState(false);
   const [appliedRows, setAppliedRows] = useState([]);
-  const status = !isLoggedIn ? 'guest' : isAdminUser ? 'admin' : 'member';
+  const status = 'member'; // TODO: 로그인
 
   useEffect(() => {
     if (tabValue !== 'applied') return;
@@ -122,31 +122,69 @@ export default function MyChallengePage() {
     fetchMyChallenges();
   }, [tabValue]);
 
+  const sortRows = [...appliedRows]
+    .filter((row) => {
+      if (sortValue === 'pending') return row.status === 'PENDING';
+      if (sortValue === 'approved') return row.status === 'APPROVED';
+      if (sortValue === 'rejected') return row.status === 'REJECTED';
+      return true;
+    })
+    .sort((a, b) => {
+      const createdA = new Date(a.createdAt).getTime();
+      const createdB = new Date(b.createdAt).getTime();
+      const deadlineA = new Date(a.deadline).getTime();
+      const deadlineB = new Date(b.deadline).getTime();
+
+      switch (sortValue) {
+        case 'pending':
+        case 'approved':
+        case 'rejected':
+          return createdB - createdA;
+
+        case 'apply_asc':
+          return createdA - createdB;
+
+        case 'apply_desc':
+        case 'all':
+          return createdB - createdA;
+
+        case 'deadline_asc':
+          return deadlineA - deadlineB;
+
+        case 'deadline_desc':
+          return deadlineB - deadlineA;
+
+        default:
+          return 0;
+      }
+    });
+  const filteredRows = sortRows.filter((row) => {
+    if (!searchValue) return true; // 검색어 없으면 전체
+    const keyword = searchValue.toLowerCase();
+    return row.title.toLowerCase().includes(keyword);
+  });
+
+  const currentSort = sortOptions.find((o) => o.value === sortValue);
+
   return (
     <>
-      <GNB status={status} />
+      <GNBContainer status={status} />
       <main className={styles.page}>
         <div className={styles.header}>
           <span>나의 챌린지</span>
-          <Button className={styles.newBtn}>
+          <Button
+            variant="solidIcon"
+            icon={<Icon name="plus" width={16} height={16} aria-hidden />}
+            iconPosition="right"
+          >
             신규 챌린지 신청
-            <Image
-              src="/icons/plus.svg"
-              alt="챌린지 신청"
-              width={16}
-              height={16}
-              style={{
-                display: 'inline-block',
-                position: 'relative',
-                top: '2px',
-                marginLeft: '8px',
-              }}
-            ></Image>
           </Button>
         </div>
+
         <div className={styles.tabWrap}>
           <Tab tabs={Tabs} value={tabValue} onChange={setTabValue} />
-        </div>{' '}
+        </div>
+
         <div className={styles.filterRow}>
           <Search
             className={styles.search}
@@ -154,12 +192,34 @@ export default function MyChallengePage() {
             onChange={setSearchValue}
             placeholder="챌린지 이름을 검색해보세요"
           />
-          <Sort
-            className={styles.sort}
-            value={sortValue}
-            onClick={setSortValue}
-          />
+
+          <div className={styles.sortWrap}>
+            <Sort
+              className={styles.sort}
+              label={currentSort?.label ?? '승인 대기'}
+              active={sortOpen}
+              onClick={() => setSortOpen((open) => !open)}
+            />
+            {sortOpen && (
+              <div className={styles.sortDropdown}>
+                {sortOptions.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    className={styles.sortOption}
+                    onClick={() => {
+                      setSortValue(opt.value);
+                      setSortOpen(false);
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+
         <div className={styles.tab}>
           {tabValue === 'participating' && <div>참여중인 챌린지</div>}
           {tabValue === 'ongoing' && <div>진행중인 챌린지</div>}
@@ -185,7 +245,7 @@ export default function MyChallengePage() {
                 </tr>
               </thead>
               <tbody>
-                {appliedRows.map((row) => (
+                {filteredRows.map((row) => (
                   <tr key={row.no} className={styles.row}>
                     <td className={styles.bodyCell}>{row.no}</td>
                     <td className={styles.bodyCell}>{row.field}</td>
@@ -195,7 +255,7 @@ export default function MyChallengePage() {
                     <td className={styles.bodyCell}>{row.appliedAt}</td>
                     <td className={styles.bodyCell}>{row.deadline}</td>
                     <td className={styles.bodyCell}>
-                      <Chip status={mapStatusChip(row.status)} />
+                      <Chip status={statusChip(row.status)} />
                     </td>
                   </tr>
                 ))}

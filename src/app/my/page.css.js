@@ -40,6 +40,40 @@ export const filterRow = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  gap: '12px',
+});
+
+export const sortWrap = style({
+  position: 'relative',
+});
+
+export const sortDropdown = style({
+  position: 'absolute',
+  right: 0,
+  marginTop: '4px',
+  backgroundColor: '#ffffff',
+  borderRadius: '12px',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  overflow: 'hidden',
+  zIndex: 10,
+});
+
+export const sortOption = style({
+  display: 'block',
+  width: '180px',
+  padding: '10px 16px',
+  textAlign: 'left',
+  border: 'none',
+  backgroundColor: '#ffffff',
+  fontSize: '14px',
+  selectors: {
+    '&:not(:last-child)': {
+      borderBottom: '1px solid #eeeeee',
+    },
+    '&:hover': {
+      backgroundColor: '#f5f5f5',
+    },
+  },
 });
 
 export const table = style({
@@ -55,7 +89,9 @@ export const tab = style({
 export const search = style({
   flex: 1,
 });
-export const sort = style({});
+export const sort = style({
+  height: '40px',
+});
 
 export const headerCell = style({
   padding: '8px 20px',
