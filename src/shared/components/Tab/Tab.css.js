@@ -27,11 +27,6 @@ const itemBase = style({
   background: 'none',
   border: 'none',
   transition: `color ${vars.transition.duration.fast} ${vars.transition.timing.ease}`,
-  selectors: {
-    // '&:hover': {
-    //   color: vars.color.gray[700],
-    // },
-  },
 });
 
 export const item = styleVariants({
