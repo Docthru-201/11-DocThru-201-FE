@@ -26,6 +26,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.20",
+    "dompurify": "^3.3.3",
     "jose": "^6.2.1",
     "next": "16.1.6",
     "prop-types": "^15.8.1",
@@ -33,7 +34,8 @@
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.2",
     "react-toastify": "^11.0.5",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",

@@ -1,11 +1,11 @@
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
+import React, { useEffect, useState, useCallback } from 'react';
+
 import { Icon } from '@/shared/components/Icon';
 import { Button } from '@/shared/components/Button';
 import { Modal } from '@/shared/components/Modal';
-
-import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useState, useCallback } from 'react';
 
 import ChallengeInfo from '@/app/admin/_components/ChallengeInfo';
 import LineDivider from '@/app/admin/_components/LineDivider.jsx';
@@ -25,7 +25,6 @@ export default function AdminChallengePage() {
   const router = useRouter();
   const challengeId = params?.id;
 
-  // ✅ 상태 통합
   const [challengeData, setChallengeData] = useState({
     challenge: null,
     prevId: null,

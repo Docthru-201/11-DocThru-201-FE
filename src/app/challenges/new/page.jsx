@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { GNB, Button, Input, Dropdown, TextBox } from '@/shared/components';
+import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
+import { Button, Input, Dropdown, TextBox } from '@/shared/components';
 import * as styles from './page.css'; // 스타일 파일은 어디에, 어떻게 만들것인가? 왜 ts?
 
 export default function NewChallengePage() {
@@ -29,7 +30,7 @@ export default function NewChallengePage() {
 
   return (
     <div className={styles.page}>
-      <GNB status="member" />
+      <GNBContainer />
 
       <main className={styles.main}>
         <h1 className={styles.title}>신규 챌린지 신청</h1>
@@ -52,7 +53,7 @@ export default function NewChallengePage() {
             onChange={(e) => setLink(e.target.value)}
           />
 
-          <div className={styles.row} />
+          {/* <div className={styles.row} /> */}
           {/*분야 (드롭다운)*/}
           <Dropdown
             label="분야"
@@ -103,8 +104,7 @@ export default function NewChallengePage() {
             <Button
               type="submit"
               variant="solid"
-              size="large"
-              width="full" // 너비 꽉 차게
+              fullWidth // 너비 꽉 차게
             >
               신청하기
             </Button>
