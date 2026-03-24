@@ -1,20 +1,4 @@
-/**
- * 인증 관련 fetch 함수
- */
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
-
-// 공통 에러 처리 함수
-async function handleResponse(response, defaultMessage) {
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || defaultMessage);
-  }
-
-  if (response.status === 204) return; // ✅ 204 처리 추가
-
-  return response.json();
-}
+import { BASE_URL, handleResponse } from '@/apis/common';
 
 // 로그인
 export async function login(body) {

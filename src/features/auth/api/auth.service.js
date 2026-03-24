@@ -1,4 +1,3 @@
-// src/features/auth/api/auth.service.js
 import {
   signup,
   login,
@@ -8,29 +7,17 @@ import {
   getMe,
 } from '@/apis/auth';
 
-/**
- * 회원가입 서비스 로직
- */
 export const signUpUser = async (signUpData) => {
   try {
-    // 1. 전역 API 함수 호출
     const response = await signup(signUpData);
-
-    // 2. 성공 시 데이터 반환
-    // (이때 response는 이미 apis/auth.js의 handleResponse에서 .json() 처리가 된 상태)
     return response;
   } catch (error) {
-    // 3. 에러 발생 시 cause를 포함하여 다시 던짐
-    // 상위 hooks(useSignup)에서 이 메시지를 그대로 UI에 보여줄 수 있습니다.
     throw new Error(error.message || '회원가입 처리 중 오류가 발생했습니다.', {
       cause: error,
     });
   }
 };
 
-/**
- * 로그인 서비스 로직
- */
 export const loginUser = async (loginData) => {
   try {
     const response = await login(loginData);
@@ -42,9 +29,7 @@ export const loginUser = async (loginData) => {
     });
   }
 };
-/**
- * 3. 로그아웃
- */
+
 export const logoutUser = async () => {
   try {
     const data = await logout();
@@ -54,9 +39,6 @@ export const logoutUser = async () => {
   }
 };
 
-/**
- * 4. 모든 기기 로그아웃 (보안용)
- */
 export const logoutAllDevices = async () => {
   try {
     return await logoutAll();
@@ -73,9 +55,6 @@ export const getMeUser = async () => {
   }
 };
 
-/**
- * 5. 토큰 갱신 (Access Token 만료 시 자동 호출용)
- */
 export const refreshUserToken = async () => {
   try {
     return await refreshToken();
