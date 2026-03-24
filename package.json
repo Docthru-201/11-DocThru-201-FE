@@ -2,7 +2,11 @@
   "name": "docthru-201-fe",
   "version": "0.1.0",
   "scripts": {
+<<<<<<< feature/challenge-api-dolby527
+    "dev": "next dev",
+=======
     "dev": "next dev --turbopack",
+>>>>>>> develop
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -26,6 +30,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.20",
+    "dompurify": "^3.3.3",
     "jose": "^6.2.1",
     "next": "16.1.6",
     "prop-types": "^15.8.1",

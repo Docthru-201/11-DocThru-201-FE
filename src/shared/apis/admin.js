@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 // import { BASE_URL } from "@/shared/constants/file.js"; //환경변수 못 읽어오는데 확인 필요
 const BASE_URL = 'http://localhost:5001/api';
-console.log('BASE_URL:', BASE_URL);
+console.log('확인용(admin.js) : ADMIN BASE_URL:', BASE_URL);
 // 관리자 - 신청 목록 전체 조회
 export async function getChallengesAction({ params = {} }) {
   const cookieStore = await cookies();
@@ -130,6 +130,56 @@ export async function declineChallengeAction(challengeId, declineReason) {
     return await response.json();
   } catch (err) {
     console.error('서버 액션 - 챌린지 거절 오류:', err);
+    throw err;
+  }
+}
+
+// 관리자 Soft 삭제
+export async function deleteChallengeAction(challengeId, declineReason) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  // 임시로 막음-토큰 연계시 해제
+  // if (!accessToken) {
+  //   throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+  // }
+
+  try {
+    const challengeRes = await fetch(`${BASE_URL}/challenges/${challengeId}`);
+    if (!challengeRes.ok) throw new Error('챌린지 조회 실패');
+    const challenge = await challengeRes.json();
+
+    // 2. isClosed 체크
+    if (challenge.isClosed) {
+      throw new Error('마감된 챌린지는 삭제할 수 없습니다.');
+    }
+
+    const response = await fetch(
+      `${BASE_URL}/admin/challenges/${challengeId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `accessToken=${accessToken}`,
+        },
+        body: JSON.stringify({
+          status: 'DELETED',
+          declineReason: declineReason,
+        }),
+      },
+    );
+
+    const data = await response.json();
+    console.log('delete result:', data);
+    if (!response.ok) {
+      throw new Error(data.message || '서버 오류가 발생했습니다.');
+    }
+    if (data.result?.status !== 'DELETED') {
+      throw new Error(data.message || '챌린지 상태 변경에 실패했습니다.');
+    }
+    return data;
+  } catch (err) {
+    console.error('서버 액션 - 챌린지 삭제 오류:', err);
     throw err;
   }
 }
