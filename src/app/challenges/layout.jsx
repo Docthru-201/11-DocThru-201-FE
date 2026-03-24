@@ -24,7 +24,7 @@ export default function ChallengeLayout({ children }) {
   return (
     <div className={styles.challengeRoot}>
       <GNB
-        status="user" // 일반 서비스 레이아웃이므로 "user"로 설정
+        status="member" // 일반 서비스 레이아웃이므로 "member"로 설정
         tabs={challengeTabs}
         className=""
         onTabChange={() => {}}

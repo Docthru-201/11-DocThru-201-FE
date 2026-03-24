@@ -29,8 +29,11 @@ import * as styles from './ChallengeDetailPage.css.js';
 export default function ChallengeDetailPage() {
   const router = useRouter();
 
-  // const challengeId = ' 01KM8JWF0AFW1PGAE13BE42HP1';
-  const challengeId = '01KM8JWEW0CYSZZ3VZ1JZBQWW5';
+  // const challengeId = '01KMD847N2B4YMWTA7NVPEPFZK'; /마감된 데이타
+  // const challengeId = '01KMD847NR9GCDQDBFM2F357P5'; //참가자 full 데이타
+  // const challengeId = '01KMD847MC69W5WSKCPKN2ZDTW'; //진행중인 데이타
+  // const challengeId = '01KMD847PYRBZ5ECN80MQQVAW3'; //500Byte 이상
+  const challengeId = '01KMD847MC69W5WSKCPKN2ZDTW'; //500byte 이하
   console.log(
     '(challenges/[id]/work/page.jsx :Hard coding된 임시 challengeId',
     challengeId,
@@ -138,6 +141,10 @@ export default function ChallengeDetailPage() {
                   window.open(challenge.originalUrl, '_blank');
                 }
               }}
+              isFull={
+                challenge?.participants?.length >= challenge?.maxParticipants
+              }
+              isClosed={challenge.isClosed}
             />
           </div>
         </section>

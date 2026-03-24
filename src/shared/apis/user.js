@@ -83,7 +83,7 @@ export async function getRankingAction(challengeId) {
 export async function createWorkAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-
+  const BASE_URL = 'http://localhost:5001/api';
   // 확인목적 swlee import { BASE_URL } from '@/shared/constants/file.js';
   console.log('3. 작업물 생성: challengeId:', BASE_URL, challengeId);
 
