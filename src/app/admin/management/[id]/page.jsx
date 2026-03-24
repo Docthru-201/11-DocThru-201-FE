@@ -18,7 +18,7 @@ import {
   declineChallengeAction,
 } from '@/shared/apis/admin.js';
 
-import * as styles from './AdminChallengePage.css.js';
+import * as styles from './Page.css.js';
 
 export default function AdminChallengePage() {
   const params = useParams();
@@ -92,10 +92,13 @@ export default function AdminChallengePage() {
     if (!challenge?.id) return;
 
     try {
-      await approveChallengeAction(challenge.id);
+      const result = await approveChallengeAction(challenge.id);
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
 
-      alert('챌린지가 승인되었습니다.');
-
+      alert('승인되었습니다.');
       await fetchChallenge(challengeId);
     } catch (error) {
       console.error('승인 실패', error);
@@ -157,15 +160,6 @@ export default function AdminChallengePage() {
             승인하기
           </Button>
         </div>
-      )}
-
-      {challenge?.status === 'APPROVED' && (
-        <iframe
-          src={challenge?.originalUrl}
-          title="원문 페이지 미리보기"
-          className={styles.previewIframe}
-          loading="lazy"
-        />
       )}
 
       <Modal

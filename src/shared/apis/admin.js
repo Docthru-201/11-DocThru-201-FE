@@ -2,9 +2,8 @@
 
 import { cookies } from 'next/headers';
 
-// import { BASE_URL } from "@/shared/constants/file.js"; //환경변수 못 읽어오는데 확인 필요
-const BASE_URL = 'http://localhost:5001/api';
-console.log('확인용(admin.js) : ADMIN BASE_URL:', BASE_URL);
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+
 // 관리자 - 신청 목록 전체 조회
 export async function getChallengesAction({ params = {} }) {
   const cookieStore = await cookies();
@@ -64,10 +63,9 @@ export async function approveChallengeAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
-  // 임시코드 - swlee 토큰 확인
-  // if (!accessToken) {
-  //   throw new Error("인증되지 않았습니다: 액세스 토큰이 없습니다.");
-  // }
+  if (!accessToken) {
+    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+  }
 
   try {
     const response = await fetch(
@@ -101,10 +99,9 @@ export async function declineChallengeAction(challengeId, declineReason) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
-  // 임시로 막음-토큰 연계시 해제
-  // if (!accessToken) {
-  //   throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
-  // }
+  if (!accessToken) {
+    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+  }
 
   try {
     const response = await fetch(
@@ -139,10 +136,9 @@ export async function deleteChallengeAction(challengeId, declineReason) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
-  // 임시로 막음-토큰 연계시 해제
-  // if (!accessToken) {
-  //   throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
-  // }
+  if (!accessToken) {
+    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+  }
 
   try {
     const challengeRes = await fetch(`${BASE_URL}/challenges/${challengeId}`);
@@ -170,7 +166,6 @@ export async function deleteChallengeAction(challengeId, declineReason) {
     );
 
     const data = await response.json();
-    console.log('delete result:', data);
     if (!response.ok) {
       throw new Error(data.message || '서버 오류가 발생했습니다.');
     }

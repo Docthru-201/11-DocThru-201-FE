@@ -7,7 +7,7 @@ export function decodeAccessToken(token) {
     const payload = decodeJwt(token);
     return payload;
   } catch (error) {
-    console.error('토큰 디코딩 실패:', err);
+    console.error('토큰 디코딩 실패:', error);
     return null;
   }
 }

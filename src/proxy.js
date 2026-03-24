@@ -15,11 +15,10 @@ export function proxy(req) {
   const { pathname } = req.nextUrl;
 
   const token = req.cookies.get('token');
-  // const role = req.cookies.get('role'); // ADMIN / USER
-
-  const role = 'ADMIN'; // 테스트를 위한 임시 설정
+  const role = req.cookies.get('role'); // ADMIN / USER
 
   // 1. 로그인 상태에서 루트(/) 접근 시 역할별 대시보드로 이동
+
   if (pathname === '/' && token) {
     if (role === 'ADMIN') {
       return NextResponse.redirect(new URL('/admin/management', req.url));

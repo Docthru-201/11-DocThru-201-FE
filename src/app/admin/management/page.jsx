@@ -14,7 +14,7 @@ import Pagination from '@/app/admin/_components/Pagination';
 
 import { getChallengesAction } from '@/shared/apis/admin.js';
 
-import * as styles from './AdminManagementPage.css.js';
+import * as styles from './Page.css.js';
 
 export default function AdminManagementPage() {
   const [challenges, setChallenges] = useState([]);
