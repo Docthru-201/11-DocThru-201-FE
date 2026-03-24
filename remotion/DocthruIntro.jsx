@@ -7,6 +7,10 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
+import '@fontsource/pretendard/400.css';
+import '@fontsource/pretendard/500.css';
+import '@fontsource/pretendard/600.css';
+import '@fontsource/quantico/700.css';
 
 const BRAND_BG = 'var(--color-gray-800, #262626)';
 const BRAND_POINT = 'var(--color-brand-point, #FFC117)';
@@ -14,9 +18,9 @@ const BRAND_TEXT = 'var(--color-brand-text, #F1F2F5)';
 const BRAND_SUBTEXT = 'var(--color-gray-300, #CFCFCF)';
 
 const FONT_PRETENDARD =
-  'var(--font-pretendard), Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif';
+  'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif';
 const FONT_QUANTICO =
-  'var(--font-quantico), Quantico, -apple-system, BlinkMacSystemFont, system-ui, sans-serif';
+  'Quantico, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif';
 
 export const DocthruIntro = () => {
   const frame = useCurrentFrame();
