@@ -101,6 +101,7 @@ export const chipCategory = styleVariants({
     chipBase,
     {
       display: 'inline-flex',
+      height: '26px',
       padding: '5px 7px',
       justifyContent: 'center',
       alignItems: 'center',

@@ -9,6 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/features/auth/schema/auth.schema';
 import { useLogin } from '@/features/auth/hooks/useLogin'; // 로그인 훅이 있다고 가정
 
+import Link from 'next/link'; // Next.js의 Link 컴포넌트
+import { Icon } from '@/shared/components/Icon';
+
 import * as s from './login.css'; // 스타일 재사용
 
 export default function LoginPage() {
@@ -33,23 +36,23 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = () => {
-    // 구글 로그인은 API 서버의 경로로 직접 이동하는 방식이 일반적입니다.
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    window.location.href = 'http://localhost:5001/api/auth/google/login';
   };
-
   return (
     <main className={s.container}>
       {/* 로고 */}
-      <div className={s.logoWrapper}>
-        <Image
-          src="/images/img_logo.png"
-          alt="Docthru 로고"
-          width={320}
-          height={72}
-          priority
-          style={{ objectFit: 'contain' }}
-        />
-      </div>
+      <Link href="/" className={s.logoBlock}>
+        <span className={s.logo}>
+          {/* 주신 수치 반영 (약 47x54 px) */}
+          <Icon
+            name="docthruLogo"
+            width={46.8} // 2.925 * 16
+            height={54} // 3.375 * 16
+            aria-hidden="true"
+          />
+          Docthru
+        </span>
+      </Link>
 
       {/* 로그인 폼 */}
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
@@ -97,9 +100,9 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
         >
           <Image
-            src="/images/google_icon.png"
+            src="/icons/login-google.svg"
             alt="google"
-            width={20}
+            width={25}
             height={20}
           />
           구글로 시작하기

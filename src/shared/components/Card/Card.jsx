@@ -5,15 +5,15 @@ import { Icon } from '@/shared/components/Icon';
 import * as styles from './Card.css.js';
 
 const TYPE = {
-  NEXT_JS: 'next',
+  NEXT_JS: 'next_js',
   API: 'api',
   CAREER: 'career',
-  MODERN_JS: 'modernJs',
+  MODERN_JS: 'modern_js',
   WEB: 'web',
 };
 
 const CATEGORY = {
-  DOCUMENT: 'docs',
+  DOCUMENT: 'document',
   BLOG: 'blog',
 };
 
@@ -27,17 +27,17 @@ function formatDeadlineText(deadline) {
 
 export function Card({
   study,
-  status: statusProp,
-  title: titleProp,
-  chipType: chipTypeProp,
-  chipCategory: chipCategoryProp,
-  deadlineText: deadlineTextProp,
-  personText: personTextProp,
+  status: statusProp = undefined,
+  title: titleProp = undefined,
+  chipType: chipTypeProp = undefined,
+  chipCategory: chipCategoryProp = undefined,
+  deadlineText: deadlineTextProp = undefined,
+  personText: personTextProp = undefined,
 
-  onCtaClick,
+  onCtaClick = () => {},
   showCta = true,
   showEditMenu = false,
-  onEditClick,
+  onEditClick = () => {},
 }) {
   let status = statusProp;
   let title = titleProp;

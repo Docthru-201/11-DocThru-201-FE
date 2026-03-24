@@ -13,7 +13,7 @@ export const headerCell = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: '#1f2937',
+  background: '#262626',
   color: '#ffffff',
   fontSize: '14px',
   fontWeight: '600',

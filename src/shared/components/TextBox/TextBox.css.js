@@ -3,6 +3,16 @@ import { vars } from '@/styles/tokens.css.ts';
 
 export const root = style({
   width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+});
+
+export const label = style({
+  fontSize: vars.fontSize.sm,
+  fontWeight: vars.fontWeight.medium,
+  lineHeight: vars.lineHeight.normal,
+  color: vars.color.gray[900],
 });
 
 const textareaBase = style({
@@ -35,6 +45,14 @@ export const textarea = styleVariants({
     textareaBase,
     {
       minHeight: '120px',
+    },
+  ],
+  large: [
+    textareaBase,
+    {
+      minHeight: '219px',
+      borderRadius: '6px',
+      padding: '16px 20px',
     },
   ],
 });
