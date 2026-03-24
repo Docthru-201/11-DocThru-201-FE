@@ -100,9 +100,9 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
         >
           <Image
-            src="/images/google_icon.png"
+            src="/icons/login-google.svg"
             alt="google"
-            width={20}
+            width={25}
             height={20}
           />
           구글로 시작하기
