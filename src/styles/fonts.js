@@ -1,9 +1,3 @@
-/**
- * 폰트 설정
- * - Pretendard: 전역 기본 폰트로 설정됨.
- * - Quantico: tokens.fontFamily.quantico로 사용
- */
-
 import { Quantico } from 'next/font/google';
 import localFont from 'next/font/local';
 
