@@ -37,3 +37,9 @@ export const row = style({
 export const buttonWrap = style({
   marginBottom: '37px',
 });
+
+export const errorMessage = style({
+  margin: '4px 0 0',
+  fontSize: vars.fontSize.sm,
+  color: '#ff4d4f',
+});

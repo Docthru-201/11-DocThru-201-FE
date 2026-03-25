@@ -71,6 +71,14 @@ export const searchField = style({
   maxWidth: 'none',
 });
 
+export const feedback = style({
+  margin: 0,
+  padding: `${vars.space.lg} 0`,
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[600],
+  textAlign: 'center',
+});
+
 export const cardList = style({
   display: 'flex',
   flexDirection: 'column',

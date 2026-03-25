@@ -1,8 +1,9 @@
 /**
  * 챌린지 관련 fetch 함수
- * 현재는 `src/mock/*` 목 응답을 그대로 반환합니다.
+ * 목록/일부는 백엔드 API, 나머지는 아직 mock.
  */
 
+import { BASE_URL, handleResponse } from '@/apis/common';
 import {
   challengeDetailResponseMock,
   challengeListResponseMock,
@@ -13,14 +14,24 @@ import {
 } from '@/mock/applications';
 import { participantListResponseMock } from '@/mock/participants';
 
-const messageOnly = (message) => ({
-  message,
-  data: undefined,
-});
-
 export async function getChallenges(params = {}) {
-  void params;
-  return challengeListResponseMock;
+  const qs = new URLSearchParams();
+  if (params.cursor) qs.set('cursor', String(params.cursor));
+  if (params.limit != null) qs.set('limit', String(params.limit));
+  if (params.keyword) qs.set('keyword', String(params.keyword));
+  if (params.status) qs.set('status', String(params.status));
+  if (params.category) qs.set('category', String(params.category));
+  if (params.type) qs.set('type', String(params.type));
+
+  const query = qs.toString();
+  const url = `${BASE_URL}/challenges${query ? `?${query}` : ''}`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  return handleResponse(response, '챌린지 목록을 불러오지 못했습니다.');
 }
 
 export async function getChallengeById(id) {
@@ -29,8 +40,16 @@ export async function getChallengeById(id) {
 }
 
 export async function createChallenge(body) {
-  void body;
-  return challengeDetailResponseMock;
+  const response = await fetch(`${BASE_URL}/challenges`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+
+  return handleResponse(response, '챌린지 신청에 실패했습니다.');
 }
 
 export async function getMyChallenges(params = {}) {
