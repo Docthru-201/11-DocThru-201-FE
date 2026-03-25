@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { vars } from '@/styles/tokens.css.ts';
+import { vars } from '@/styles/tokens.css';
 
 export const root = style({
   position: 'relative',
@@ -24,7 +24,6 @@ const triggerBase = style({
   cursor: 'pointer',
   fontSize: vars.fontSize.base,
   fontWeight: vars.fontWeight.regular,
-  color: vars.color.gray[400],
   textAlign: 'left',
 });
 
@@ -41,6 +40,7 @@ export const trigger = styleVariants({
 
 export const triggerLabel = style({
   flex: 1,
+  color: vars.color.gray[400],
 });
 
 export const label = style({
@@ -57,6 +57,7 @@ export const triggerIcon = style({
   width: '48px',
   height: '48px',
   margin: `-${vars.space.sm} -${vars.space.sm} -${vars.space.sm} 0`,
+  color: vars.color.gray[400],
 });
 
 export const list = style({

@@ -6,7 +6,7 @@ import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useMe } from '@/features/auth/hooks/useMe';
 
 export function GNBContainer({ tabs = [], onTabChange = undefined }) {
-  useMe();
+  const { sessionReady } = useMe();
   const user = useAuthStore((state) => state.user);
   const { logout } = useLogout(); // ✅ 로그아웃 훅
 
@@ -20,7 +20,9 @@ export function GNBContainer({ tabs = [], onTabChange = undefined }) {
   return (
     <GNB
       status={status}
+      sessionReady={sessionReady}
       memberNickname={user?.nickname}
+      memberHasGoogleAccount={Boolean(user?.hasGoogleAccount)}
       memberGrade={user?.grade}
       adminNickname={user?.nickname}
       onLogout={logout}

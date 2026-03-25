@@ -148,8 +148,8 @@ export const footer = style({
 });
 
 export const btnReset = style({
-  flex: 1,
   height: '40px',
+  width: '134px',
   margin: 0,
   padding: `0 ${vars.space.lg}`,
   fontSize: vars.fontSize.base,
