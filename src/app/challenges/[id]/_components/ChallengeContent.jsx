@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '@/shared/store/useAuthStore';
+// import { useAuthStore } from '@/shared/store/useAuthStore';
 
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
