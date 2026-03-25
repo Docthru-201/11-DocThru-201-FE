@@ -64,7 +64,7 @@ const SECTIONS = [
 
 export default function LandingPage() {
   const router = useRouter();
-  const needIntro = shouldPlayIntro();
+  const [showLanding, setShowLanding] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleClick = () => {
@@ -73,22 +73,24 @@ export default function LandingPage() {
   };
 
   useEffect(() => {
-    if (needIntro) {
+    if (shouldPlayIntro()) {
       router.replace('/intro');
+      return;
     }
-  }, [needIntro, router]);
+    setShowLanding(true);
+  }, [router]);
 
   useEffect(() => {
-    if (needIntro) return;
+    if (!showLanding) return;
     const onScroll = () => {
       setShowScrollTop(window.scrollY > 1);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [needIntro]);
+  }, [showLanding]);
 
-  if (needIntro) return null;
+  if (!showLanding) return null;
 
   return (
     <>

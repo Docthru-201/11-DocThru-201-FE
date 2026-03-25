@@ -18,7 +18,7 @@ function shouldPlayIntro() {
 export default function IntroPage() {
   const router = useRouter();
   const [videoError, setVideoError] = useState(false);
-  const needIntro = shouldPlayIntro();
+  const [showIntro, setShowIntro] = useState(false);
 
   const handleIntroDone = () => {
     localStorage.setItem(LAST_INTRO_KEY, String(Date.now()));
@@ -26,12 +26,27 @@ export default function IntroPage() {
   };
 
   useEffect(() => {
-    if (!needIntro) {
+    if (!shouldPlayIntro()) {
       router.replace('/');
+      return;
     }
-  }, [needIntro, router]);
+    setShowIntro(true);
+  }, [router]);
 
-  if (!needIntro) return null;
+  if (!showIntro) {
+    return (
+      <main
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#171717',
+          position: 'relative',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+        }}
+        aria-busy="true"
+      />
+    );
+  }
 
   return (
     <main
