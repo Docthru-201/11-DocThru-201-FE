@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLandingIntroPhase } from '@/shared/hooks/useIntroPhase';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -14,17 +15,6 @@ const landingImg2 = '/images/landing-translation.png';
 const landingImg3 = '/images/landing-feedback.png';
 
 const HERO_HEADLINE = `함께 번역하며 성장하는\n개발자의 새로운 영어 습관`;
-const LAST_INTRO_KEY = 'lastIntro';
-const INTRO_REPLAY_INTERVAL_MS = 24 * 60 * 60 * 1000;
-
-function shouldPlayIntro() {
-  if (typeof window === 'undefined') return false;
-  const raw = localStorage.getItem(LAST_INTRO_KEY);
-  const lastIntroAt = Number(raw);
-
-  if (!raw || Number.isNaN(lastIntroAt)) return true;
-  return Date.now() - lastIntroAt >= INTRO_REPLAY_INTERVAL_MS;
-}
 
 const SECTIONS = [
   {
@@ -64,7 +54,7 @@ const SECTIONS = [
 
 export default function LandingPage() {
   const router = useRouter();
-  const [showLanding, setShowLanding] = useState(false);
+  const introPhase = useLandingIntroPhase();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleClick = () => {
@@ -73,24 +63,22 @@ export default function LandingPage() {
   };
 
   useEffect(() => {
-    if (shouldPlayIntro()) {
+    if (introPhase === 'intro') {
       router.replace('/intro');
-      return;
     }
-    setShowLanding(true);
-  }, [router]);
+  }, [introPhase, router]);
 
   useEffect(() => {
-    if (!showLanding) return;
+    if (introPhase !== 'land') return;
     const onScroll = () => {
       setShowScrollTop(window.scrollY > 1);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [showLanding]);
+  }, [introPhase]);
 
-  if (!showLanding) return null;
+  if (introPhase === 'unknown' || introPhase === 'intro') return null;
 
   return (
     <>
