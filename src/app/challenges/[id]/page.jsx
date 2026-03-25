@@ -10,8 +10,6 @@ import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
 import LineDivider from '@/app/admin/_components/LineDivider';
 
-// 점검 후 아래 삭제
-// import ChallengeSidebarCard from '@/app/challenges/[id]/_components/ChallengeSidebarCard';
 import ChallengeContent from '@/app/challenges/[id]/_components/ChallengeContent';
 import RankingListItem from '@/app/challenges/[id]/_components/RankingListItem';
 import TopRankedList from '@/app/challenges/[id]/_components/TopRankedList';
@@ -22,21 +20,11 @@ import { getRankingAction } from '@/shared/apis/user.js';
 import { createWorkAction } from '@/shared/apis/user.js';
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
 
-// import PageContainer from "@/components/container/PageContainer";
-
-import * as styles from './ChallengeDetailPage.css.js';
+import * as styles from './Page.css.js';
 
 export default function ChallengeDetailPage() {
   const router = useRouter();
-
-  // const challengeId = ' 01KM8JWF0AFW1PGAE13BE42HP1';
-  const challengeId = '01KM8JWEW0CYSZZ3VZ1JZBQWW5';
-  console.log(
-    '(challenges/[id]/work/page.jsx :Hard coding된 임시 challengeId',
-    challengeId,
-  );
-  // const { id: challengeId } = useParams();
-
+  const { id: challengeId } = useParams();
   const [challenge, setChallenge] = useState(null);
   const [rankingData, setRankingData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -90,10 +78,11 @@ export default function ChallengeDetailPage() {
 
   if (loading)
     return <div className={styles.statusWrapper}>불러오는 중...</div>;
-  // if (!challenge)
-  //   return (
-  //     <div className={styles.statusWrapper}>챌린지를 찾을 수 없습니다.</div>
-  //   );
+
+  if (!challenge)
+    return (
+      <div className={styles.statusWrapper}>챌린지를 찾을 수 없습니다.</div>
+    );
 
   return (
     <div className={styles.pageContainer}>
@@ -138,17 +127,20 @@ export default function ChallengeDetailPage() {
                   window.open(challenge.originalUrl, '_blank');
                 }
               }}
+              isFull={
+                challenge?.participants?.length >= challenge?.maxParticipants
+              }
+              isClosed={challenge.isClosed}
             />
           </div>
         </section>
 
         <LineDivider />
-        {/* 조건 재 확인 필요 : swlee */}
-        {/* {challenge?.isClosed === 'CLOSED' && ( */}
-        <div className={styles.bestWorkWrapper}>
-          <TopRankedList rankingData={rankingData} />
-        </div>
-        {/* )} */}
+        {challenge?.isClosed === true && (
+          <div className={styles.bestWorkWrapper}>
+            <TopRankedList rankingData={rankingData} />
+          </div>
+        )}
 
         <section className={styles.rankingSection}>
           <div className={styles.rankingHeader}>

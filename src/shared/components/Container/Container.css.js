@@ -190,3 +190,10 @@ export const actionButton = style({
   userSelect: 'none',
   boxSizing: 'border-box',
 });
+
+export const disabled = style({
+  backgroundColor: '#E0E0E0',
+  color: '#9E9E9E',
+  cursor: 'not-allowed',
+  pointerEvents: 'none',
+});

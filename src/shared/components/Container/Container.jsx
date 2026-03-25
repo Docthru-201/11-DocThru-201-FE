@@ -13,7 +13,10 @@ export function Container({
   actionLabel = '작업 도전하기',
   onOriginalViewClick,
   onActionClick,
+  isFull = false, // 인원이 다 찼는지
+  isClosed = false, // 마감되었는지
 }) {
+  const isDisabled = isFull || isClosed;
   return (
     <div
       className={clsx(styles.baseContainer, styles.container[size], className)}
@@ -40,7 +43,9 @@ export function Container({
           </button>
           <button
             type="button"
-            className={styles.actionButton}
+            className={clsx(styles.actionButton, {
+              [styles.disabled]: isDisabled,
+            })}
             onClick={onActionClick}
           >
             {actionLabel}

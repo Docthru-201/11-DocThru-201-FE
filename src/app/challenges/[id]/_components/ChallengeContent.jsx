@@ -3,18 +3,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/shared/store/useAuthStore';
 
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { ChipCard } from '@/shared/components/ChipCard';
-
-import * as styles from './ChallengeContent.css';
 
 import ModalDecline from '@/app/challenges/[id]/_components/ModalDecline';
 import ModalSuccess from '@/app/challenges/[id]/_components/ModalSuccess';
 import ModalError from '@/app/challenges/[id]/_components/ModalError';
 
 import { deleteChallengeAction } from '@/shared/apis/admin.js';
+import * as styles from './ChallengeContent.css';
 
 export default function ChallengeContent({
   challengeId,
@@ -31,13 +31,9 @@ export default function ChallengeContent({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // 전역 AuthProvider 미생성으로 하드코딩
+  // const user = useAuthStore((state) => state.user);
 
-  const user = {
-    role: 'ADMIN', // "ADMIN"으로 바꿔서 테스트해볼 수도 있습니다.
-    id: 'test-user-id',
-    nickname: '테스트유저',
-  };
+  const user = { role: 'ADMIN', id: 'test-user-id', nickname: '테스트유저' };
   console.log(
     '사용자정보 하드코딩 (challengeContent.jsx)========> :',
     user.role,

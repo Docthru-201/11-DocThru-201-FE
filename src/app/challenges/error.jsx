@@ -8,12 +8,9 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h2>신청 목록을 불러오는 중 오류가 발생했습니다.</h2>
-      <button
-        onClick={() => reset()}
-        style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer' }}
-      >
+    <div>
+      <h2>문제가 발생했습니다</h2>
+      <button type="button" onClick={() => reset()}>
         다시 시도
       </button>
     </div>

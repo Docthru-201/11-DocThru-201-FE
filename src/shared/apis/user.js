@@ -1,13 +1,11 @@
 'use server';
 import { cookies } from 'next/headers';
-import { ITEM_COUNT, BASE_URL } from '@/shared/constants/file.js';
+import { ITEM_COUNT } from '@/shared/constants/file.js';
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 // 챌린지 상세 조회
 export async function getChallengeDetail(challengeId) {
-  // import { BASE_URL } from "@/shared/constants/file";
-  const BASE_URL = 'http://localhost:5001/api';
-  console.log('1. 실제 사용될 BASE_URL(Challenge Detail):', BASE_URL);
-
   const res = await fetch(`${BASE_URL}/challenges/${challengeId}`, {
     credentials: 'include',
   });
@@ -18,22 +16,13 @@ export async function getChallengeDetail(challengeId) {
   }
 
   const result = await res.json();
-  console.log('부모에서 확인한 challenge 원본 데이터:', result);
   return result;
 }
 
+// 작업물 전체 조회
 export async function getRankingAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-
-  // 확인목적 swlee import { BASE_URL } from '@/shared/constants/file.js';
-  // const BASE_URL = 'http://localhost:5001/api';
-  const BASE_URL = 'http://localhost:5001/api';
-  console.log(
-    '2. 작업물 조회(user.js): getRankingAction:',
-    BASE_URL,
-    challengeId,
-  );
 
   if (!challengeId) {
     console.error('에러: challengeId가 없습니다!');
@@ -79,13 +68,10 @@ export async function getRankingAction(challengeId) {
   return allWorks;
 }
 
-// 챌린지 상세에서 작업물 도전하기로 진입시 사용
+// 챌린지 상세에서 작업물 도전하기로 진입
 export async function createWorkAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-
-  // 확인목적 swlee import { BASE_URL } from '@/shared/constants/file.js';
-  console.log('3. 작업물 생성: challengeId:', BASE_URL, challengeId);
 
   const res = await fetch(`${BASE_URL}/challenges/${challengeId}/works`, {
     method: 'POST',

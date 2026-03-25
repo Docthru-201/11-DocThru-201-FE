@@ -30,7 +30,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
-    "src/app/challenges/[id]/ChallengeDetailPage.css.js"
+    "src/app/challenges/[id]/Page.css.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -10,7 +10,6 @@ import { Icon } from '@/shared/components/Icon';
 export default function TopRankedList({ rankingData }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [expandedIndexes, setExpandedIndexes] = useState({});
-  console.log('topRankedList에 진입하였습니다.@@@@@@@@@@@@');
   const topWorks = useMemo(() => {
     if (!rankingData || rankingData.length === 0) return [];
     const maxLikes = Math.max(...rankingData.map((w) => w.likeCount));
