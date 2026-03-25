@@ -84,7 +84,7 @@ export function Card({
               onClick={onEditClick}
               aria-label="더보기 메뉴"
             >
-              <Icon name="meatballsMenu" aria-hidden />
+              {/* <Icon name="meatballsMenu" aria-hidden /> */}
             </button>
           )}
           {title != null && title !== '' && (

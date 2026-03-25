@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import { Button, Icon } from '@/shared/components';
+import { useAuthStore } from '@/shared/store/useAuthStore';
 import * as styles from './page.css';
 
 const heroBackground = '/images/hero-background.png';
@@ -54,10 +55,15 @@ const SECTIONS = [
 
 export default function LandingPage() {
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
   const introPhase = useLandingIntroPhase();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleClick = () => {
+    if (user) {
+      router.push('/challenges');
+      return;
+    }
     toast.error('로그인 후 이용해주세요.');
     router.push('/login');
   };
