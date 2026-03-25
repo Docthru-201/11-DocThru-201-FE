@@ -4,10 +4,7 @@
  */
 
 import { BASE_URL, handleResponse } from '@/apis/common';
-import {
-  challengeDetailResponseMock,
-  challengeListResponseMock,
-} from '@/mock/challenges';
+import { challengeDetailResponseMock } from '@/mock/challenges';
 import {
   applicationDetailResponseMock,
   applicationListResponseMock,
@@ -53,8 +50,17 @@ export async function createChallenge(body) {
 }
 
 export async function getMyChallenges(params = {}) {
-  void params;
-  return challengeListResponseMock;
+  const qs = new URLSearchParams();
+  if (params.tab) qs.set('tab', String(params.tab));
+  const query = qs.toString();
+  const url = `${BASE_URL}/challenges/me${query ? `?${query}` : ''}`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  return handleResponse(response, '나의 챌린지를 불러오지 못했습니다.');
 }
 
 export async function applyChallenge(challengeId, body) {

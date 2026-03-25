@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { getMyChallenges } from '@/apis/challenges';
 import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import {
   Search,
@@ -10,22 +13,67 @@ import {
   Icon,
   PageIndicator,
 } from '@/shared/components';
-import Link from 'next/link';
-import * as styles from '../challenges/page.css';
-import { challengeItemsMock } from '@/mock/challenges';
-// import { filterChallengeItems } from '@/shared/lib/filterChallengeItems';
+import * as styles from '../challenges/page.css.js';
+
+const PAGE_SIZE = 5;
 
 export default function MyChallengesPage() {
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState('participating');
-  const totalPages = 3;
+  const skipScrollToTopRef = useRef(true);
 
   const myChallengesTabs = [
     { value: 'participating', label: '참여중인 챌린지' },
     { value: 'done', label: '완료한 챌린지' },
     { value: 'applied', label: '신청한 챌린지' },
   ];
+
+  const {
+    data: challengeItems = [],
+    isPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['challenges', 'my', value],
+    queryFn: async () => {
+      const res = await getMyChallenges({ tab: value });
+      return res?.data?.items ?? [];
+    },
+    staleTime: 60 * 1000,
+  });
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [value, searchValue]);
+
+  useEffect(() => {
+    if (skipScrollToTopRef.current) {
+      skipScrollToTopRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
+  const filteredChallenges = useMemo(() => {
+    const q = searchValue.trim().toLowerCase();
+    if (!q) return challengeItems;
+    return challengeItems.filter((item) =>
+      item.title.toLowerCase().includes(q),
+    );
+  }, [challengeItems, searchValue]);
+
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredChallenges.length / PAGE_SIZE)),
+    [filteredChallenges.length],
+  );
+
+  const safePage = Math.min(currentPage, totalPages);
+
+  const displayedChallenges = useMemo(() => {
+    const start = (safePage - 1) * PAGE_SIZE;
+    return filteredChallenges.slice(start, start + PAGE_SIZE);
+  }, [filteredChallenges, safePage]);
 
   return (
     <div className={styles.page}>
@@ -57,24 +105,37 @@ export default function MyChallengesPage() {
           />
         </div>
 
-        <div className={styles.cardList}>
-          {challengeItemsMock.map((study) => (
-            <Card
-              key={study.id}
-              study={study}
-              onCtaClick={() => {}}
-              showEditMenu
-            />
-          ))}
-        </div>
+        {isPending && (
+          <p className={styles.feedback}>챌린지 목록을 불러오는 중…</p>
+        )}
+        {isError && (
+          <p className={styles.feedback} role="alert">
+            {error?.message ?? '나의 챌린지를 불러오지 못했습니다.'}
+          </p>
+        )}
 
-        <div className={styles.paginationWrap}>
-          <PageIndicator
-            current={currentPage}
-            total={totalPages}
-            onChange={setCurrentPage}
-          />
-        </div>
+        {!isPending && !isError && (
+          <div className={styles.cardList}>
+            {displayedChallenges.map((study) => (
+              <Card
+                key={study.id}
+                study={study}
+                onCtaClick={() => {}}
+                showEditMenu
+              />
+            ))}
+          </div>
+        )}
+
+        {!isPending && !isError && filteredChallenges.length > 0 && (
+          <div className={styles.paginationWrap}>
+            <PageIndicator
+              current={safePage}
+              total={totalPages}
+              onChange={setCurrentPage}
+            />
+          </div>
+        )}
       </main>
     </div>
   );
