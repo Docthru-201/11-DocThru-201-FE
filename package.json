@@ -10,7 +10,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "video:studio": "remotion studio remotion/index.jsx",
-    "video:render:intro": "remotion render remotion/index.jsx DocthruIntro out/docthru-intro.mp4"
+    "video:render:intro": "remotion render remotion/index.jsx DocthruIntro public/videos/docthru-intro.mp4"
   },
   "lint-staged": {
     "*.{js,jsx,mjs,json,md}": [

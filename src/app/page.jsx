@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import { Button, Icon } from '@/shared/components';
 import * as styles from './page.css';
@@ -12,6 +14,17 @@ const landingImg2 = '/images/landing-translation.png';
 const landingImg3 = '/images/landing-feedback.png';
 
 const HERO_HEADLINE = `함께 번역하며 성장하는\n개발자의 새로운 영어 습관`;
+const LAST_INTRO_KEY = 'lastIntro';
+const INTRO_REPLAY_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
+function shouldPlayIntro() {
+  if (typeof window === 'undefined') return false;
+  const raw = localStorage.getItem(LAST_INTRO_KEY);
+  const lastIntroAt = Number(raw);
+
+  if (!raw || Number.isNaN(lastIntroAt)) return true;
+  return Date.now() - lastIntroAt >= INTRO_REPLAY_INTERVAL_MS;
+}
 
 const SECTIONS = [
   {
@@ -50,71 +63,148 @@ const SECTIONS = [
 ];
 
 export default function LandingPage() {
+  const router = useRouter();
+  const needIntro = shouldPlayIntro();
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const handleClick = () => {
+    toast.error('로그인 후 이용해주세요.');
+    router.push('/login');
+  };
+
+  useEffect(() => {
+    if (needIntro) {
+      router.replace('/intro');
+    }
+  }, [needIntro, router]);
+
+  useEffect(() => {
+    if (needIntro) return;
+    const onScroll = () => {
+      setShowScrollTop(window.scrollY > 1);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [needIntro]);
+
+  if (needIntro) return null;
+
   return (
-    <div className={styles.page}>
-      <GNBContainer />
+    <>
+      <div className={styles.page}>
+        <GNBContainer />
 
-      <section className={styles.hero}>
-        <Image
-          src={heroBackground}
-          alt="히어로 배경 이미지"
-          fill
-          priority
-          className={styles.heroImage}
-          sizes="100vw"
-        />
-        <div className={styles.heroContent}>
-          <span className={styles.heroLogo} aria-hidden>
-            <Icon name="docthruLogo" width={28} height={28} aria-hidden />
-            Docthru
-          </span>
-          <h1 className={styles.heroHeadline}>{HERO_HEADLINE}</h1>
-          <Button variant="outline" className={styles.heroCtaWrap}>
-            <Link href="/challenges">번역 시작하기</Link>
-          </Button>
-        </div>
-      </section>
+        <section className={styles.hero}>
+          <Image
+            src={heroBackground}
+            alt="히어로 배경 이미지"
+            fill
+            priority
+            className={styles.heroImage}
+            sizes="100vw"
+          />
+          <div className={styles.heroContent}>
+            <span className={styles.heroLogo} aria-hidden>
+              <Icon name="docthruLogo" width={28} height={28} aria-hidden />
+              Docthru
+            </span>
+            <h1 className={styles.heroHeadline}>{HERO_HEADLINE}</h1>
+            <Button
+              variant="outline"
+              className={styles.heroCtaWrap}
+              onClick={handleClick}
+            >
+              번역 시작하기
+            </Button>
+          </div>
+        </section>
 
-      <main className={styles.main}>
-        {SECTIONS.map((section) => (
-          <div key={section.id}>
-            <article className={styles.section}>
-              <div className={styles.sectionContent}>
-                <span className={styles.sectionIcon} aria-hidden>
-                  <Icon
-                    name={section.icon}
-                    width={24}
-                    height={24}
-                    aria-hidden
-                  />
+        <main className={styles.main}>
+          {SECTIONS.map((section) => (
+            <div key={section.id}>
+              <article className={styles.section}>
+                <div className={styles.sectionContent}>
+                  <span className={styles.sectionIcon} aria-hidden>
+                    <Icon
+                      name={section.icon}
+                      width={24}
+                      height={24}
+                      aria-hidden
+                    />
+                  </span>
+                  <h2 className={styles.sectionTitle}>{section.title}</h2>
+                  <p className={styles.sectionDescription}>
+                    {section.description}
+                  </p>
+                </div>
+
+                <Image
+                  src={section.image}
+                  alt={section.alt}
+                  className={styles.sectionImage}
+                  width={section.imageWidth ?? 800}
+                  height={section.imageHeight ?? 600}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </article>
+
+              {section.id !== 'feedback' && <hr className={styles.divider} />}
+            </div>
+          ))}
+
+          <div className={styles.ctaBlock}>
+            <h2 className={styles.ctaTitle}>함께 번역하고 성장하세요!</h2>
+            <Button variant="solid" onClick={handleClick}>
+              번역 시작하기
+            </Button>
+          </div>
+        </main>
+
+        <footer className={styles.footer}>
+          <div className={styles.footerInner}>
+            <div className={styles.footerTop}>
+              <div className={styles.footerBrand}>
+                <span className={styles.footerLogo}>
+                  <Icon name="docthruLogo" width={24} height={24} aria-hidden />
+                  Docthru
                 </span>
-                <h2 className={styles.sectionTitle}>{section.title}</h2>
-                <p className={styles.sectionDescription}>
-                  {section.description}
+                <p className={styles.footerText}>
+                  개발자를 위한 번역 챌린지 플랫폼
+                  <br />
+                  함께 번역하고, 함께 성장하세요.
                 </p>
               </div>
+            </div>
 
-              <Image
-                src={section.image}
-                alt={section.alt}
-                className={styles.sectionImage}
-                width={section.imageWidth ?? 800}
-                height={section.imageHeight ?? 600}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-              />
-            </article>
+            <hr className={styles.footerDivider} />
 
-            {section.id !== 'feedback' && <hr className={styles.divider} />}
+            <div className={styles.footerBottom}>
+              <p className={styles.footerCopyright}>
+                © 2026 Docthru. All rights reserved.
+              </p>
+              <p className={styles.footerCopyright}>
+                Made for developers, by developers.
+              </p>
+            </div>
           </div>
-        ))}
+        </footer>
+      </div>
 
-        <div className={styles.ctaBlock}>
-          <h2 className={styles.ctaTitle}>함께 번역하고 성장하세요!</h2>
-          <Button variant="solid">
-            <Link href="/challenges">번역 시작하기</Link>
-          </Button>
-        </div>
-      </main>
-    </div>
+      <button
+        type="button"
+        className={
+          showScrollTop
+            ? `${styles.scrollToTopButton} ${styles.scrollToTopButtonVisible}`
+            : styles.scrollToTopButton
+        }
+        aria-label="맨 위로 이동"
+        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })}
+      >
+        <span className={styles.scrollToTopIcon} aria-hidden>
+          <Icon name="arrowCircleRight" width={24} height={24} aria-hidden />
+        </span>
+      </button>
+    </>
   );
 }

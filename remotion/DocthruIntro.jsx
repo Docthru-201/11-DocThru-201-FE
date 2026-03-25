@@ -2,6 +2,7 @@ import {
   AbsoluteFill,
   Img,
   interpolate,
+  interpolateColors,
   spring,
   staticFile,
   useCurrentFrame,
@@ -12,8 +13,7 @@ import '@fontsource/pretendard/500.css';
 import '@fontsource/pretendard/600.css';
 import '@fontsource/quantico/700.css';
 
-const BRAND_BG = 'var(--color-gray-800, #262626)';
-const BRAND_POINT = 'var(--color-brand-point, #FFC117)';
+const BRAND_BG_HEX = '#262626';
 const BRAND_TEXT = 'var(--color-brand-text, #F1F2F5)';
 const BRAND_SUBTEXT = 'var(--color-gray-300, #CFCFCF)';
 
@@ -51,15 +51,19 @@ export const DocthruIntro = () => {
     extrapolateRight: 'clamp',
   });
 
-  const chipOpacity = interpolate(frame, [46, 70], [0, 1], {
+  const contentOutroOpacity = interpolate(frame, [90, 114], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-
-  const outroOpacity = interpolate(frame, [96, 118], [1, 0], {
+  const landingBlendProgress = interpolate(frame, [94, 120], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
+  const backgroundTone = interpolateColors(
+    landingBlendProgress,
+    [0, 1],
+    [BRAND_BG_HEX, '#F5F5F5'],
+  );
 
   const logoTranslateY = interpolate(frame, [0, 16], [24, 0], {
     extrapolateLeft: 'clamp',
@@ -70,10 +74,6 @@ export const DocthruIntro = () => {
     extrapolateRight: 'clamp',
   });
   const subtitleTranslateY = interpolate(frame, [32, 54], [16, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const chipTranslateY = interpolate(frame, [46, 68], [14, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -99,8 +99,7 @@ export const DocthruIntro = () => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: BRAND_BG,
-        opacity: outroOpacity,
+        backgroundColor: backgroundTone,
         justifyContent: 'center',
         alignItems: 'center',
       }}
@@ -119,7 +118,7 @@ export const DocthruIntro = () => {
           alignItems: 'center',
           gap: 14,
           transform: `scale(${0.85 + logoScale * 0.15}) translateY(${logoTranslateY}px)`,
-          opacity: logoOpacity,
+          opacity: logoOpacity * contentOutroOpacity,
         }}
       >
         <div
@@ -164,7 +163,7 @@ export const DocthruIntro = () => {
           <div
             style={{
               fontFamily: `${FONT_QUANTICO}, ${FONT_PRETENDARD}`,
-              fontSize: 84,
+              fontSize: 110,
               fontWeight: 700,
               color: BRAND_TEXT,
               letterSpacing: 0.8,
@@ -177,7 +176,7 @@ export const DocthruIntro = () => {
         <div
           style={{
             fontFamily: FONT_PRETENDARD,
-            fontSize: 24,
+            fontSize: 30,
             fontWeight: 400,
             color: BRAND_SUBTEXT,
             opacity: subtitleOpacity,
@@ -190,26 +189,6 @@ export const DocthruIntro = () => {
           }}
         >
           개발 문서를 번역하며 성장하는 영어 습관
-        </div>
-
-        <div
-          style={{
-            marginTop: 14,
-            padding: '13px 28px',
-            borderRadius: 999,
-            border: 'none',
-            backgroundColor: BRAND_POINT,
-            color: '#1F1F1F',
-            fontFamily: FONT_PRETENDARD,
-            fontSize: 22,
-            fontWeight: 600,
-            letterSpacing: -0.1,
-            opacity: chipOpacity,
-            transform: `translateY(${chipTranslateY}px)`,
-            boxShadow: '0 6px 16px rgba(255, 193, 23, 0.28)',
-          }}
-        >
-          번역 시작하기
         </div>
       </div>
     </AbsoluteFill>

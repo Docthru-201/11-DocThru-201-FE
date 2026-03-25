@@ -1,41 +1,55 @@
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 import { breakpoint } from '@/styles/breakpoints.css';
+
+const pageFadeIn = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateY(8px)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
+
+const scrollTopFabIn = keyframes({
+  from: {
+    opacity: 0,
+    transform: 'translateY(14px) scale(0.94)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'translateY(0) scale(1)',
+  },
+});
 
 export const page = style({
   minHeight: '100vh',
   backgroundColor: '#f5f5f5',
+  animation: `${pageFadeIn} 420ms ease-out`,
+  willChange: 'opacity',
 });
 
 export const hero = style({
   position: 'relative',
   width: '100%',
-  minHeight: 278, // 기본: mobile
-  padding: '56px 16px', // 기본: mobile
+  height: 278,
+  minHeight: 278,
+  padding: '56px 16px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
   boxSizing: 'border-box',
-
-  // 반응형 시작
-  '@media': {
-    [breakpoint.md]: {
-      minHeight: 360, // iPad mini 이상
-      padding: '72px 24px',
-    },
-    [breakpoint.lg]: {
-      minHeight: 420, // desktop 이상
-      padding: '96px 24px',
-    },
-  },
 });
 
 export const heroImage = style({
   objectFit: 'cover',
   objectPosition: 'center',
   zIndex: 0,
+  height: '278px',
 });
 
 export const heroContent = style({
@@ -46,7 +60,7 @@ export const heroContent = style({
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',
-  maxWidth: 760,
+  maxWidth: 420,
   textAlign: 'center',
 });
 
@@ -56,60 +70,26 @@ export const heroLogo = style({
   gap: vars.space.sm,
   fontFamily: vars.fontFamily.quantico,
   fontWeight: vars.fontWeight.bold,
-  fontSize: '18px', // 기본: mobile
+  fontSize: '16px',
   color: '#d8d8d8',
   letterSpacing: '0.2889px',
-  marginBottom: '8px',
-
-  // 반응형 시작
-  '@media': {
-    [breakpoint.md]: {
-      fontSize: '20px', // iPad mini 이상
-    },
-    [breakpoint.lg]: {
-      fontSize: '22.68px', // desktop 이상
-    },
-  },
+  marginBottom: 0,
 });
 
 export const heroHeadline = style({
   margin: 0,
-  marginTop: '12px', // 기본: mobile
+  marginTop: 12,
   fontWeight: vars.fontWeight.semibold,
-  fontSize: '24px', // 기본: mobile
-  lineHeight: 1.4, // 기본: mobile
+  fontSize: '24px',
+  lineHeight: '36px',
   color: vars.color.white,
   textAlign: 'center',
   letterSpacing: '0.39px',
   whiteSpace: 'pre-line',
-
-  // 반응형 시작
-  '@media': {
-    [breakpoint.md]: {
-      marginTop: '14px',
-      fontSize: '32px', // iPad mini 이상
-      lineHeight: 1.35,
-    },
-    [breakpoint.lg]: {
-      marginTop: '16px',
-      fontSize: '40px', // desktop 이상
-      lineHeight: 1.3,
-    },
-  },
 });
 
 export const heroCtaWrap = style({
-  marginTop: '24px', // 기본: mobile
-
-  // 반응형 시작
-  '@media': {
-    [breakpoint.md]: {
-      marginTop: '26px', // iPad mini 이상
-    },
-    [breakpoint.lg]: {
-      marginTop: '32px', // desktop 이상
-    },
-  },
+  marginTop: 24,
 });
 
 export const main = style({
@@ -238,8 +218,10 @@ export const divider = style({
   maxWidth: '100%',
   height: 1,
   margin: '0 auto',
-  backgroundColor: vars.color.gray[200],
   border: 'none',
+  backgroundImage: `repeating-linear-gradient(to right, #B2B2B2 0 4px, transparent 4px 8px)`,
+  backgroundRepeat: 'repeat-x',
+  backgroundPosition: 'center',
 });
 
 export const ctaBlock = style({
@@ -289,31 +271,54 @@ export const ctaTitle = style({
 export const footer = style({
   width: '100%',
   borderTop: `1px solid ${vars.color.gray[200]}`,
-  backgroundColor: vars.color.white,
+  backgroundColor: '#fdfdfd',
 });
 
 export const footerInner = style({
   maxWidth: 1200,
   margin: '0 auto',
-  padding: '28px 16px 36px', // 기본: mobile
-  alignItems: 'center',
+  padding: '28px 16px 28px',
   display: 'flex',
   flexDirection: 'column',
-  gap: 12,
+  gap: 20,
+  boxSizing: 'border-box',
 
   // 반응형 시작
   '@media': {
     [breakpoint.md]: {
-      padding: '32px 24px 40px', // iPad mini 이상
+      padding: '32px 24px',
     },
     [breakpoint.lg]: {
-      padding: '36px 32px 44px', // desktop 이상
+      padding: '36px 32px 30px',
     },
   },
 });
 
+export const footerTop = style({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 16,
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  '@media': {
+    [breakpoint.md]: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 24,
+    },
+  },
+});
+
+export const footerBrand = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: 8,
+});
+
 export const footerLogo = style({
-  display: 'inline-flex',
+  display: 'flex',
   alignItems: 'center',
   gap: 8,
   fontFamily: vars.fontFamily.quantico,
@@ -333,16 +338,58 @@ export const footerText = style({
   margin: 0,
   fontWeight: vars.fontWeight.regular,
   fontSize: vars.fontSize.sm,
-  lineHeight: 1.6,
+  lineHeight: 1.5,
   color: vars.color.gray[600],
   whiteSpace: 'pre-line',
+  textAlign: 'left',
 
   // 반응형 시작
   '@media': {
-    [breakpoint.lg]: {
+    [breakpoint.md]: {
       fontSize: '15px', // desktop 이상
     },
   },
+});
+
+export const footerNav = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 14,
+  flexWrap: 'wrap',
+});
+
+export const footerLink = style({
+  color: vars.color.gray[600],
+  textDecoration: 'none',
+  fontSize: vars.fontSize.sm,
+  fontWeight: vars.fontWeight.medium,
+  selectors: {
+    '&:hover': {
+      color: vars.color.gray[900],
+      textDecoration: 'underline',
+      textUnderlineOffset: '3px',
+    },
+  },
+});
+
+export const footerDivider = style({
+  width: '100%',
+  height: 1,
+  margin: 0,
+  border: 'none',
+  backgroundColor: vars.color.gray[200],
+  // backgroundImage: `repeating-linear-gradient(to right, ${vars.color.gray[200]} 0 4px, transparent 4px 8px)`,
+  // backgroundRepeat: 'repeat-x',
+  // backgroundPosition: 'center',
+});
+
+export const footerBottom = style({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 8,
+  flexWrap: 'wrap',
 });
 
 export const footerCopyright = style({
@@ -358,4 +405,54 @@ export const footerCopyright = style({
       fontSize: '13px', // desktop 이상
     },
   },
+});
+
+export const scrollToTopButton = style({
+  position: 'fixed',
+  right: 16,
+  bottom: 24,
+  zIndex: 100,
+  width: 48,
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 0,
+  borderRadius: '50%',
+  border: `1px solid ${vars.color.gray[200]}`,
+  backgroundColor: vars.color.white,
+  boxShadow: '0 6px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06)',
+  cursor: 'pointer',
+  opacity: 0,
+  pointerEvents: 'none',
+  transform: 'translateY(12px)',
+  transition: 'opacity 0.22s ease, transform 0.22s ease',
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.color.gray[50],
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${vars.color.gray[800]}`,
+      outlineOffset: 2,
+    },
+  },
+  '@media': {
+    [breakpoint.md]: {
+      right: 24,
+      bottom: 32,
+    },
+  },
+});
+
+export const scrollToTopButtonVisible = style({
+  opacity: 1,
+  pointerEvents: 'auto',
+  animation: `${scrollTopFabIn} 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards`,
+});
+
+export const scrollToTopIcon = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transform: 'rotate(-90deg)',
 });
