@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { challengeItemsMock } from '@/mock/challenges';
+import { useQuery } from '@tanstack/react-query';
+import { getChallenges } from '@/apis/challenges';
 import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import {
   Search,
@@ -20,16 +21,30 @@ import {
 } from './_components/ChallengeFilterPopover';
 import * as styles from './page.css.js';
 
-const CHALLENGES_FROM_MOCK = challengeItemsMock;
+const PAGE_SIZE = 5;
 
 export default function ChallengesPage() {
   const [searchValue, setSearchValue] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   const [appliedFilter, setAppliedFilter] = useState(DEFAULT_CHALLENGE_FILTER);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 3;
 
   const filterWrapRef = useRef(null);
+  const skipScrollToTopRef = useRef(true);
+
+  const {
+    data: challengeItems = [],
+    isPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['challenges', 'list'],
+    queryFn: async () => {
+      const res = await getChallenges({ limit: 100 });
+      return res?.data?.items ?? [];
+    },
+    staleTime: 60 * 1000,
+  });
 
   useEffect(() => {
     if (!filterOpen) return undefined;
@@ -48,11 +63,30 @@ export default function ChallengesPage() {
     };
   }, [filterOpen]);
 
+  useEffect(() => {
+    if (skipScrollToTopRef.current) {
+      skipScrollToTopRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
   const filteredChallenges = useMemo(
-    () =>
-      filterChallengeItems(CHALLENGES_FROM_MOCK, appliedFilter, searchValue),
-    [appliedFilter, searchValue],
+    () => filterChallengeItems(challengeItems, appliedFilter, searchValue),
+    [challengeItems, appliedFilter, searchValue],
   );
+
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredChallenges.length / PAGE_SIZE)),
+    [filteredChallenges.length],
+  );
+
+  const safePage = Math.min(currentPage, totalPages);
+
+  const displayedChallenges = useMemo(() => {
+    const start = (safePage - 1) * PAGE_SIZE;
+    return filteredChallenges.slice(start, start + PAGE_SIZE);
+  }, [filteredChallenges, safePage]);
 
   const filterButtonActive =
     filterOpen || hasActiveChallengeFilter(appliedFilter);
@@ -80,12 +114,16 @@ export default function ChallengesPage() {
               variant="filter"
               label="필터"
               active={filterButtonActive}
+              className={undefined}
               onClick={() => setFilterOpen((prev) => !prev)}
             />
             {filterOpen && (
               <ChallengeFilterPopover
                 applied={appliedFilter}
-                onApply={setAppliedFilter}
+                onApply={(next) => {
+                  setAppliedFilter(next);
+                  setCurrentPage(1);
+                }}
                 onClose={() => setFilterOpen(false)}
               />
             )}
@@ -94,28 +132,44 @@ export default function ChallengesPage() {
             className={styles.searchField}
             placeholder="챌린지 이름을 검색해보세요"
             value={searchValue}
-            onChange={setSearchValue}
+            onChange={(v) => {
+              setSearchValue(v);
+              setCurrentPage(1);
+            }}
           />
         </div>
 
-        <div className={styles.cardList}>
-          {filteredChallenges.map((study) => (
-            <Card
-              key={study.id}
-              study={study}
-              onCtaClick={() => {}}
-              showEditMenu
+        {isPending && (
+          <p className={styles.feedback}>챌린지 목록을 불러오는 중…</p>
+        )}
+        {isError && (
+          <p className={styles.feedback} role="alert">
+            {error?.message ?? '챌린지 목록을 불러오지 못했습니다.'}
+          </p>
+        )}
+
+        {!isPending && !isError && (
+          <div className={styles.cardList}>
+            {displayedChallenges.map((study) => (
+              <Card
+                key={study.id}
+                study={study}
+                onCtaClick={() => {}}
+                showEditMenu
+              />
+            ))}
+          </div>
+        )}
+
+        {!isPending && !isError && filteredChallenges.length > 0 && (
+          <div className={styles.paginationWrap}>
+            <PageIndicator
+              current={safePage}
+              total={totalPages}
+              onChange={setCurrentPage}
             />
-          ))}
-        </div>
-
-        <div className={styles.paginationWrap}>
-          <PageIndicator
-            current={currentPage}
-            total={totalPages}
-            onChange={setCurrentPage}
-          />
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
