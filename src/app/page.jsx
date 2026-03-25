@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLandingIntroPhase } from '@/shared/hooks/useIntroPhase';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import { Button, Icon } from '@/shared/components';
+import { useAuthStore } from '@/shared/store/useAuthStore';
 import * as styles from './page.css';
 
 const heroBackground = '/images/hero-background.png';
@@ -14,17 +16,6 @@ const landingImg2 = '/images/landing-translation.png';
 const landingImg3 = '/images/landing-feedback.png';
 
 const HERO_HEADLINE = `함께 번역하며 성장하는\n개발자의 새로운 영어 습관`;
-const LAST_INTRO_KEY = 'lastIntro';
-const INTRO_REPLAY_INTERVAL_MS = 24 * 60 * 60 * 1000;
-
-function shouldPlayIntro() {
-  if (typeof window === 'undefined') return false;
-  const raw = localStorage.getItem(LAST_INTRO_KEY);
-  const lastIntroAt = Number(raw);
-
-  if (!raw || Number.isNaN(lastIntroAt)) return true;
-  return Date.now() - lastIntroAt >= INTRO_REPLAY_INTERVAL_MS;
-}
 
 const SECTIONS = [
   {
@@ -64,31 +55,36 @@ const SECTIONS = [
 
 export default function LandingPage() {
   const router = useRouter();
-  const needIntro = shouldPlayIntro();
+  const user = useAuthStore((s) => s.user);
+  const introPhase = useLandingIntroPhase();
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleClick = () => {
+    if (user) {
+      router.push('/challenges');
+      return;
+    }
     toast.error('로그인 후 이용해주세요.');
     router.push('/login');
   };
 
   useEffect(() => {
-    if (needIntro) {
+    if (introPhase === 'intro') {
       router.replace('/intro');
     }
-  }, [needIntro, router]);
+  }, [introPhase, router]);
 
   useEffect(() => {
-    if (needIntro) return;
+    if (introPhase !== 'land') return;
     const onScroll = () => {
       setShowScrollTop(window.scrollY > 1);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [needIntro]);
+  }, [introPhase]);
 
-  if (needIntro) return null;
+  if (introPhase === 'unknown' || introPhase === 'intro') return null;
 
   return (
     <>

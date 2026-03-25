@@ -2,23 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-const LAST_INTRO_KEY = 'lastIntro';
-const INTRO_REPLAY_INTERVAL_MS = 24 * 60 * 60 * 1000;
-
-function shouldPlayIntro() {
-  if (typeof window === 'undefined') return false;
-  const raw = localStorage.getItem(LAST_INTRO_KEY);
-  const lastIntroAt = Number(raw);
-
-  if (!raw || Number.isNaN(lastIntroAt)) return true;
-  return Date.now() - lastIntroAt >= INTRO_REPLAY_INTERVAL_MS;
-}
+import {
+  LAST_INTRO_KEY,
+  useIntroPagePhase,
+} from '@/shared/hooks/useIntroPhase';
 
 export default function IntroPage() {
   const router = useRouter();
   const [videoError, setVideoError] = useState(false);
-  const needIntro = shouldPlayIntro();
+  const phase = useIntroPagePhase();
 
   const handleIntroDone = () => {
     localStorage.setItem(LAST_INTRO_KEY, String(Date.now()));
@@ -26,12 +18,25 @@ export default function IntroPage() {
   };
 
   useEffect(() => {
-    if (!needIntro) {
+    if (phase === 'skip') {
       router.replace('/');
     }
-  }, [needIntro, router]);
+  }, [phase, router]);
 
-  if (!needIntro) return null;
+  if (phase === 'unknown' || phase === 'skip') {
+    return (
+      <main
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#171717',
+          position: 'relative',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+        }}
+        aria-busy="true"
+      />
+    );
+  }
 
   return (
     <main
