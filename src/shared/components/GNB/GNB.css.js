@@ -3,6 +3,9 @@ import { vars } from '@/styles/tokens.css';
 import { breakpoint } from '@/styles/breakpoints.css';
 
 export const gnb = style({
+  position: 'sticky',
+  top: 0,
+  zIndex: 100,
   width: '100%',
   minHeight: '56px',
   paddingLeft: vars.space.lg,
@@ -13,13 +16,14 @@ export const gnb = style({
   '@media': {
     [breakpoint.md]: {
       minHeight: '60px',
-      paddingLeft: vars.space.xl,
-      paddingRight: vars.space.xl,
+      // 큰 화면에서 md로 줄어들 때 여백 점프를 줄이기 위해 완만한 clamp 사용
+      paddingLeft: 'clamp(16px, 3vw, 32px)',
+      paddingRight: 'clamp(16px, 3vw, 32px)',
     },
     [breakpoint.lg]: {
       minHeight: '60px',
-      paddingLeft: '360px',
-      paddingRight: '360px',
+      paddingLeft: 'clamp(24px, 3vw, 40px)',
+      paddingRight: 'clamp(24px, 3vw, 40px)',
     },
   },
 });
@@ -31,6 +35,8 @@ export const inner = style({
   width: '100%',
   minHeight: 'inherit',
   boxSizing: 'border-box',
+  maxWidth: 1200,
+  margin: '0 auto',
 });
 
 export const left = style({
@@ -46,11 +52,6 @@ export const right = style({
   gap: 16,
   flexShrink: 0,
 });
-
-// export const logowrapper = style({
-//   padding: '0 5.4px',
-//   display: 'flex',
-// });
 
 export const logo = style({
   width: '120px',
@@ -137,8 +138,6 @@ export const tab = styleVariants({
   ],
 });
 
-const loginTransition = `background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, box-shadow ${vars.transition.duration.normal} ${vars.transition.timing.ease}`;
-
 export const loginButton = style({
   width: '90px',
 });
@@ -152,7 +151,6 @@ export const profileWrap = style({
   flexShrink: 0,
 });
 
-/** 멤버 프로필(노란 아이콘) + 드롭다운 */
 export const memberMenu = style({
   position: 'relative',
   flexShrink: 0,
@@ -177,8 +175,6 @@ export const memberTrigger = style({
     },
   },
 });
-
-const figmaGray100 = '#F5F5F5';
 
 export const memberDropdown = style({
   position: 'absolute',
@@ -221,18 +217,36 @@ export const memberDropdownMeta = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  // gap: '2px',
   minWidth: 0,
 });
 
 export const memberDropdownName = style({
   margin: 0,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 1,
+  minWidth: 0,
   fontFamily: vars.fontFamily.pretendard,
   fontSize: vars.fontSize.sm,
   fontWeight: vars.fontWeight.medium,
   lineHeight: vars.lineHeight.normal,
   color: vars.color.gray[800],
   whiteSpace: 'nowrap',
+});
+
+export const memberDropdownNameText = style({
+  minWidth: 0,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+});
+
+export const memberDropdownGoogleIconWrap = style({
+  display: 'flex',
+  flexShrink: 0,
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: vars.fontSize.sm,
+  height: vars.fontSize.sm,
 });
 
 export const memberDropdownGrade = style({
@@ -262,9 +276,8 @@ const menuItemBase = style({
   display: 'flex',
   alignItems: 'center',
   width: '100%',
-  minHeight: '32px',
+  minHeight: '29px',
   paddingLeft: vars.space.lg,
-  // paddingRight: vars.space.sm,
   fontFamily: vars.fontFamily.pretendard,
   fontSize: vars.fontSize.base,
   fontWeight: vars.fontWeight.medium,
@@ -295,11 +308,13 @@ export const memberDropdownLogout = style([
   menuItemBase,
   {
     color: vars.color.gray[400],
-    borderTop: `1px solid ${figmaGray100}`,
   },
 ]);
 
-/** 어드민 드롭다운: 하단 메뉴가 로그아웃만 있을 때(상단 구분선 아래 단일 행) */
+export const adminDropdown = style({
+  height: '110px',
+});
+
 export const adminDropdownLogout = style([
   menuItemBase,
   {

@@ -10,7 +10,6 @@ const withVanillaExtract = createVanillaExtractPlugin({
 const nextConfig = {
   reactStrictMode: true,
   reactCompiler: true,
-  turbopack: {},
 };
 
 export default withVanillaExtract(nextConfig);

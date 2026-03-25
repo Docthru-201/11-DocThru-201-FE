@@ -1,32 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import { Button, Input, Dropdown, TextBox } from '@/shared/components';
-import * as styles from './page.css'; // 스타일 파일은 어디에, 어떻게 만들것인가? 왜 ts?
+import {
+  createChallengeFormSchema,
+  toCreateChallengeRequestBody,
+} from '@/features/challenges/schema/challenges.schema';
+import { useCreateChallenge } from '@/features/challenges/hooks/useCreateChallenge';
+import * as styles from './page.css.js';
+
+const categoryOptions = [
+  { value: 'DOCUMENT', label: '공식문서' },
+  { value: 'BLOG', label: '블로그' },
+];
+
+const docTypeOptions = [
+  { value: 'NEXT_JS', label: 'Next.js' },
+  { value: 'API', label: 'API' },
+  { value: 'CAREER', label: 'Career' },
+  { value: 'MODERN_JS', label: 'Modern JS' },
+  { value: 'WEB', label: 'Web' },
+];
 
 export default function NewChallengePage() {
-  const [title, setTitle] = useState('');
-  const [link, setLink] = useState('');
-  const [category, setCategory] = useState(null);
-  const [docType, setDocType] = useState(null);
-  const [deadline, setDeadline] = useState('');
-  const [maxParticipants, setMaxParticipants] = useState('');
-  const [content, setContent] = useState('');
+  const { createChallenge, isPending } = useCreateChallenge();
 
-  //드롭다운 옵션 데이터 추가(이유를 모름)
-  const categoryOptions = [
-    { value: 'DOCUMENT', label: '공식문서' },
-    { value: 'BLOG', label: '블로그' },
-  ];
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(createChallengeFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      title: '',
+      originalUrl: '',
+      category: undefined,
+      type: undefined,
+      deadline: '',
+      maxParticipants: '',
+      description: '',
+    },
+  });
 
-  const docTypeOptions = [
-    { value: 'NEXT_JS', label: 'Next.js' },
-    { value: 'API', label: 'API' },
-    { value: 'CAREER', label: 'Career' },
-    { value: 'MODERN_JS', label: 'Modern JS' },
-    { value: 'WEB', label: 'Web' },
-  ];
+  const onSubmit = (data) => {
+    createChallenge(toCreateChallengeRequestBody(data));
+  };
 
   return (
     <div className={styles.page}>
@@ -35,78 +57,118 @@ export default function NewChallengePage() {
       <main className={styles.main}>
         <h1 className={styles.title}>신규 챌린지 신청</h1>
 
-        <form className={styles.form}>
-          {/* 제목 (인풋) */}
-
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="제목"
             placeholder="제목을 입력해주세요"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            error={!!errors.title}
+            helperText={errors.title?.message}
+            {...register('title')}
           />
 
-          {/* 원문 링크(인풋)*/}
           <Input
             label="원문 링크"
-            placeholder="원문 링크를 입력해주세요"
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
+            placeholder="http://"
+            error={!!errors.originalUrl}
+            helperText={errors.originalUrl?.message}
+            {...register('originalUrl')}
           />
 
-          {/* <div className={styles.row} /> */}
-          {/*분야 (드롭다운)*/}
-          <Dropdown
-            label="분야"
-            placeholder="카테고리"
-            options={categoryOptions}
-            value={category}
-            onChange={setCategory}
-            showLabel
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <Dropdown
+                label="분야"
+                placeholder="카테고리"
+                options={categoryOptions}
+                value={field.value}
+                onChange={field.onChange}
+                showLabel
+              />
+            )}
           />
-          {/* 문서 타입 (드롭다운) */}
-          <Dropdown
-            label="문서 타입"
-            placeholder="카테고리"
-            options={docTypeOptions}
-            value={docType}
-            onChange={setDocType}
-            showLabel
+          {errors.category && (
+            <p className={styles.errorMessage}>{errors.category.message}</p>
+          )}
+
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <Dropdown
+                label="문서 타입"
+                placeholder="카테고리"
+                options={docTypeOptions}
+                value={field.value}
+                onChange={field.onChange}
+                showLabel
+              />
+            )}
           />
-          {/* 마감일 (Date Input) */}
-          <Input
-            label="마감일"
-            type="date"
-            placeholder="YY/MM/DD"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
+          {errors.type && (
+            <p className={styles.errorMessage}>{errors.type.message}</p>
+          )}
+
+          <Controller
+            name="deadline"
+            control={control}
+            render={({ field }) => (
+              <Input
+                label="마감일"
+                type="date"
+                placeholder="YY/MM/DD"
+                value={field.value}
+                onChange={field.onChange}
+                error={!!errors.deadline}
+                helperText={errors.deadline?.message}
+              />
+            )}
           />
 
-          {/* 최대인원 (인풋) */}
           <Input
             label="최대 인원"
-            type="number" // 숫자만 입력 가능
+            type="number"
+            min={1}
             placeholder="인원을 입력해주세요"
-            value={maxParticipants}
-            onChange={(e) => setMaxParticipants(e.target.value)}
+            error={!!errors.maxParticipants}
+            helperText={errors.maxParticipants?.message}
+            {...register('maxParticipants')}
           />
 
-          {/* 내용 (텍스트박스) */}
-          <TextBox
-            label="내용"
-            placeholder="내용을 입력해주세요"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={10} // 높이 조절
-          />
+          <div>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <TextBox
+                  label="내용"
+                  placeholder="내용을 입력해주세요"
+                  value={field.value ?? ''}
+                  onChange={(value) =>
+                    field.onChange({
+                      target: { value, name: field.name },
+                    })
+                  }
+                  rows={10}
+                />
+              )}
+            />
+            {errors.description && (
+              <p className={styles.errorMessage}>
+                {errors.description.message}
+              </p>
+            )}
+          </div>
 
-          {/* 신청하기 (버튼) */}
           <div className={styles.buttonWrap}>
             <Button
               type="submit"
               variant="solid"
-              fullWidth // 너비 꽉 차게
+              fullWidth
+              disabled={isPending || isSubmitting}
             >
-              신청하기
+              {isPending || isSubmitting ? '신청 중…' : '신청하기'}
             </Button>
           </div>
         </form>

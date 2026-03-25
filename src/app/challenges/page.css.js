@@ -37,6 +37,14 @@ export const header = style({
   paddingBottom: 16,
 });
 
+export const headerMy = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: vars.space.md,
+  paddingTop: 24,
+});
+
 export const title = style({
   margin: 0,
   fontSize: vars.fontSize['lg'],
@@ -63,6 +71,14 @@ export const searchField = style({
   maxWidth: 'none',
 });
 
+export const feedback = style({
+  margin: 0,
+  padding: `${vars.space.lg} 0`,
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[600],
+  textAlign: 'center',
+});
+
 export const cardList = style({
   display: 'flex',
   flexDirection: 'column',
@@ -74,4 +90,9 @@ export const paginationWrap = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+});
+
+export const tabBar = style({
+  marginBottom: '24px',
+  borderBottom: `1px solid ${vars.color.gray[300]}`,
 });

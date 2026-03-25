@@ -12,16 +12,14 @@ function gradeToLabel(grade) {
   return '일반';
 }
 
-function Logo() {
+function Logo({ href = '/', ariaLabel = 'Docthru 홈' }) {
   return (
-    // <div className={styles.logowrapper}>
-    <Link href="/" className={clsx(styles.logo)} aria-label="Docthru 홈">
+    <Link href={href} className={clsx(styles.logo)} aria-label={ariaLabel}>
       <span className={styles.logoIcon}>
         <Icon name="docthruLogo" width={17.55} height={20.25} aria-hidden />
       </span>
       Docthru
     </Link>
-    // </div>
   );
 }
 
@@ -31,17 +29,25 @@ export function GNB({
   tabs = [],
   onTabChange = undefined,
   memberNickname = '체다치즈',
-  memberGrade = 'EXPERT',
-  /** API에서 이미 한글 라벨을 주는 경우 우선 */
+  memberGrade = 'NORMAL',
+
   memberGradeLabel = undefined,
-  /** 어드민 헤더 드롭다운 */
+  memberHasGoogleAccount = false,
+
+  /** 세션 확인 전에는 로그인 버튼을 숨겨 쿠키만 있는 사용자에게 잠깐 로그인 UI가 노출되지 않게 함 */
+  sessionReady = true,
+
   adminNickname = '체다치즈',
   adminSubtitleLabel = '어드민',
   onLogout = undefined,
 }) {
   const isAdmin = status === 'admin';
   const isMember = status === 'member';
-  const isGuest = status === 'guest';
+  const isGuest = status === 'guest' && sessionReady;
+
+  const logoHref = isAdmin || isMember ? '/challenges' : '/';
+  const logoAriaLabel =
+    logoHref === '/challenges' ? '챌린지 목록으로 이동' : 'Docthru 홈';
 
   const [memberMenuOpen, setMemberMenuOpen] = useState(false);
   const memberMenuRef = useRef(null);
@@ -92,7 +98,9 @@ export function GNB({
     <header className={clsx(styles.gnb, className)} role="banner">
       <div className={styles.inner}>
         <div className={styles.left}>
-          {(isAdmin || isGuest || isMember) && <Logo />}
+          {(isAdmin || isMember || status === 'guest') && (
+            <Logo href={logoHref} ariaLabel={logoAriaLabel} />
+          )}
           {isAdmin && tabs.length > 0 && (
             <nav className={styles.tabs} aria-label="주 메뉴">
               {tabs.map((tab, i) => {
@@ -171,7 +179,22 @@ export function GNB({
                       </span>
                       <div className={styles.memberDropdownMeta}>
                         <p className={styles.memberDropdownName}>
-                          {memberNickname}
+                          <span className={styles.memberDropdownNameText}>
+                            {memberNickname}
+                          </span>
+                          {memberHasGoogleAccount && (
+                            <span
+                              className={styles.memberDropdownGoogleIconWrap}
+                              aria-hidden
+                            >
+                              <Icon
+                                name="loginGoogle"
+                                width={14}
+                                height={14}
+                                aria-hidden
+                              />
+                            </span>
+                          )}
                         </p>
                         <p className={styles.memberDropdownGrade}>
                           {memberGradeLabel ?? gradeToLabel(memberGrade)}
@@ -219,7 +242,7 @@ export function GNB({
               </button>
               {adminMenuOpen && (
                 <div
-                  className={styles.memberDropdown}
+                  className={clsx(styles.memberDropdown, styles.adminDropdown)}
                   role="menu"
                   aria-label="어드민 메뉴"
                 >

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -11,17 +12,19 @@ import { useLogin } from '@/features/auth/hooks/useLogin'; // 로그인 훅이 �
 
 import Link from 'next/link'; // Next.js의 Link 컴포넌트
 import { Icon } from '@/shared/components/Icon';
+import { BASE_URL } from '@/apis/common';
 
 import * as s from './login.css'; // 스타일 재사용
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, isPending } = useLogin(); // useSignup과 동일한 구조
+  const { login, isPending, isSuccess } = useLogin(); // useSignup과 동일한 구조
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
     mode: 'onChange',
@@ -36,8 +39,9 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5001/api/auth/google/login';
+    window.location.href = `${BASE_URL}/auth/google/login`;
   };
+
   return (
     <main className={s.container}>
       {/* 로고 */}
@@ -73,12 +77,32 @@ export default function LoginPage() {
         {/* 비밀번호 */}
         <div className={s.inputGroup}>
           <label className={s.label}>비밀번호</label>
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요"
-            className={s.input}
-            {...register('password')}
-          />
+          <div className={s.passwordField}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="비밀번호를 입력해주세요"
+              className={`${s.input} ${s.inputWithToggle}`}
+              autoComplete="current-password"
+              {...register('password')}
+            />
+            <button
+              type="button"
+              className={s.passwordToggle}
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              <Icon
+                name={
+                  showPassword
+                    ? 'passwordVisibilityOn'
+                    : 'passwordVisibilityOff'
+                }
+                width={22}
+                height={22}
+                aria-hidden
+              />
+            </button>
+          </div>
           {errors.password && (
             <p className={s.errorMessage}>{errors.password.message}</p>
           )}
@@ -88,9 +112,11 @@ export default function LoginPage() {
         <button
           type="submit"
           className={s.submitButton}
-          disabled={!isValid || isPending}
+          disabled={!isValid || isPending || isSubmitting || isSuccess}
         >
-          {isPending ? '로그인 중...' : '로그인하기'}
+          {isPending || isSubmitting || isSuccess
+            ? '로그인 중...'
+            : '로그인하기'}
         </button>
 
         {/* 구글 로그인 버튼 */}
@@ -100,18 +126,18 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
         >
           <Image
-            src="/images/google_icon.png"
+            src="/icons/login-google.svg"
             alt="google"
-            width={20}
-            height={20}
+            width={28}
+            height={28}
           />
-          구글로 시작하기
+          Google로 시작하기
         </button>
       </form>
 
       {/* 하단 회원가입 이동 */}
       <footer className={s.footer}>
-        <span>계정이 없으신가요?</span>
+        <span>회원이 아니신가요?</span>
         <button
           type="button"
           className={s.signupLink}

@@ -17,8 +17,19 @@ export const useLogin = () => {
       setUser(data);
       // 1. 성공 알림
       toast.success('로그인에 성공했습니다!');
+      // 2. 페이지 리다이렉트 (대시보드 또는 메인)
+      const userRole = data.role || data.user?.role;
 
-      router.replace('/challenges');
+      if (userRole === 'ADMIN') {
+        // 관리자라면 관리 페이지로
+        router.push('/admin/management');
+      } else {
+        // 일반 사용자라면 메인으로
+        router.push('/');
+      }
+
+      // 3. 상태 업데이트를 위해 페이지 새로고침 (필요 시)
+      router.refresh();
     },
 
     // 실패했을 때 실행할 로직
@@ -32,6 +43,7 @@ export const useLogin = () => {
     // 컴포넌트에서 사용할 변수와 함수들
     login: loginMutation.mutate, // 로그인 실행 함수
     isPending: loginMutation.isPending, // 로딩 상태 (isLoading 대신 isPending 권장)
+    isSuccess: loginMutation.isSuccess,
     isError: loginMutation.isError, // 에러 발생 여부
     error: loginMutation.error, // 에러 객체
   };
