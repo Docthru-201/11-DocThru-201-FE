@@ -11,8 +11,14 @@ export const useSignup = () => {
     mutationFn: (signUpData) => signUpUser(signUpData),
 
     // 성공했을 때 실행할 로직
-    onSuccess: (data) => {
-      toast.success('회원가입에 성공했습니다! 로그인 페이지로 이동합니다.');
+    onSuccess: () => {
+      toast.success(
+        <>
+          회원가입에 성공했습니다!
+          <br />
+          로그인 페이지로 이동합니다.
+        </>,
+      );
       router.push('/login'); // 로그인 페이지로 리다이렉트
     },
 
@@ -24,10 +30,12 @@ export const useSignup = () => {
   });
 
   return {
-    // 컴포넌트에서 사용할 변수와 함수들
-    signup: signupMutation.mutate, // 회원가입 실행 함수
-    isLoading: signupMutation.isPending, // 로딩 상태 (Next 13+에서는 isPending)
-    isError: signupMutation.isError, // 에러 발생 여부
-    error: signupMutation.error, // 에러 객체
+    signup: signupMutation.mutate,
+    signupAsync: signupMutation.mutateAsync,
+    isPending: signupMutation.isPending,
+    isSuccess: signupMutation.isSuccess,
+    isLoading: signupMutation.isPending,
+    isError: signupMutation.isError,
+    error: signupMutation.error,
   };
 };

@@ -14,13 +14,13 @@ export const useLogout = () => {
     onSuccess: () => {
       clearUser(); // ✅ zustand 상태 초기화
       toast.success('로그아웃 되었습니다.');
-      router.push('/login');
+      router.replace('/');
     },
 
     onError: (error) => {
       clearUser();
       toast.error(error.message || '로그아웃 중 오류가 발생했습니다.');
-      router.push('/login');
+      router.replace('/');
     },
   });
 

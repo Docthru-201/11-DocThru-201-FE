@@ -2,14 +2,19 @@ import { style } from '@vanilla-extract/css';
 
 /* 1. 전체 화면 레이아웃 (120rem x 67.5rem 기준) */
 export const container = style({
-  width: '120rem',
-  height: '67.5rem',
+  width: '100%',
+  // maxWidth: '120rem',
+  minHeight: '100vh',
   margin: '0 auto',
-  padding: '7.5rem 43.81rem', // 상하 7.5, 좌우 43.81
+  paddingTop: 'clamp(2rem, 8vw, 7.5rem)',
+  paddingBottom: 'clamp(2rem, 8vw, 7.5rem)',
+  paddingLeft: 'clamp(1rem, 4vw, 2.5rem)',
+  paddingRight: 'clamp(1rem, 4vw, 2.5rem)',
   backgroundColor: '#f4f4f4',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   boxSizing: 'border-box',
 });
 
@@ -44,7 +49,8 @@ export const logo = style({
 });
 /* 3. 폼 전체 */
 export const form = style({
-  width: '32.38rem', // 120 - (43.81 * 2) 한 나머지 공간
+  width: '100%',
+  maxWidth: '32.38rem',
   display: 'flex',
   flexDirection: 'column',
   // 인풋 그룹 간의 간격 (인풋과 다음 제목 사이의 gap: 1.5rem)
@@ -74,6 +80,9 @@ export const label = style({
 /* 6. 인풋창 스타일 (전달해주신 상세 수치 반영) */
 export const input = style({
   display: 'flex',
+  width: '100%',
+  minWidth: 0,
+  boxSizing: 'border-box',
   height: '3rem', // 48px
   padding: '0.6875rem 1.25rem',
   alignItems: 'center',
@@ -87,6 +96,40 @@ export const input = style({
   selectors: {
     '&:focus': {
       borderColor: '#262626',
+    },
+  },
+});
+
+export const passwordField = style({
+  position: 'relative',
+  width: '100%',
+  minWidth: 0,
+  alignSelf: 'stretch',
+  boxSizing: 'border-box',
+});
+
+export const inputWithToggle = style({
+  paddingRight: 'calc(20px + 22px + 8px)',
+});
+
+export const passwordToggle = style({
+  position: 'absolute',
+  right: '20px',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '0.25rem',
+  border: 'none',
+  backgroundColor: 'transparent',
+  cursor: 'pointer',
+  borderRadius: '0.25rem',
+  color: '#A3A3A3',
+  selectors: {
+    '&:focus-visible': {
+      outline: '2px solid #262626',
+      outlineOffset: 2,
     },
   },
 });
@@ -112,6 +155,28 @@ export const submitButton = style({
       backgroundColor: '#E5E5E5',
       cursor: 'not-allowed',
     },
+  },
+});
+
+/* 구글로 시작하기 (로그인 페이지와 동일) */
+export const googleButton = style({
+  display: 'flex',
+  height: '3rem',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '8px',
+  alignSelf: 'stretch',
+  borderRadius: '12px',
+  border: '1px solid #E5E5E5',
+  backgroundColor: '#FFFFFF',
+  color: '#171717',
+  fontSize: '1rem',
+  fontWeight: '400',
+  cursor: 'pointer',
+  marginTop: '-6px',
+  transition: 'background-color 0.2s',
+  ':hover': {
+    backgroundColor: '#F9F9F9',
   },
 });
 

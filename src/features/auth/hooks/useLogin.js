@@ -32,6 +32,7 @@ export const useLogin = () => {
     // 컴포넌트에서 사용할 변수와 함수들
     login: loginMutation.mutate, // 로그인 실행 함수
     isPending: loginMutation.isPending, // 로딩 상태 (isLoading 대신 isPending 권장)
+    isSuccess: loginMutation.isSuccess,
     isError: loginMutation.isError, // 에러 발생 여부
     error: loginMutation.error, // 에러 객체
   };
