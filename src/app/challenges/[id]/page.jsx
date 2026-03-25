@@ -32,6 +32,21 @@ export default function ChallengeDetailPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  const isDisabled = useMemo(() => {
+    if (!challenge) return true;
+
+    const isFull =
+      (challenge?.participants?.length || 0) >=
+      (challenge?.maxParticipants || 0);
+    const isClosed = challenge?.isClosed;
+
+    const isInactiveStatus = ['DELETED', 'REJECTED'].includes(
+      challenge?.status,
+    );
+
+    return isFull || isClosed || isInactiveStatus;
+  }, [challenge]);
+
   const itemsPerPage = 5;
   const { currentItems, totalPages } = useMemo(() => {
     const rankedData = getRankedList(rankingData);
@@ -127,10 +142,7 @@ export default function ChallengeDetailPage() {
                   window.open(challenge.originalUrl, '_blank');
                 }
               }}
-              isFull={
-                challenge?.participants?.length >= challenge?.maxParticipants
-              }
-              isClosed={challenge.isClosed}
+              isDisabled={isDisabled}
             />
           </div>
         </section>

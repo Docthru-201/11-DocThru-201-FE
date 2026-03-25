@@ -22,7 +22,7 @@ const statusMap = {
 };
 
 export default function StatusSection({ challenge }) {
-  const { status, adminMessage, invalidatedAt } = challenge || {};
+  const { status, declineReason, invalidatedAt } = challenge || {};
   const { message, text } = statusMap[status] || {};
 
   // 상태에 맞는 스타일 선택 (기본값 PENDING)
@@ -36,7 +36,7 @@ export default function StatusSection({ challenge }) {
       {(status === 'DELETED' || status === 'REJECTED') && (
         <div className={styles.reasonBox}>
           <span className={styles.reasonTitle}>{text}</span>
-          <p className={styles.reasonContent}>{adminMessage}</p>
+          <p className={styles.reasonContent}>{declineReason}</p>
           <div className={styles.footerWrapper}>
             <span className={styles.footerBrand}>F11 doc-thru</span>
             <span className={styles.divider}></span>

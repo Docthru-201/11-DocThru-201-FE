@@ -84,7 +84,7 @@ export default function AdminChallengePage() {
 
       await fetchChallenge(challengeId);
     } catch (error) {
-      alert(`거절 실패: ${error.message}`);
+      alert(error.message || '오류가 발생했습니다.');
     }
   };
 
@@ -92,17 +92,11 @@ export default function AdminChallengePage() {
     if (!challenge?.id) return;
 
     try {
-      const result = await approveChallengeAction(challenge.id);
-      if (!result.success) {
-        alert(result.message);
-        return;
-      }
-
-      alert('승인되었습니다.');
+      await approveChallengeAction(challenge.id);
+      alert('챌린지가 승인되었습니다.');
       await fetchChallenge(challengeId);
     } catch (error) {
-      console.error('승인 실패', error);
-      alert('승인 처리 중 오류가 발생했습니다.');
+      alert(error.message || '오류가 발생했습니다.');
     }
   };
 
