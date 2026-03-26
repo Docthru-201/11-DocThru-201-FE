@@ -7,6 +7,7 @@ import WorkDetailViewer from './_components/WorkDetailViewer';
 import WorkActionButtons from './_components/WorkActionButtons';
 import FeedbackList from './_components/FeedbackList';
 import FeedbackForm from './_components/FeedbackForm';
+import * as styles from './page.css';
 
 export default function WorkPage() {
   const { id, workId } = useParams();
@@ -19,27 +20,28 @@ export default function WorkPage() {
   if (isError) return <div>작업물을 불러오는데 실패했습니다.</div>;
 
   return (
-    <div>
-      <WorkDetailViewer
-        work={work}
-        likeCount={likeCount}
-        isLiked={isLiked}
-        toggleLike={toggleLike}
-        isLikePending={isLikePending}
-      />
+    <div className={styles.pageContainer}>
+      <div className={styles.contentWrapper}>
+        {/* 제목 + ⋮ 버튼 */}
+        <div className={styles.topRow}>
+          <WorkDetailViewer
+            work={work}
+            likeCount={likeCount}
+            isLiked={isLiked}
+            toggleLike={toggleLike}
+            isLikePending={isLikePending}
+          />
+          <WorkActionButtons
+            work={work}
+            onEdit={() => router.push(`/challenges/${id}/work/${workId}/edit`)}
+            onDelete={() => deleteWork()}
+            isDeletePending={isDeletePending}
+          />
+        </div>
 
-      <WorkActionButtons
-        work={work}
-        onEdit={() => router.push(`/challenges/${id}/work/${workId}/edit`)}
-        onDelete={() => deleteWork()}
-        isDeletePending={isDeletePending}
-      />
-
-      {/* 댓글 목록 */}
-      <FeedbackList workId={workId} />
-
-      {/* 댓글 작성 */}
-      <FeedbackForm workId={workId} />
+        <FeedbackForm workId={workId} />
+        <FeedbackList workId={workId} />
+      </div>
     </div>
   );
 }
