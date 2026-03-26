@@ -6,6 +6,12 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 // 챌린지 상세 조회
 export async function getChallengeDetail(challengeId) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+  if (!accessToken) {
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
+  }
+
   const res = await fetch(`${BASE_URL}/challenges/${challengeId}`, {
     credentials: 'include',
   });
@@ -23,6 +29,10 @@ export async function getChallengeDetail(challengeId) {
 export async function getRankingAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
+  }
 
   if (!challengeId) {
     console.error('에러: challengeId가 없습니다!');
@@ -72,6 +82,10 @@ export async function getRankingAction(challengeId) {
 export async function createWorkAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
+  }
 
   const res = await fetch(`${BASE_URL}/challenges/${challengeId}/works`, {
     method: 'POST',

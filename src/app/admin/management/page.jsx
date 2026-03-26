@@ -84,6 +84,7 @@ export default function AdminManagementPage() {
 
         <div className={styles.sortWrapper} ref={popoverRef}>
           <Sort
+            className=""
             label={currentSortLabel}
             active={isSortOpen}
             onClick={() => setIsSortOpen((prev) => !prev)}

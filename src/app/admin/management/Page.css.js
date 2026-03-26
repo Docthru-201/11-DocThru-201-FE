@@ -153,6 +153,7 @@ export const paginationContainer = style({
   marginTop: '40px',
   paddingBottom: '40px',
 });
+
 // import { style, globalStyle } from '@vanilla-extract/css';
 
 // export const container = style({
