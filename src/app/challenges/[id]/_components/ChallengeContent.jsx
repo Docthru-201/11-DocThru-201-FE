@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
 // import { useAuthStore } from '@/shared/store/useAuthStore';
 
 import { Icon } from '@/shared/components/Icon';
@@ -29,7 +28,6 @@ export default function ChallengeContent({
   maxParticipants,
 }) {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   // const user = useAuthStore((state) => state.user);
 
@@ -76,8 +74,8 @@ export default function ChallengeContent({
   };
 
   const handleDeleteClick = () => {
-    if (isClosed) {
-      setErrorMessage('완료된 챌린지는 삭제가 불가능합니다.');
+    if (isClosed || status === 'DELETED') {
+      setErrorMessage('완료되었거나 이미 삭제된 챌린지는 삭제가 불가능합니다.');
       setErrorModalOpen(true);
       return;
     }
@@ -88,11 +86,11 @@ export default function ChallengeContent({
   const handleConfirmDelete = async (declineMessage) => {
     try {
       await deleteChallengeAction(challengeId, declineMessage);
-      queryClient.invalidateQueries({ queryKey: ['challenges'] });
       setIsSuccessModalOpen(true);
     } catch (error) {
-      console.error('챌린지 삭제 실패:', error);
-      setErrorMessage('완료된 챌린지는 삭제가 불가능합니다.');
+      console.error('삭제 실패:', error);
+      setIsDeclineModalOpen(false);
+      setErrorMessage('삭제 처리 중 오류가 발생했습니다.');
       setErrorModalOpen(true);
     } finally {
       setIsDeclineModalOpen(false);
@@ -205,6 +203,7 @@ export default function ChallengeContent({
 
       {isSuccessModalOpen && (
         <ModalSuccess
+          duration={1000}
           text="삭제가 완료되었습니다!"
           onClose={() => setIsSuccessModalOpen(false)}
         />

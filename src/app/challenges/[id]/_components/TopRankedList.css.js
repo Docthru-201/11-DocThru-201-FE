@@ -1,10 +1,10 @@
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const sectionContainer = style({
-  position: 'relative',
   width: '100%',
-  maxWidth: '1152px',
-  overflow: 'hidden',
+  maxWidth: 'none',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 export const sliderTrack = style({

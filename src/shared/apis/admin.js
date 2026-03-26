@@ -87,7 +87,8 @@ export async function approveChallengeAction(challengeId) {
       throw new Error(errorData.message || '챌린지 승인에 실패했습니다.');
     }
 
-    return await response.json();
+    const { result } = await response.json();
+    return result;
   } catch (error) {
     console.error('서버 액션 - 챌린지 승인 오류:', error);
     throw error;
@@ -124,7 +125,8 @@ export async function declineChallengeAction(challengeId, declineReason) {
       throw new Error(errorData.message || '챌린지 거절에 실패했습니다.');
     }
 
-    return await response.json();
+    const { result } = await response.json();
+    return result;
   } catch (error) {
     console.error('서버 액션 - 챌린지 거절 오류:', error);
     throw error;
@@ -161,11 +163,13 @@ export async function deleteChallengeAction(challengeId, declineReason) {
         body: JSON.stringify({
           status: 'DELETED',
           declineReason: declineReason,
+          deletedAt: new Date().toISOString(),
         }),
       },
     );
 
     const data = await response.json();
+    console.log('DELETED 상황====>', data);
     if (!response.ok) {
       throw new Error(data.message || '서버 오류가 발생했습니다.');
     }

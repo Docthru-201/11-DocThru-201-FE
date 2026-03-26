@@ -84,7 +84,7 @@ export default function AdminChallengePage() {
 
       await fetchChallenge(challengeId);
     } catch (error) {
-      alert(`거절 실패: ${error.message}`);
+      alert(error.message || '오류가 발생했습니다.');
     }
   };
 
@@ -92,76 +92,70 @@ export default function AdminChallengePage() {
     if (!challenge?.id) return;
 
     try {
-      const result = await approveChallengeAction(challenge.id);
-      if (!result.success) {
-        alert(result.message);
-        return;
-      }
-
-      alert('승인되었습니다.');
+      await approveChallengeAction(challenge.id);
+      alert('챌린지가 승인되었습니다.');
       await fetchChallenge(challengeId);
     } catch (error) {
-      console.error('승인 실패', error);
-      alert('승인 처리 중 오류가 발생했습니다.');
+      alert(error.message || '오류가 발생했습니다.');
     }
   };
 
   return (
     <div className={styles.pageContainer}>
       {loading && <div>로딩 중...</div>}
+      <div className={styles.innerWrapper}>
+        <div className={styles.header}>
+          <span className={styles.idText}>No. {challenge?.serialNumber}</span>
 
-      <div className={styles.header}>
-        <span className={styles.idText}>No. {challenge?.serialNumber}</span>
+          <div className={styles.navGroup}>
+            <button
+              onClick={() => handleMovePage(prevId)}
+              disabled={!prevId}
+              className={styles.navBtn}
+              title="이전 항목"
+            >
+              <Icon name="chevronLeftActive" alt="이전" />
+            </button>
 
-        <div className={styles.navGroup}>
-          <button
-            onClick={() => handleMovePage(prevId)}
-            disabled={!prevId}
-            className={styles.navBtn}
-            title="이전 항목"
-          >
-            <Icon name="chevronLeftActive" alt="이전" />
-          </button>
-
-          <button
-            onClick={() => handleMovePage(nextId)}
-            disabled={!nextId}
-            className={styles.navBtn}
-            title="다음 항목"
-          >
-            <Icon name="chevronRightActive" alt="다음" />
-          </button>
+            <button
+              onClick={() => handleMovePage(nextId)}
+              disabled={!nextId}
+              className={styles.navBtn}
+              title="다음 항목"
+            >
+              <Icon name="chevronRightActive" alt="다음" />
+            </button>
+          </div>
         </div>
+
+        <StatusSection challenge={challenge} />
+        <LineDivider />
+        <ChallengeInfo challenge={challenge} />
+        <LineDivider />
+        <OriginalUrlSection originalPageUrl={challenge?.originalUrl} />
+
+        {challenge?.status === 'PENDING' && (
+          <div className={styles.buttonWrapper}>
+            <Button
+              variant="outline"
+              icon={null}
+              className={styles.declineBtn}
+              onClick={() => setIsModalOpen(true)}
+            >
+              거절하기
+            </Button>
+
+            <Button
+              variant="solid"
+              icon={null}
+              className={styles.approveBtn}
+              onClick={handleApproved}
+            >
+              승인하기
+            </Button>
+          </div>
+        )}
       </div>
-
-      <StatusSection challenge={challenge} />
-      <LineDivider />
-      <ChallengeInfo challenge={challenge} />
-      <LineDivider />
-      <OriginalUrlSection originalPageUrl={challenge?.originalUrl} />
-
-      {challenge?.status === 'PENDING' && (
-        <div className={styles.buttonWrapper}>
-          <Button
-            variant="outline"
-            icon={null}
-            className={styles.declineBtn}
-            onClick={() => setIsModalOpen(true)}
-          >
-            거절하기
-          </Button>
-
-          <Button
-            variant="solid"
-            icon={null}
-            className={styles.approveBtn}
-            onClick={handleApproved}
-          >
-            승인하기
-          </Button>
-        </div>
-      )}
-
       <Modal
         open={isModalOpen}
         onClose={() => {
