@@ -12,13 +12,13 @@ export const useLikes = (workId) => {
   const queryClient = useQueryClient();
 
   const { data: likeCount } = useQuery({
-    queryKey: QUERY_KEYS.like.count(workId),
+    queryKey: QUERY_KEYS.likes.count(workId),
     queryFn: () => fetchLikeCount(workId),
     enabled: !!workId,
   });
 
   const { data: likeStatus } = useQuery({
-    queryKey: QUERY_KEYS.like.status(workId),
+    queryKey: QUERY_KEYS.likes.status(workId),
     queryFn: () => fetchMyLikeStatus(workId),
     enabled: !!workId,
   });
@@ -27,10 +27,10 @@ export const useLikes = (workId) => {
     mutationFn: () => addLike(workId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.like.count(workId),
+        queryKey: QUERY_KEYS.likes.count(workId),
       });
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.like.status(workId),
+        queryKey: QUERY_KEYS.likes.status(workId),
       });
     },
     onError: (error) => {
@@ -42,10 +42,10 @@ export const useLikes = (workId) => {
     mutationFn: () => removeLike(workId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.like.count(workId),
+        queryKey: QUERY_KEYS.likes.count(workId),
       });
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.like.status(workId),
+        queryKey: QUERY_KEYS.likes.status(workId),
       });
     },
     onError: (error) => {
@@ -62,7 +62,7 @@ export const useLikes = (workId) => {
   };
 
   return {
-    likeCount: likeCount?.likeCount ?? 0,
+    likeCount: likeCount?.count ?? 0,
     isLiked: likeStatus?.isLiked ?? false,
     toggleLike,
     isLikePending: likeMutation.isPending || unlikeMutation.isPending,
