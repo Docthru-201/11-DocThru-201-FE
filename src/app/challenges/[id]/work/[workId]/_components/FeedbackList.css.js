@@ -136,3 +136,15 @@ export const editActions = style({
   gap: vars.space.sm,
   marginTop: vars.space.sm,
 });
+export const deletedContent = style({
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[400],
+  fontStyle: 'italic',
+  marginBottom: vars.space.sm,
+});
+
+export const editedMark = style({
+  fontSize: vars.fontSize['2xs'],
+  color: vars.color.gray[400],
+  fontStyle: 'italic',
+});
