@@ -1,44 +1,64 @@
 import { style } from '@vanilla-extract/css';
 
 export const pageContainer = style({
-  marginBottom: '160px',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   backgroundColor: '#ffffff',
-  width: '100%',
+  marginBottom: '160px',
+  boxSizing: 'border-box',
 });
 
 export const contentWrapper = style({
-  width: '100%',
-  maxWidth: 'var(--container-challenge, 1200px)',
+  width: '1200px',
+  display: 'flex',
+  flexDirection: 'column',
+
+  '@media': {
+    'screen and (max-width: 1199px)': {
+      width: '744px',
+      padding: '0 24px',
+      boxSizing: 'border-box',
+    },
+    'screen and (max-width: 743px)': {
+      width: '375px',
+      padding: '0 16px',
+      boxSizing: 'border-box',
+    },
+  },
 });
 
 export const topSection = style({
   display: 'flex',
   width: '100%',
-  flexDirection: 'column',
-  gap: '16px',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  gap: '24px',
+  marginBottom: '32px',
+
   '@media': {
-    'screen and (min-width: 744px)': {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      gap: '24px',
+    'screen and (max-width: 743px)': {
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '16px',
+      marginBottom: '24px',
     },
   },
 });
 
 export const leftInfoArea = style({
+  flex: 1,
   display: 'flex',
-  width: '100%',
   flexDirection: 'column',
   gap: '12px',
-  paddingTop: '16px',
+  paddingTop: '24px',
+  minWidth: 0,
+
   '@media': {
-    'screen and (min-width: 744px)': {
-      width: '66.6666%',
-      paddingTop: '24px',
+    'screen and (max-width: 743px)': {
+      width: '100%',
+      paddingTop: '16px',
     },
   },
 });
@@ -58,14 +78,24 @@ export const authorNickname = style({
 
 export const authorImage = style({
   borderRadius: '50%',
+  overflow: 'hidden',
 });
 
 export const rightSidebarArea = style({
-  width: '100%',
+  width: '320px',
+  flexShrink: 0,
+  marginTop: '24px',
+  display: 'flex',
+  justifyContent: 'flex-end',
+
   '@media': {
-    'screen and (min-width: 744px)': {
-      width: '33.3333%',
-      marginTop: '24px',
+    'screen and (max-width: 1199px)': {
+      width: '300px',
+    },
+    'screen and (max-width: 743px)': {
+      width: '100%',
+      justifyContent: 'center',
+      marginTop: '8px',
     },
   },
 });
@@ -75,64 +105,91 @@ export const rankingSection = style({
   borderRadius: '12px',
   border: '2px solid #1f2937',
   backgroundColor: '#ffffff',
-  marginTop: '32px',
+  marginTop: '40px',
   overflow: 'hidden',
+  boxSizing: 'border-box',
+
+  '@media': {
+    'screen and (max-width: 743px)': {
+      marginTop: '32px',
+    },
+  },
 });
 
 export const rankingHeader = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '12px 16px',
-  borderBottom: '1px solid #f3f4f6',
+  padding: '16px 20px',
+  borderBottom: 'none',
+
+  '@media': {
+    'screen and (max-width: 743px)': {
+      padding: '12px 16px',
+    },
+  },
 });
 
 export const rankingTitle = style({
   fontSize: '18px',
-  fontWeight: 600,
+  fontWeight: 700,
+  color: '#111827',
 });
 
 export const paginationGroup = style({
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  gap: '10px',
 });
 
 export const currentPageText = style({
-  fontWeight: 600,
+  fontWeight: 700,
   color: '#f59e0b',
 });
 
 export const totalPageText = style({
-  color: '#1f2937',
+  fontWeight: 500,
+  color: '#6b7280',
 });
 
-export const paginationIcon = style({
-  cursor: 'pointer',
-  selectors: {
-    "&[data-disabled='true']": {
-      opacity: 0.3,
-      cursor: 'not-allowed',
+export const rankingListContainer = style({
+  width: '100%',
+  margin: '0 auto',
+  padding: '0 24px 40px 24px',
+  boxSizing: 'border-box',
+
+  '@media': {
+    'screen and (max-width: 1199px)': {
+      maxWidth: '686px',
+      padding: '0 16px 24px 16px',
+    },
+    'screen and (max-width: 743px)': {
+      maxWidth: '100%',
+      padding: '0 8px 16px 8px',
     },
   },
 });
 
-export const rankingListContainer = style({
-  padding: '0 16px',
-});
-
 export const emptyText = style({
-  padding: '40px 0',
+  padding: '80px 0',
   textAlign: 'center',
-  color: '#6b7280',
-  lineHeight: '1.5',
+  color: '#9ca3af',
+  fontSize: '15px',
+  lineHeight: '1.6',
 });
 
 export const statusWrapper = style({
-  textAlign: 'center',
-  padding: '40px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  height: '400px',
+  fontSize: '16px',
+  color: '#6b7280',
 });
 
 export const bestWorkWrapper = style({
-  marginBottom: '24px',
+  width: '100%',
+  marginTop: '32px',
+  marginBottom: '8px',
 });
