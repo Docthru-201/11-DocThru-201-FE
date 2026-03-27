@@ -1,77 +1,72 @@
 'use client';
 
-import { useMemo } from 'react';
+import React from 'react';
+import * as styles from './Pagination.css.js';
 
-import { Icon } from '@/shared/components/Icon';
-import * as styles from './Pagination.css';
+const PAGE_GROUP_SIZE = 5;
 
-const pagesPerGroup = 5;
+export default function Pagination({
+  totalCount,
+  currentPage,
+  pageSize,
+  onPageChange,
+}) {
+  const totalPages = Math.ceil(totalCount / pageSize);
+  if (totalPages <= 1) return null;
 
-function Pagination({ totalCount, currentPage, pageSize, onPageChange }) {
-  const itemsPerPage = pageSize;
+  const currentGroupIndex = Math.floor((currentPage - 1) / PAGE_GROUP_SIZE);
+  const startPage = currentGroupIndex * PAGE_GROUP_SIZE + 1;
+  const endPage = Math.min(startPage + PAGE_GROUP_SIZE - 1, totalPages);
 
-  const paginationData = useMemo(() => {
-    const totalPages = Math.ceil(totalCount / itemsPerPage);
-    const currentGroup = Math.ceil(currentPage / pagesPerGroup);
-    const startPage = (currentGroup - 1) * pagesPerGroup + 1;
-    const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
-
-    const pages = [];
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+  const handlePrevGroup = () => {
+    if (startPage > 1) {
+      onPageChange(startPage - 1);
     }
+  };
 
-    return {
-      totalPages,
-      startPage,
-      endPage,
-      pages,
-      hasPrev: currentPage > 1,
-      hasNext: currentPage < totalPages,
-    };
-  }, [currentPage, totalCount, itemsPerPage]);
+  const handleNextGroup = () => {
+    if (endPage < totalPages) {
+      onPageChange(endPage + 1);
+    }
+  };
 
-  const handlePrev = () => onPageChange(currentPage - 1);
-  const handleNext = () => onPageChange(currentPage + 1);
+  const pageNumbers = [];
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.paginationContainer}>
       <button
         type="button"
-        className={`${styles.pageButton} ${
-          !paginationData.hasPrev ? styles.disabled : ''
-        }`}
-        onClick={handlePrev}
-        disabled={!paginationData.hasPrev}
+        className={styles.arrowButton}
+        onClick={handlePrevGroup}
+        disabled={startPage === 1}
       >
-        <Icon name="chevronLeftActive" alt="이전" />
+        &lt;
       </button>
 
-      {paginationData.pages.map((page) => (
-        <button
-          key={page}
-          type="button"
-          onClick={() => onPageChange(page)}
-          className={`${styles.pageButton} ${
-            page === currentPage ? styles.active : styles.hover
-          }`}
-        >
-          {page}
-        </button>
-      ))}
+      <div className={styles.numberWrapper}>
+        {pageNumbers.map((number) => (
+          <button
+            key={number}
+            type="button"
+            className={`${styles.pageButton} ${number === currentPage ? styles.active : ''}`}
+            onClick={() => onPageChange(number)}
+          >
+            {number}
+          </button>
+        ))}
+      </div>
 
       <button
         type="button"
-        className={`${styles.pageButton} ${
-          !paginationData.hasNext ? styles.disabled : ''
-        }`}
-        onClick={handleNext}
-        disabled={!paginationData.hasNext}
+        className={styles.arrowButton}
+        onClick={handleNextGroup}
+        disabled={endPage === totalPages}
       >
-        <Icon name="chevronRightActive" alt="다음" />
+        &gt;
       </button>
     </div>
   );
 }
-
-export default Pagination;

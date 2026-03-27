@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 import { Search } from '@/shared/components/Search';
 import { Sort } from '@/shared/components/Sort';
@@ -13,38 +14,65 @@ import ListRow from '@/app/admin/_components/ListRow';
 import Pagination from '@/app/admin/_components/Pagination';
 
 import { getChallengesAction } from '@/shared/apis/admin.js';
-
 import * as styles from './Page.css.js';
 
 export default function AdminManagementPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // URL 상태 읽기
+  const page = Number(searchParams.get('page')) || 1;
+  const sort = searchParams.get('sort') || 'createdAt_desc';
+  const urlKeyword = searchParams.get('keyword') || '';
+
+  // 한글 입력을 위한 로컬 상태
+  // URL과 별개로 입력창의 텍스트를 실시간으로 관리
+  const [localKeyword, setLocalKeyword] = useState(urlKeyword);
+
   const [challenges, setChallenges] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-
-  const [sort, setSort] = useState('createdAt_desc');
-  const [keyword, setKeyword] = useState('');
   const [isSortOpen, setIsSortOpen] = useState(false);
 
   const popoverRef = useRef(null);
   const pageSize = ITEM_COUNT.CHALLENGE_CNT || 10;
 
-  // 외부 클릭 시 닫기
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-        setIsSortOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  // URL 업데이트 함수
+  const updateQueryParams = useCallback(
+    (updates) => {
+      const params = new URLSearchParams(searchParams.toString());
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value) params.set(key, value.toString());
+        else params.delete(key);
+      });
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
 
+  // 디바운스 적용: 입력이 멈추고 0.5초 뒤에 URL을 변경
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localKeyword !== urlKeyword) {
+        updateQueryParams({ keyword: localKeyword, page: 1 });
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [localKeyword, updateQueryParams, urlKeyword]);
+
+  // URL의 키워드가 외부(뒤로가기 등)에 의해 바뀌면 로컬 상태도 동기화
+  useEffect(() => {
+    setLocalKeyword(urlKeyword);
+  }, [urlKeyword]);
+
+  // 데이터 페칭
   const fetchChallenges = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await getChallengesAction({
-        params: { page, pageSize, sort, keyword },
+        params: { page, pageSize, sort, keyword: urlKeyword },
       });
       setChallenges(response.challenges || []);
       setTotalCount(response.pagination?.totalCount || 0);
@@ -53,7 +81,7 @@ export default function AdminManagementPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [page, pageSize, sort, keyword]);
+  }, [page, pageSize, sort, urlKeyword]);
 
   useEffect(() => {
     fetchChallenges();
@@ -63,8 +91,7 @@ export default function AdminManagementPage() {
     SORT_OPTIONS.find((opt) => opt.value === sort)?.label || '정렬';
 
   const handleSelectSort = (value) => {
-    setSort(value);
-    setPage(1);
+    updateQueryParams({ sort: value, page: 1 });
     setIsSortOpen(false);
   };
 
@@ -74,12 +101,9 @@ export default function AdminManagementPage() {
 
       <div className={styles.searchSortWrapper}>
         <Search
-          value={keyword}
+          value={localKeyword}
           className={styles.searchInput}
-          onChange={(value) => {
-            setKeyword(value);
-            setPage(1);
-          }}
+          onChange={(val) => setLocalKeyword(val)}
         />
 
         <div className={styles.sortWrapper} ref={popoverRef}>
@@ -130,7 +154,7 @@ export default function AdminManagementPage() {
                 totalCount={totalCount}
                 currentPage={page}
                 pageSize={pageSize}
-                onPageChange={setPage}
+                onPageChange={(newPage) => updateQueryParams({ page: newPage })}
               />
             </div>
           )}
