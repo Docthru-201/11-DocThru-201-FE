@@ -16,6 +16,8 @@ export default function TopRankedList({ rankingData }) {
     return rankingData.filter((w) => w.likeCount === maxLikes);
   }, [rankingData]);
 
+  const CONTENT_LIMIT_LENGTH = 500;
+
   if (topWorks.length === 0) return null;
 
   const isSingle = topWorks.length === 1;
@@ -73,16 +75,10 @@ export default function TopRankedList({ rankingData }) {
 
               <div className={styles.contentArea}>
                 <hr className={styles.hr} />
-                {/* <div
-                  className={styles.contentTextVariants[contentKey]}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(work.content),                
-                  }}
-                /> */}
                 <div className={styles.contentTextVariants[contentKey]}>
                   {typeof work.content === 'string' &&
                   work.content.startsWith('{') ? (
-                    JSON.parse(work.content).content[0].content[0].text // 단순 텍스트 추출 예시
+                    JSON.parse(work.content).content[0].content[0].text
                   ) : (
                     <div
                       dangerouslySetInnerHTML={{
@@ -92,7 +88,7 @@ export default function TopRankedList({ rankingData }) {
                   )}
                 </div>
 
-                {work.content.length > 500 && (
+                {work.content.length > CONTENT_LIMIT_LENGTH && (
                   <div className={styles.moreButtonWrapper}>
                     <button
                       onClick={() =>

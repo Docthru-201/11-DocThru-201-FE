@@ -8,6 +8,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 export async function getChallengesAction({ params = {} }) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+  }
+
   const query = new URLSearchParams(params).toString();
 
   try {
@@ -38,6 +43,10 @@ export async function getChallengeAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
+  if (!accessToken) {
+    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+  }
+
   try {
     const res = await fetch(`${BASE_URL}/admin/challenges/${challengeId}`, {
       method: 'GET',
@@ -64,7 +73,7 @@ export async function approveChallengeAction(challengeId) {
   const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) {
-    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
   }
 
   try {
@@ -101,7 +110,7 @@ export async function declineChallengeAction(challengeId, declineReason) {
   const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) {
-    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
   }
 
   try {
@@ -139,7 +148,7 @@ export async function deleteChallengeAction(challengeId, declineReason) {
   const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) {
-    throw new Error('인증되지 않았습니다: 액세스 토큰이 없습니다.');
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
   }
 
   try {

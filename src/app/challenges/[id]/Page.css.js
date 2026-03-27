@@ -29,6 +29,10 @@ export const contentWrapper = style({
   },
 });
 
+export const dividerWrapper = style({
+  padding: '0 20px',
+});
+
 export const topSection = style({
   display: 'flex',
   width: '100%',

@@ -15,8 +15,8 @@ export default function AdminLayout({ children }) {
     },
     {
       label: '챌린지 목록',
-      href: '/admin/challenges',
-      active: pathname.includes('/admin/challenges'),
+      href: '/challenges',
+      active: pathname.includes('/challenges'),
     },
   ];
 

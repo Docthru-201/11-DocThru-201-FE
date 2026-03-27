@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import { useAuthStore } from '@/shared/store/useAuthStore';
+import { useAuthStore } from '@/shared/store/useAuthStore';
 
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
@@ -29,9 +29,9 @@ export default function ChallengeContent({
 }) {
   const router = useRouter();
 
-  // const user = useAuthStore((state) => state.user);
+  const user = useAuthStore((state) => state.user);
 
-  const user = { role: 'ADMIN', id: 'test-user-id', nickname: '테스트유저' };
+  // const user = { role: 'ADMIN', id: 'test-user-id', nickname: '테스트유저' };
   console.log(
     '사용자정보 하드코딩 (challengeContent.jsx)========> :',
     user.role,
