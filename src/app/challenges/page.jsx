@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { getChallenges } from '@/apis/challenges';
-import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import {
   Search,
   Sort,
@@ -93,7 +92,6 @@ export default function ChallengesPage() {
 
   return (
     <div className={styles.page}>
-      <GNBContainer />
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>
