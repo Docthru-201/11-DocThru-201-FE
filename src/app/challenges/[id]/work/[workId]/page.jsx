@@ -13,7 +13,7 @@ export default function WorkPage() {
   const { id, workId } = useParams();
   const router = useRouter();
   const { work, isPending, isError } = useWork(workId);
-  const { deleteWork, isDeletePending } = useWorkMutation(workId);
+  const { deleteWork, isDeletePending } = useWorkMutation(workId, id);
   const { likeCount, isLiked, toggleLike, isLikePending } = useLikes(workId);
 
   if (isPending) return <div>로딩 중...</div>;

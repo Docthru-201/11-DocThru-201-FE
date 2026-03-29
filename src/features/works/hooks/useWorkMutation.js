@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@/shared/constants/queryKeys';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
-export const useWorkMutation = (workId) => {
+export const useWorkMutation = (workId, challengeId) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -42,7 +42,7 @@ export const useWorkMutation = (workId) => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.work.detail(workId),
       });
-      router.back();
+      router.push(`/challenges/${challengeId}`);
     },
     onError: (error) => {
       toast.error(error.message || '작업물 삭제에 실패했습니다.');
