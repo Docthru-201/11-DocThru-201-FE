@@ -91,3 +91,9 @@ export const disabledTextarea = style([
     color: vars.color.gray[400],
   },
 ]);
+export const charCount = style({
+  fontSize: vars.fontSize['2xs'],
+  color: vars.color.gray[400],
+  textAlign: 'right',
+  marginTop: vars.space.xs,
+});

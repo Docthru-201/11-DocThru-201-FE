@@ -4,22 +4,24 @@ import { vars } from '@/styles/tokens.css';
 export const pageWrapper = style({
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '100vh',
+  height: '100vh',
   backgroundColor: vars.color.white,
+  overflow: 'hidden',
 });
 
 export const header = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: `${vars.space.lg} 24px`,
+  padding: `12px 24px`,
+  backgroundColor: vars.color.white,
   borderBottom: `1px solid ${vars.color.gray[200]}`,
+  flexShrink: 0,
 });
 
 export const headerLeft = style({
   display: 'flex',
   alignItems: 'center',
-  gap: vars.space.lg,
 });
 
 export const challengeTitle = style({
@@ -34,15 +36,41 @@ export const headerRight = style({
   gap: vars.space.sm,
 });
 
-export const editorArea = style({
-  flex: 1,
+export const contentArea = style({
   display: 'flex',
-  position: 'relative',
+  flex: 1,
   padding: '24px',
-  maxWidth: '960px',
+  overflow: 'hidden',
+  justifyContent: 'center',
+});
+
+export const editorArea = style({
   width: '100%',
-  margin: '0 auto',
-  boxSizing: 'border-box',
+  maxWidth: '960px',
+  backgroundColor: vars.color.white,
+  overflow: 'auto',
+  padding: '0 24px',
+});
+
+export const editorHalf = style({
+  flex: 1,
+  backgroundColor: vars.color.white,
+  overflow: 'auto',
+  padding: '0 24px',
+});
+
+export const originalArea = style({
+  flex: 1,
+  backgroundColor: vars.color.white,
+  borderRadius: vars.radius.lg,
+  overflow: 'hidden',
+  border: `1px solid ${vars.color.gray[200]}`,
+});
+
+export const originalIframe = style({
+  width: '100%',
+  height: '100%',
+  border: 'none',
 });
 
 export const originalButton = style({
@@ -55,7 +83,7 @@ export const originalButton = style({
   alignItems: 'center',
   justifyContent: 'center',
   width: '40px',
-  height: '40px',
+  height: '56px',
   borderRadius: vars.radius.md,
   backgroundColor: vars.color.gray[800],
   color: vars.color.white,
@@ -63,6 +91,9 @@ export const originalButton = style({
   fontWeight: vars.fontWeight.medium,
   border: 'none',
   cursor: 'pointer',
+  zIndex: 10,
+  whiteSpace: 'pre',
+  textAlign: 'center',
   selectors: {
     '&:hover': {
       backgroundColor: vars.color.gray[900],

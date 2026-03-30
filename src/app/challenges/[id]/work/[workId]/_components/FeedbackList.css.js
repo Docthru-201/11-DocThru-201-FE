@@ -54,6 +54,8 @@ export const content = style({
   color: vars.color.gray[700],
   lineHeight: vars.lineHeight.normal,
   marginBottom: vars.space.sm,
+  wordBreak: 'break-word',
+  overflowWrap: 'break-word',
 });
 
 export const actions = style({

@@ -18,12 +18,12 @@ import {
   getChallengeDetail,
   getRankingAction,
   createWorkAction,
+  getMyWorkAction,
 } from '@/shared/apis/user.js';
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
 
 import * as styles from './Page.css.js';
 
-// 브라우저 크기 감지 훅
 function useIsSize() {
   const [size, setSize] = useState('large');
 
@@ -49,15 +49,14 @@ export default function ChallengeDetailPage() {
 
   const [challenge, setChallenge] = useState(null);
   const [rankingData, setRankingData] = useState([]);
+  const [myWork, setMyWork] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  // 1. 데이터 가공 (방어 로직 추가)
   const itemsPerPage = 5;
   const { currentItems, totalPages } = useMemo(() => {
-    // rankingData가 없거나 getRankedList 결과가 없을 때 에러 방지
     const rankedData = rankingData ? getRankedList(rankingData) : [];
     const total = Math.ceil(rankedData.length / itemsPerPage) || 1;
 
@@ -70,7 +69,6 @@ export default function ChallengeDetailPage() {
     };
   }, [rankingData, currentPage]);
 
-  // 2. 비활성화 로직
   const isDisabled = useMemo(() => {
     if (!challenge) return true;
     const isFull =
@@ -83,22 +81,22 @@ export default function ChallengeDetailPage() {
     return isFull || isClosed || isInactiveStatus;
   }, [challenge]);
 
-  // 3. API 호출
   useEffect(() => {
     if (!challengeId) return;
 
     const fetchData = async () => {
       try {
-        const [detail, ranks] = await Promise.all([
+        const [detail, ranks, myWorkData] = await Promise.all([
           getChallengeDetail(challengeId),
           getRankingAction(challengeId),
+          getMyWorkAction(challengeId).catch(() => null),
         ]);
         setChallenge(detail);
         setRankingData(ranks || []);
+        setMyWork(myWorkData);
       } catch (err) {
         console.error('데이터 로딩 중 에러:', err);
       } finally {
-        // 무조건 로딩 해제
         setLoading(false);
       }
     };
@@ -106,9 +104,15 @@ export default function ChallengeDetailPage() {
   }, [challengeId]);
 
   const handleChallenge = async () => {
+    // 이미 작업물이 있으면 이어서 작성
+    if (myWork) {
+      router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
+      return;
+    }
+
     try {
       const data = await createWorkAction(challengeId);
-      router.push(`/challenges/${challenge.id}/work/${data.data.id}/edit`);
+      router.push(`/challenges/${challengeId}/work/${data.id}/edit`);
     } catch {
       setModalMessage(
         `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
@@ -154,7 +158,7 @@ export default function ChallengeDetailPage() {
               deadlineText={dayjs(challenge?.deadline).format('YYYY년 M월 D일')}
               personText={`${challenge?.participants?.length || 0}/${challenge?.maxParticipants || 0}`}
               originalLabel="원문 보기"
-              actionLabel="작업 도전하기"
+              actionLabel={myWork ? '이어서 작성하기' : '작업 도전하기'}
               onActionClick={handleChallenge}
               onOriginalViewClick={() => {
                 if (challenge?.originalUrl)
@@ -221,7 +225,6 @@ export default function ChallengeDetailPage() {
                       onLikeClick={() => {}}
                     />
 
-                    {/* 아이템 사이에만 직접 만든 LineDivider 넣기 */}
                     {index < currentItems.length - 1 && (
                       <div className={styles.dividerWrapper}>
                         <LineDivider />

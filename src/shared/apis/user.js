@@ -104,3 +104,29 @@ export async function createWorkAction(challengeId) {
 
   return await res.json();
 }
+
+export async function getMyWorkAction(challengeId) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
+  }
+
+  const res = await fetch(`${BASE_URL}/challenges/${challengeId}/works/my`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Cookie: `accessToken=${accessToken}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (res.status === 404) return null; // 작업물 없음
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.message || '내 작업물 조회 실패');
+  }
+
+  return await res.json();
+}

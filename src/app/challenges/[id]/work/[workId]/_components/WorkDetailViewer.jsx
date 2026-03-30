@@ -1,13 +1,26 @@
 'use client';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import * as styles from './WorkDetailViewer.css.js';
 
 function WorkContent({ content }) {
+  const parsedContent = (() => {
+    if (!content) return null;
+    try {
+      return typeof content === 'string' ? JSON.parse(content) : content;
+    } catch {
+      return null;
+    }
+  })();
+
   const editor = useEditor({
-    extensions: [StarterKit],
-    content: typeof content === 'string' ? JSON.parse(content) : content,
+    extensions: [
+      StarterKit,
+      Image.configure({ inline: false, allowBase64: true }),
+    ],
+    content: parsedContent,
     editable: false,
     immediatelyRender: false,
   });
