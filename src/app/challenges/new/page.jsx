@@ -2,7 +2,6 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import { Button, Input, Dropdown, TextBox } from '@/shared/components';
 import {
   createChallengeFormSchema,
@@ -52,8 +51,6 @@ export default function NewChallengePage() {
 
   return (
     <div className={styles.page}>
-      <GNBContainer />
-
       <main className={styles.main}>
         <h1 className={styles.title}>신규 챌린지 신청</h1>
 

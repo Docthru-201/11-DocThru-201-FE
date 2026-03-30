@@ -148,7 +148,6 @@ export default function ChallengesPage() {
 
   return (
     <div className={styles.page}>
-      <GNBContainer />
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>
