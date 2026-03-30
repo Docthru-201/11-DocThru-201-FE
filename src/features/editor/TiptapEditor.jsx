@@ -2,7 +2,7 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useEditorStore } from './store/useEditorStore';
 import { useImageUpload } from './hooks/useImageUpload';
 import Toolbar from './Toolbar';

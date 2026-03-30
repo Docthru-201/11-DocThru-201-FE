@@ -1,7 +1,9 @@
 'use server';
 
 import { requestWithAuth } from './base';
+import { cookies } from 'next/headers';
 import { ITEM_COUNT } from '@/shared/constants/file.js';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 // 챌린지 상세 조회
 export async function getChallengeDetail(challengeId) {
