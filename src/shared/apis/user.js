@@ -1,71 +1,39 @@
 'use server';
-import { cookies } from 'next/headers';
-import { ITEM_COUNT } from '@/shared/constants/file.js';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+import { requestWithAuth } from './base';
+import { ITEM_COUNT } from '@/shared/constants/file.js';
 
 // 챌린지 상세 조회
 export async function getChallengeDetail(challengeId) {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-  if (!accessToken) {
-    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
-  }
-
-  const res = await fetch(`${BASE_URL}/challenges/${challengeId}`, {
+  return requestWithAuth(`/challenges/${challengeId}`, {
+    method: 'GET',
     credentials: 'include',
   });
-
-  if (!res.ok) {
-    const errorBody = await res.json();
-    throw new Error(errorBody.message || '챌린지 정보를 불러올 수 없습니다.');
-  }
-
-  const result = await res.json();
-  return result;
 }
 
-// 작업물 전체 조회
+// 작업물 전체 조회 (페이지네이션 루프 포함)
 export async function getRankingAction(challengeId) {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  if (!accessToken) {
-    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
-  }
-
   if (!challengeId) {
     console.error('에러: challengeId가 없습니다!');
     return [];
   }
 
-  const pageSize = ITEM_COUNT.CHALLENGE_LG || 5; // 5
+  const pageSize = ITEM_COUNT.CHALLENGE_LG || 5;
   let page = 1;
   let hasMore = true;
   let allWorks = [];
 
   while (hasMore) {
-    const res = await fetch(
-      `${BASE_URL}/challenges/${challengeId}/works?page=${page}&pageSize=${pageSize}`,
+    // 공통 함수를 사용하여 인증 체크 및 fetch 로직 대체
+    const response = await requestWithAuth(
+      `/challenges/${challengeId}/works?page=${page}&pageSize=${pageSize}`,
       {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: `accessToken=${accessToken}`,
-        },
         cache: 'no-store',
       },
     );
-    if (!res.ok) {
-      const errorBody = await res.json().catch(() => ({}));
-      throw new Error(
-        errorBody.message || `오류가 발생했습니다. (상태 코드: ${res.status})`,
-      );
-    }
 
-    const result = await res.json();
-    const works = result.data;
-
+    const works = response.data || [];
     allWorks = [...allWorks, ...works];
 
     if (works.length < pageSize) {
@@ -80,27 +48,9 @@ export async function getRankingAction(challengeId) {
 
 // 챌린지 상세에서 작업물 도전하기로 진입
 export async function createWorkAction(challengeId) {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  if (!accessToken) {
-    throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
-  }
-
-  const res = await fetch(`${BASE_URL}/challenges/${challengeId}/works`, {
+  return requestWithAuth(`/challenges/${challengeId}/works`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Cookie: `accessToken=${accessToken}`,
-    },
     cache: 'no-store',
     credentials: 'include',
   });
-
-  if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({}));
-    throw new Error(errorBody.message || '작업물 생성에 실패했습니다.');
-  }
-
-  return await res.json();
 }

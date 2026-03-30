@@ -16,7 +16,7 @@ export const modalContainer = style({
   minHeight: '407px',
   backgroundColor: '#ffffff',
   borderRadius: '8px',
-  border: '2px solid #1f2937', // gray-800
+  border: '2px solid #1f2937',
   padding: '16px',
 
   '@media': {
@@ -62,7 +62,7 @@ export const labelText = style({
   marginBottom: '8px',
   fontSize: '14px',
   fontWeight: 400,
-  color: '#111827', // gray-900
+  color: '#111827',
 
   '@media': {
     'screen and (min-width: 744px)': {
@@ -77,7 +77,7 @@ export const textArea = style({
   marginBottom: '16px',
   padding: '16px 20px',
   borderRadius: '6px',
-  border: '1px solid #d1d5db', // gray-300
+  border: '1px solid #d1d5db',
   backgroundColor: '#ffffff',
   fontSize: '16px',
   resize: 'none',
@@ -87,7 +87,7 @@ export const textArea = style({
     border: '1px solid #1f2937',
   },
   '::placeholder': {
-    color: '#6b7280', // gray-500
+    color: '#6b7280',
   },
 
   '@media': {
@@ -101,7 +101,7 @@ export const submitButton = style({
   width: '100%',
   height: '48px',
   borderRadius: '12px',
-  backgroundColor: '#262626', // brand-black
+  backgroundColor: '#262626',
   color: '#ffffff',
   fontSize: '16px',
   fontWeight: 600,

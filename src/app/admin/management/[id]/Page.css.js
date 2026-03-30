@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 
 export const pageContainer = style({
   width: '100%',
@@ -154,6 +154,34 @@ export const actionBtn = style({
     },
   },
 });
+
+export const loadingWrapper = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  minHeight: '400px', // 적절한 높이 부여
+  padding: '100px 0',
+});
+
+export const errorWrapper = style({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '80px 20px',
+  width: '100%',
+  color: '#cf1322',
+  fontSize: '16px',
+  gap: '12px',
+});
+
+globalStyle(`${errorWrapper} button`, {
+  marginTop: '16px',
+  padding: '8px 16px',
+  cursor: 'pointer',
+});
+
 // import { style } from '@vanilla-extract/css';
 
 // export const pageContainer = style({

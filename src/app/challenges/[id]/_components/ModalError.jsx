@@ -8,7 +8,6 @@ const ModalError = ({ isOpen, onClose, title, message }) => {
   return (
     <div className={styles.overlay}>
       <div className={styles.modalContainer}>
-        {/* 에러 제목이 있을 경우에만 렌더링 */}
         {title && <h2 className={styles.titleText}>{title}</h2>}
 
         <div className={styles.errorContent}>{message}</div>
@@ -35,7 +34,7 @@ ModalError.propTypes = {
 };
 
 ModalError.defaultProps = {
-  title: '알림', // 에러 발생 시 기본 제목
+  title: '알림',
 };
 
 export default ModalError;

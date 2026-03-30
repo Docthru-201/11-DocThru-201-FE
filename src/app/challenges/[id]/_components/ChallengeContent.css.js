@@ -8,7 +8,7 @@ export const articleContainer = style({
 });
 
 export const header = style({
-  position: 'relative', // meatballsMenu 버튼의 부모로서 relative 기준점
+  position: 'relative',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'flex-start',

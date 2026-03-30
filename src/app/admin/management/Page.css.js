@@ -154,142 +154,48 @@ export const paginationContainer = style({
   paddingBottom: '40px',
 });
 
-// import { style, globalStyle } from '@vanilla-extract/css';
+export const errorWrapper = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '80px 20px',
+  width: '100%',
+  boxSizing: 'border-box',
+});
 
-// export const container = style({
-//   padding: '40px',
-//   backgroundColor: '#ffffff',
-//   minHeight: '100vh',
-//   minWidth: '375px',
-//   // 반응형 대응
-//   '@media': {
-//     'screen and (max-width: 744px)': { padding: '24px' },
-//     'screen and (max-width: 375px)': { padding: '16px' },
-//   },
-// });
+export const errorBox = style({
+  textAlign: 'center',
+  padding: '40px 32px',
+  backgroundColor: '#fff1f0',
+  border: '1px solid #ffa39e',
+  borderRadius: '12px',
+  maxWidth: '440px',
+  width: '100%',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+});
 
-// export const title = style({
-//   fontSize: '24px',
-//   fontWeight: '700',
-//   marginBottom: '30px',
-//   color: '#1a1a1a',
-//   '@media': {
-//     'screen and (max-width: 375px)': { fontSize: '20px', marginBottom: '20px' },
-//   },
-// });
+// 하위 p 태그 스타일
+globalStyle(`${errorBox} p`, {
+  margin: '0 0 16px 0',
+  color: '#cf1322',
+  fontSize: '16px',
+  lineHeight: '1.6',
+  wordBreak: 'keep-all',
+});
 
-// export const searchSortWrapper = style({
-//   display: 'grid',
-//   gridTemplateColumns: '1fr auto',
-//   gap: '16px',
-//   marginBottom: '24px',
-//   alignItems: 'center',
-//   position: 'relative',
-//   zIndex: 100,
-//   '@media': {
-//     'screen and (max-width: 375px)': {
-//       gridTemplateColumns: '1fr',
-//       gap: '12px',
-//     },
-//   },
-// });
+// 하위 button 태그 스타일
+globalStyle(`${errorBox} button`, {
+  padding: '10px 24px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #d9d9d9',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  fontSize: '14px',
+  fontWeight: '500',
+  transition: 'all 0.2s ease',
+});
 
-// export const searchInput = style({
-//   width: '100%',
-// });
-
-// globalStyle(`${searchSortWrapper} > div:first-child`, {
-//   maxWidth: 'none !important',
-//   width: '100% !important',
-// });
-
-// export const sortWrapper = style({
-//   position: 'relative',
-//   minWidth: '140px',
-//   display: 'flex',
-//   justifyContent: 'flex-end',
-//   '@media': {
-//     'screen and (max-width: 375px)': {
-//       justifyContent: 'flex-start',
-//       width: '100%',
-//     },
-//   },
-// });
-
-// export const sortPopover = style({
-//   position: 'absolute',
-//   top: 'calc(100% + 4px)',
-//   right: 0,
-//   width: '160px',
-//   backgroundColor: '#ffffff',
-//   border: '1px solid #d1d5db',
-//   borderRadius: '8px',
-//   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-//   overflow: 'hidden',
-//   display: 'flex',
-//   flexDirection: 'column',
-//   zIndex: 101,
-//   '@media': {
-//     'screen and (max-width: 375px)': {
-//       left: 0,
-//       right: 'auto',
-//     },
-//   },
-// });
-
-// export const sortOptionButton = style({
-//   width: '100%',
-//   padding: '12px 16px',
-//   fontSize: '14px',
-//   textAlign: 'left',
-//   border: 'none',
-//   borderBottom: '1px solid #e5e7eb',
-//   backgroundColor: '#ffffff',
-//   cursor: 'pointer',
-//   color: '#4b5563',
-//   transition: 'background-color 0.2s ease',
-//   selectors: {
-//     '&:last-child': { borderBottom: 'none' },
-//     '&:hover': { backgroundColor: '#f9fafb' },
-//   },
-// });
-
-// export const activeOption = style({
-//   color: '#111827',
-//   fontWeight: '600',
-//   backgroundColor: '#f3f4f6',
-// });
-
-// export const listSection = style({
-//   position: 'relative',
-//   zIndex: 1,
-//   '@media': {
-//     'screen and (max-width: 744px)': {
-//       overflowX: 'auto',
-//     },
-//   },
-// });
-
-// export const loadingWrapper = style({
-//   display: 'flex',
-//   justifyContent: 'center',
-//   alignItems: 'center',
-//   padding: '100px 0',
-// });
-
-// export const emptyState = style({
-//   textAlign: 'center',
-//   padding: '100px 0',
-//   color: '#737373',
-//   fontSize: '16px',
-//   backgroundColor: '#f9fafb',
-//   borderRadius: '8px',
-//   marginTop: '20px',
-// });
-
-// export const paginationContainer = style({
-//   display: 'flex',
-//   justifyContent: 'center',
-//   marginTop: '40px',
-//   paddingBottom: '40px',
-// });
+globalStyle(`${errorBox} button:hover`, {
+  backgroundColor: '#f5f5f5',
+  borderColor: '#bfbfbf',
+});
