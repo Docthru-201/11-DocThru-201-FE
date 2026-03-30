@@ -25,7 +25,7 @@ export const useLogin = () => {
         router.push('/admin/management');
       } else {
         // 일반 사용자라면 메인으로
-        router.push('/');
+        router.push('/challenges');
       }
 
       // 3. 상태 업데이트를 위해 페이지 새로고침 (필요 시)

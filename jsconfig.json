@@ -24,7 +24,8 @@
     "src/styles/global.css.ts",
     "src/styles/reset.css.ts",
     "src/styles/tokens.css.ts",
-    "src/shared/providers/toast.css.ts"
+    "src/shared/providers/toast.css.ts",
+    "src/app/challenges/[id]/work/[workId]/page.css.ts"
   ],
   "exclude": ["node_modules", ".next"]
 }
