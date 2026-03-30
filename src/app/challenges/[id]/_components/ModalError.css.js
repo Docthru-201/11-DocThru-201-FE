@@ -25,15 +25,15 @@ export const titleText = style({
   marginBottom: '16px',
   fontSize: '18px',
   fontWeight: 600,
-  color: '#1f2937', // gray-800
+  color: '#1f2937',
 });
 
 export const errorContent = style({
   marginBottom: '24px',
   fontSize: '16px',
-  color: '#374151', // gray-700
+  color: '#374151',
   lineHeight: '1.6',
-  whiteSpace: 'pre-wrap', // \n 줄바꿈 적용
+  whiteSpace: 'pre-wrap',
   textAlign: 'center',
 });
 
@@ -45,7 +45,7 @@ export const buttonWrapper = style({
 export const confirmButton = style({
   padding: '10px 20px',
   borderRadius: '6px',
-  backgroundColor: '#262626', // brand-black
+  backgroundColor: '#262626',
   color: '#ffffff',
   border: 'none',
   cursor: 'pointer',

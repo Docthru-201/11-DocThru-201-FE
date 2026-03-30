@@ -7,6 +7,8 @@ export const ITEM_COUNT = {
   CHALLENGE_SM: 4,
 };
 
+export const ITEMSPERPAGE = 5;
+
 export const SORT_OPTIONS = [
   { label: '승인 대기', value: 'pending' },
   { label: '신청 승인', value: 'approved' },

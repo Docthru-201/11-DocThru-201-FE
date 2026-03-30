@@ -7,29 +7,29 @@ export const overlay = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.3)', // bg-black/30
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
 });
 
 export const modalContainer = style({
   width: '90%',
-  maxWidth: '448px', // max-w-md
+  maxWidth: '448px',
   backgroundColor: '#ffffff',
-  borderRadius: '12px', // rounded-xl
-  padding: '24px', // p-6
+  borderRadius: '12px',
+  padding: '24px',
   boxShadow:
-    '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', // shadow-xl
+    '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
 });
 
 export const titleText = style({
   marginBottom: '16px',
-  fontSize: '18px', // text-lg
+  fontSize: '18px',
   fontWeight: 600,
-  color: '#1f2937', // text-gray-800
+  color: '#1f2937',
 });
 
 export const contentArea = style({
   marginBottom: '16px',
-  color: '#374151', // text-gray-700
+  color: '#374151',
 });
 
 export const buttonWrapper = style({
@@ -38,9 +38,9 @@ export const buttonWrapper = style({
 });
 
 export const confirmButton = style({
-  padding: '8px 16px', // px-4 py-2
-  borderRadius: '6px', // rounded-md
-  backgroundColor: '#262626', // var(--color-brand-black) 대용
+  padding: '8px 16px',
+  borderRadius: '6px',
+  backgroundColor: '#262626',
   color: '#ffffff',
   border: 'none',
   cursor: 'pointer',

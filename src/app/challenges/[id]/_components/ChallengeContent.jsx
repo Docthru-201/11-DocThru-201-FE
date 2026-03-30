@@ -31,14 +31,6 @@ export default function ChallengeContent({
 
   const user = useAuthStore((state) => state.user);
 
-  // const user = { role: 'ADMIN', id: 'test-user-id', nickname: '테스트유저' };
-  console.log(
-    '사용자정보 하드코딩 (challengeContent.jsx)========> :',
-    user.role,
-    user.id,
-    user.nickname,
-  );
-
   const adminDropdownRef = useRef(null);
   const userDropdownRef = useRef(null);
 
