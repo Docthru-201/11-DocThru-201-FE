@@ -1,12 +1,5 @@
 import { z } from 'zod';
 import { AUTH_LIMITS, REGEX } from '@/shared/constants/auth.js';
-
-/**
- * [Base Schemas]
- * 개별 필드에 대한 검증 로직입니다.
- * 상수의 값을 동적으로 반영하여 유지보수가 용이합니다.
- */
-
 // 1. 이메일 스키마
 const emailSchema = z
   .string()
