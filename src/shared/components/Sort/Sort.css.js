@@ -7,6 +7,7 @@ export const root = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   width: '170px',
+  height: '40px',
   padding: `${vars.space.sm} ${vars.space.sm} ${vars.space.sm} 10px`,
   backgroundColor: vars.color.white,
   border: `1px solid ${vars.color.gray[300]}`,
