@@ -20,47 +20,49 @@ import {
   getChallengeDetail,
   getRankingAction,
   createWorkAction,
-  getMyWorkAction,
 } from '@/shared/apis/user.js';
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
 import { useIsSize } from '@/shared/hooks/useIsSize';
 import * as styles from './Page.css.js';
-
-function useIsSize() {
-  const [size, setSize] = useState('large');
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 744) setSize('small');
-      else if (width < 1200) setSize('medium');
-      else setSize('large');
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return size;
-}
 
 export default function ChallengeDetailPage() {
   const router = useRouter();
   const { id: challengeId } = useParams();
   const containerSize = useIsSize();
 
-  const [challenge, setChallenge] = useState(null);
-  const [rankingData, setRankingData] = useState([]);
-  const [myWork, setMyWork] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  const itemsPerPage = 5;
-  const { currentItems, totalPages } = useMemo(() => {
-    const rankedData = rankingData ? getRankedList(rankingData) : [];
-    const total = Math.ceil(rankedData.length / itemsPerPage) || 1;
+  // 챌린지 상세 데이터 (React Query)
+  const { data: challenge, isLoading: isChallengeLoading } = useQuery({
+    queryKey: ['challenge', challengeId],
+    queryFn: () => getChallengeDetail(challengeId),
+    enabled: !!challengeId,
+  });
+
+  // 랭킹 데이터 (React Query)
+  const { data: rankingData = [], isLoading: isRankingLoading } = useQuery({
+    queryKey: ['challenge-ranking', challengeId],
+    queryFn: () => getRankingAction(challengeId),
+    enabled: !!challengeId,
+    select: (data) => data || [],
+  });
+
+  // 작업물 생성 (Mutation)
+  const challengeMutation = useMutation({
+    mutationFn: () => createWorkAction(challengeId),
+    onSuccess: (response) => {
+      const workId = response.data.id;
+      router.push(`/challenges/${challengeId}/work/${workId}/edit`);
+    },
+    onError: () => {
+      setModalMessage(
+        `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
+      );
+      setIsModalOpen(true);
+    },
+  });
 
   // 데이터 가공 (페이지네이션)
 
@@ -76,6 +78,7 @@ export default function ChallengeDetailPage() {
     };
   }, [rankingData, currentPage]);
 
+  // 비활성화 로직
   const isDisabled = useMemo(() => {
     if (!challenge) return true;
     const isFull =
@@ -84,47 +87,8 @@ export default function ChallengeDetailPage() {
     return isFull || challenge.isClosed || isInactiveStatus;
   }, [challenge]);
 
-  useEffect(() => {
-    if (!challengeId) return;
-
-    const fetchData = async () => {
-      try {
-        const [detail, ranks, myWorkData] = await Promise.all([
-          getChallengeDetail(challengeId),
-          getRankingAction(challengeId),
-          getMyWorkAction(challengeId).catch(() => null),
-        ]);
-        setChallenge(detail);
-        setRankingData(ranks || []);
-        setMyWork(myWorkData);
-      } catch (err) {
-        console.error('데이터 로딩 중 에러:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [challengeId]);
-
-  const handleChallenge = async () => {
-    // 이미 작업물이 있으면 이어서 작성
-    if (myWork) {
-      router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
-      return;
-    }
-
-    try {
-      const data = await createWorkAction(challengeId);
-      router.push(`/challenges/${challengeId}/work/${data.id}/edit`);
-    } catch {
-      setModalMessage(
-        `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
-      );
-      setIsModalOpen(true);
-    }
-  };
-
-  if (loading)
+  // 로딩 처리
+  if (isChallengeLoading || isRankingLoading) {
     return <div className={styles.statusWrapper}>불러오는 중...</div>;
   }
 
@@ -165,8 +129,8 @@ export default function ChallengeDetailPage() {
               deadlineText={dayjs(challenge.deadline).format('YYYY년 M월 D일')}
               personText={`${challenge.participants?.length || 0}/${challenge.maxParticipants || 0}`}
               originalLabel="원문 보기"
-              actionLabel={myWork ? '이어서 작성하기' : '작업 도전하기'}
-              onActionClick={handleChallenge}
+              actionLabel="작업 도전하기"
+              onActionClick={() => challengeMutation.mutate()}
               onOriginalViewClick={() => {
                 if (challenge.originalUrl)
                   window.open(challenge.originalUrl, '_blank');
