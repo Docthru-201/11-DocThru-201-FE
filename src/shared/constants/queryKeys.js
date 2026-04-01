@@ -15,4 +15,9 @@ export const QUERY_KEYS = {
     ranking: (challengeId) => ['challenges', challengeId, 'ranking'],
     myWork: (challengeId) => ['challenges', challengeId, 'myWork'],
   },
+  user: {
+    me: ['user', 'me'],
+    stats: ['user', 'stats'],
+    works: ['user', 'works'],
+  },
 };
