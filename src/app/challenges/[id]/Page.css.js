@@ -1,4 +1,41 @@
 import { style } from '@vanilla-extract/css';
+import { vars } from '@/styles/tokens.css';
+import { breakpoint } from '@/styles/breakpoints.css';
+
+export const page = style({
+  minHeight: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: vars.color.gray[50],
+});
+
+export const main = style({
+  flex: 1,
+  width: '100%',
+  maxWidth: '996px',
+  margin: '0 auto',
+  padding: `0 16px ${vars.space['2xl']}`,
+  boxSizing: 'border-box',
+  '@media': {
+    [breakpoint.md]: {
+      paddingLeft: 24,
+      paddingRight: 24,
+    },
+  },
+});
+
+export const pageHeader = style({
+  paddingTop: 24,
+  paddingBottom: 16,
+});
+
+export const pageTitle = style({
+  margin: 0,
+  fontSize: vars.fontSize.lg,
+  fontWeight: vars.fontWeight.semibold,
+  lineHeight: 1.3,
+  color: vars.color.gray[800],
+});
 
 export const pageContainer = style({
   width: '100%',

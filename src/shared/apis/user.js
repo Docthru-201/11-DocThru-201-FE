@@ -10,6 +10,14 @@ export async function getChallengeDetail(challengeId) {
     method: 'GET',
     credentials: 'include',
   });
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.message || '챌린지 정보를 불러올 수 없습니다.');
+  }
+
+  const result = await res.json();
+  return result;
 }
 
 // 작업물 전체 조회 (페이지네이션 루프 포함)
@@ -33,8 +41,16 @@ export async function getRankingAction(challengeId) {
         cache: 'no-store',
       },
     );
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      throw new Error(
+        errorBody.message || `오류가 발생했습니다. (상태 코드: ${res.status})`,
+      );
+    }
 
-    const works = response.data || [];
+    const result = await res.json();
+    const works = Array.isArray(result?.data) ? result.data : [];
+
     allWorks = [...allWorks, ...works];
 
     if (works.length < pageSize) {
