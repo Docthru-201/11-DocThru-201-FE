@@ -182,13 +182,11 @@ export const memberDropdown = style({
   right: 0,
   zIndex: 100,
   width: '152px',
-  height: '137px',
-  overflow: 'hidden',
+  // height 제거, overflow도 제거
   backgroundColor: vars.color.white,
   borderRadius: vars.radius.md,
   border: `2px solid ${vars.color.gray[100]}`,
   boxShadow: vars.shadow.md,
-  // boxSizing: 'border-box',
 });
 
 export const memberDropdownHeader = style({

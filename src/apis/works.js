@@ -4,14 +4,6 @@ export async function getWorkById(workId) {
   return fetchClient(`/works/${workId}`);
 }
 
-export async function createWork(body) {
-  return fetchClient('/works', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-}
-
 export async function updateWork(workId, body) {
   return fetchClient(`/works/${workId}`, {
     method: 'PATCH',

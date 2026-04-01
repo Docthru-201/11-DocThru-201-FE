@@ -315,6 +315,16 @@ export function GNB({
                     <ul className={styles.memberDropdownList}>
                       <li className={styles.memberDropdownItem}>
                         <Link
+                          href="/mypage"
+                          className={styles.memberDropdownLink}
+                          role="menuitem"
+                          onClick={() => setMemberMenuOpen(false)}
+                        >
+                          마이페이지
+                        </Link>
+                      </li>
+                      <li className={styles.memberDropdownItem}>
+                        <Link
                           href="/challenges"
                           className={styles.memberDropdownLink}
                           role="menuitem"
