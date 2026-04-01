@@ -22,6 +22,16 @@ export default function MyChallengesPage() {
   const [value, setValue] = useState('participating');
   const skipScrollToTopRef = useRef(true);
 
+  const handleTabChange = (next) => {
+    setValue(next);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (next) => {
+    setSearchValue(next);
+    setCurrentPage(1);
+  };
+
   const myChallengesTabs = [
     { value: 'participating', label: '참여중인 챌린지' },
     { value: 'done', label: '완료한 챌린지' },
@@ -41,10 +51,6 @@ export default function MyChallengesPage() {
     },
     staleTime: 60 * 1000,
   });
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [value, searchValue]);
 
   useEffect(() => {
     if (skipScrollToTopRef.current) {
@@ -91,7 +97,11 @@ export default function MyChallengesPage() {
         </header>
 
         <div className={styles.tabBar}>
-          <Tab tabs={myChallengesTabs} value={value} onChange={setValue} />
+          <Tab
+            tabs={myChallengesTabs}
+            value={value}
+            onChange={handleTabChange}
+          />
         </div>
 
         <div className={styles.toolbar}>
@@ -99,7 +109,7 @@ export default function MyChallengesPage() {
             className={styles.searchField}
             placeholder="챌린지 이름을 검색해보세요"
             value={searchValue}
-            onChange={setSearchValue}
+            onChange={handleSearchChange}
           />
         </div>
 
