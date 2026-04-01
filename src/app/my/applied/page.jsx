@@ -62,6 +62,40 @@ const category = (category) => {
   }
 };
 
+const fetchMyChallenges = async () => {
+  const res = await fetch(
+    'http://localhost:5001/api/challenges/me?tab=applied',
+    {
+      credentials: 'include',
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+
+  const payload = await res.json();
+  const items = payload.data?.items ?? [];
+
+  const rows = items.map((item) => ({
+    no: item.serialNumber,
+    field: type(item.type),
+    category: category(item.category),
+    title: item.title,
+    maxParticipants: item.maxParticipants,
+    appliedAt: formatDate(item.createdAt),
+    deadline: formatDate(item.deadline),
+    status: item.status,
+    createdAt: item.createdAt,
+  }));
+
+  rows.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  return rows;
+};
+
 export default function MyChallengePage() {
   const [tabValue, setTabValue] = useState('participating');
   const [searchValue, setSearchValue] = useState('');
@@ -72,35 +106,9 @@ export default function MyChallengePage() {
   useEffect(() => {
     if (tabValue !== 'applied') return;
 
-    const fetchMyChallenges = async () => {
+    const loadMyChallenges = async () => {
       try {
-        const res = await fetch('http://localhost:5001/api/challenges/me', {
-          credentials: 'include',
-        });
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        const rows = data.map((item) => ({
-          no: item.serialNumber,
-          field: type(item.type),
-          category: category(item.category),
-          title: item.title,
-          maxParticipants: item.maxParticipants,
-          appliedAt: formatDate(item.createdAt),
-          deadline: formatDate(item.deadline),
-          status: item.status,
-          createdAt: item.createdAt,
-        }));
-
-        rows.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        );
-
+        const rows = await fetchMyChallenges();
         setAppliedRows(rows);
       } catch (e) {
         console.error('신청한 챌린지 조회 실패', e);
@@ -108,7 +116,7 @@ export default function MyChallengePage() {
       }
     };
 
-    fetchMyChallenges();
+    loadMyChallenges();
   }, [tabValue]);
 
   const sortRows = [...appliedRows]
@@ -147,8 +155,9 @@ export default function MyChallengePage() {
           return 0;
       }
     });
+
   const filteredRows = sortRows.filter((row) => {
-    if (!searchValue) return true; // 검색어 없으면 전체
+    if (!searchValue) return true;
     const keyword = searchValue.toLowerCase();
     return row.title.toLowerCase().includes(keyword);
   });

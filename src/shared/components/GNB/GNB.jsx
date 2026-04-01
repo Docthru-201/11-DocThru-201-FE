@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './GNB.css.js';
 import { Button } from '@/shared/components';
+import { getMyNotifications } from '@/apis/notification';
 
 function gradeToLabel(grade) {
   if (grade === 'EXPERT') return '전문가';
@@ -20,6 +21,121 @@ function Logo({ href = '/', ariaLabel = 'Docthru 홈' }) {
       </span>
       Docthru
     </Link>
+  );
+}
+
+function formatNotificationDate(value) {
+  if (!value) return '';
+  const str = typeof value === 'string' ? value : new Date(value).toISOString();
+  return str.slice(0, 10).replaceAll('-', '.');
+}
+
+function NotificationBell() {
+  const [open, setOpen] = useState(false);
+  const [hideBadge, setHideBadge] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [items, setItems] = useState([]);
+  const containerRef = useRef(null);
+  const visibleItems = items.filter((n) => n.message?.trim());
+  const hasUnread = visibleItems.some((n) => !n.isRead);
+  const showBadge = hasUnread && !hideBadge;
+
+  async function loadNotifications() {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getMyNotifications();
+      setItems(data);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleToggle = () => {
+    setOpen((prev) => !prev);
+    setHideBadge(true);
+  };
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    if (!items.length && !loading && !error) {
+      void loadNotifications();
+    }
+
+    const handlePointerDown = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  return (
+    <div ref={containerRef} className={styles.notificationContainer}>
+      <button
+        type="button"
+        className={clsx(styles.profileWrap, styles.notificationButton)}
+        aria-label={hasUnread ? '읽지 않은 알림이 있습니다' : '알림'}
+        aria-haspopup="true"
+        aria-expanded={open}
+        onClick={handleToggle}
+      >
+        <Icon name="notificationBellEmpty" width={24} height={24} aria-hidden />
+        {showBadge && <span className={styles.notificationBadge} aria-hidden />}
+      </button>
+
+      {open && (
+        <div
+          className={styles.notificationDropdown}
+          role="region"
+          aria-label="알림"
+        >
+          <div className={styles.notificationHeader}>알림</div>
+          <ul className={styles.notificationList}>
+            {loading && (
+              <li className={styles.notificationEmpty}>
+                알림을 불러오는 중입니다.
+              </li>
+            )}
+            {error && !loading && (
+              <li className={styles.notificationEmpty}>
+                알림을 불러오지 못했습니다.
+              </li>
+            )}
+            {!loading && !error && visibleItems.length === 0 && (
+              <li className={styles.notificationEmpty}>알림이 없습니다.</li>
+            )}
+            {!loading &&
+              !error &&
+              visibleItems.map((n) => (
+                <li key={n.id} className={styles.notificationItem}>
+                  <p className={styles.notificationMessage}>{n.message}</p>
+                  <p className={styles.notificationDate}>
+                    {formatNotificationDate(n.createdAt)}
+                  </p>
+                </li>
+              ))}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -141,16 +257,11 @@ export function GNB({
               <Link href="/login">로그인</Link>
             </Button>
           )}
+
+          {(isMember || isAdmin) && <NotificationBell />}
+
           {isMember && (
             <>
-              <span className={styles.profileWrap} aria-hidden>
-                <Icon
-                  name="notificationBellEmpty"
-                  width={24}
-                  height={24}
-                  aria-hidden
-                />
-              </span>
               <div className={styles.memberMenu} ref={memberMenuRef}>
                 <button
                   type="button"
