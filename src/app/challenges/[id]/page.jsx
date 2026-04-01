@@ -28,6 +28,7 @@ import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDeta
 import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
 import { useMyWork } from '@/features/works/hooks/useMyWork.js';
 import { useWorkMutation } from '@/features/works/hooks/useWorkMutation.js';
+import { RankingListRow } from './_components/RankingListRow.jsx';
 
 export default function ChallengeDetailPage() {
   const { id: challengeId } = useParams();
@@ -182,22 +183,10 @@ export default function ChallengeDetailPage() {
               <List withDivider={false}>
                 {currentItems.map((item, index) => (
                   <React.Fragment key={item.workId}>
-                    <ListRow
-                      badgeRank={item.rank}
-                      badgeLabel={item.rank.toString().padStart(2, '0')}
-                      showBadge
-                      name={item.author.authorNickname}
-                      role={item.author.grade === 'EXPERT' ? '전문가' : '일반'}
-                      likeCount={item.likeCount}
-                      profileType={
-                        item.author.grade === 'EXPERT' ? 'admin' : 'member'
-                      }
-                      onWorkClick={() =>
-                        router.push(
-                          `/challenges/${challengeId}/work/${item.workId}`,
-                        )
-                      }
-                      onLikeClick={() => {}}
+                    <RankingListRow
+                      item={item}
+                      challengeId={challengeId}
+                      router={router}
                     />
                     {index < currentItems.length - 1 && (
                       <div className={styles.dividerWrapper}>
