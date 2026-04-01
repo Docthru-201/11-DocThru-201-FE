@@ -44,7 +44,6 @@ export const searchSortWrapper = style({
   marginBottom: '24px',
   alignItems: 'center',
   position: 'relative',
-  zIndex: 100,
   '@media': {
     'screen and (max-width: 743px)': {
       gridTemplateColumns: '1fr',
