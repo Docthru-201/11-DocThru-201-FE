@@ -11,6 +11,11 @@ export const useWorkMutation = (workId, challengeId) => {
 
   const createMutation = useMutation({
     mutationFn: () => createWorkAction(challengeId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+      });
+    },
     onError: (error) => {
       toast.error(error.message || '작업물 생성에 실패했습니다.');
     },
@@ -44,6 +49,10 @@ export const useWorkMutation = (workId, challengeId) => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.work.detail(workId),
       });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+      });
+
       router.push(`/challenges/${challengeId}`);
     },
     onError: (error) => {
