@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMyWorks } from '@/features/users/hooks/useMyWorks';
 import * as styles from './WorkListSection.css.js';
+import WorkCard from './WorkCard.jsx';
 
 const STATUS_FILTER = [
   { label: '전체', value: 'ALL' },
@@ -46,34 +47,7 @@ export default function WorkListSection() {
       {filteredWorks.length > 0 ? (
         <div className={styles.workList}>
           {filteredWorks.map((work) => (
-            <div
-              key={work.id}
-              className={styles.workCard}
-              onClick={() =>
-                router.push(`/challenges/${work.challengeId}/work/${work.id}`)
-              }
-            >
-              <div className={styles.workInfo}>
-                <span className={styles.challengeTitle}>
-                  {work.challenge.title}
-                </span>
-                <span
-                  className={
-                    work.status === 'DRAFT'
-                      ? styles.statusDraft
-                      : styles.statusSubmitted
-                  }
-                >
-                  {work.status === 'DRAFT' ? '임시저장' : '제출완료'}
-                </span>
-              </div>
-              <div className={styles.workMeta}>
-                <span className={styles.likeCount}>❤️ {work.likeCount}</span>
-                <span className={styles.date}>
-                  {new Date(work.createdAt).toLocaleDateString('ko-KR')}
-                </span>
-              </div>
-            </div>
+            <WorkCard key={work.id} work={work} />
           ))}
         </div>
       ) : (

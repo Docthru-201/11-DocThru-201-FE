@@ -51,4 +51,7 @@ export const introduction = style({
   textAlign: 'center',
   lineHeight: '1.5',
   marginTop: '4px',
+  wordBreak: 'break-all',
+  overflowWrap: 'break-word',
+  width: '100%',
 });

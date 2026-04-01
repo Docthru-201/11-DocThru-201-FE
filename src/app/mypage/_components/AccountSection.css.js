@@ -114,3 +114,9 @@ export const saveButton = style({
     cursor: 'not-allowed',
   },
 });
+export const charCount = style({
+  fontSize: '12px',
+  color: '#9ca3af',
+  textAlign: 'right',
+  marginTop: '4px',
+});

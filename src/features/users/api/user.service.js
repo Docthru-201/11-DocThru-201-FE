@@ -19,3 +19,11 @@ export async function updateMe(data) {
 export async function getMyWorks() {
   return fetchClient('/users/me/works');
 }
+
+export async function updateMyProfile(data) {
+  return fetchClient('/users/me/profile', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
