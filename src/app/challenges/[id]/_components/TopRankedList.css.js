@@ -1,14 +1,16 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants, globalStyle } from '@vanilla-extract/css';
 
 export const sectionContainer = style({
   width: '100%',
   maxWidth: 'none',
   display: 'flex',
   flexDirection: 'column',
+  overflow: 'hidden',
 });
 
 export const sliderTrack = style({
   display: 'flex',
+  gap: '12px',
   transition: 'transform 0.5s ease-in-out',
 });
 
@@ -18,16 +20,23 @@ const cardBase = style({
   flexDirection: 'column',
   minHeight: '240px',
   flexShrink: 0,
+  width: '92%',
   borderRadius: '16px',
   border: '2px solid #e5e7eb',
   backgroundColor: '#f9fafb',
   transition: 'all 0.3s ease',
+  boxSizing: 'border-box',
+  // '@media': {
+  //   'screen and (max-width: 767px)': {
+  //     width: '88%',
+  //   },
+  // },
 });
 
 export const cardVariants = styleVariants({
   single: [cardBase, { width: '100%', opacity: 1 }],
-  active: [cardBase, { width: '95%', marginRight: '8px', opacity: 1 }],
-  inactive: [cardBase, { width: '95%', marginRight: '8px', opacity: 0.3 }],
+  active: [cardBase, { opacity: 1 }],
+  inactive: [cardBase, { opacity: 0.3 }],
 });
 
 export const badge = style({
@@ -59,7 +68,6 @@ export const authorGroup = style({
   gap: '8px',
 });
 
-// 추가된 내부 스타일들
 export const userInfoLeft = style({
   display: 'flex',
   alignItems: 'center',
@@ -107,6 +115,11 @@ export const contentArea = style({
   flexDirection: 'column',
   flexGrow: 1,
   padding: '0 24px',
+  '@media': {
+    'screen and (max-width: 767px)': {
+      padding: '0 8px',
+    },
+  },
 });
 
 export const hr = style({
@@ -127,12 +140,39 @@ export const contentTextVariants = styleVariants({
     contentTextBase,
     {
       display: '-webkit-box',
-      WebkitLineClamp: 5,
       WebkitBoxOrientation: 'vertical',
       overflow: 'hidden',
+      width: '100%',
+      '@media': {
+        'screen and (min-width: 1024px)': {
+          height: '179px',
+        },
+        'screen and (min-width: 768px) and (max-width: 1023px)': {
+          height: '188px',
+        },
+        'screen and (max-width: 767px)': {
+          height: '220px',
+        },
+      },
     },
   ],
-  expanded: [contentTextBase],
+  expanded: [
+    contentTextBase,
+    {
+      width: '100%',
+      height: 'auto',
+    },
+  ],
+});
+
+globalStyle(`${contentTextVariants.clamped} *`, {
+  wordBreak: 'break-word',
+  overflowWrap: 'break-word',
+});
+
+globalStyle(`${contentTextVariants.expanded} *`, {
+  wordBreak: 'break-word',
+  overflowWrap: 'break-word',
 });
 
 export const moreButtonWrapper = style({
