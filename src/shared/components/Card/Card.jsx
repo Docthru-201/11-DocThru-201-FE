@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChipCard, Chip, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './Card.css.js';
@@ -28,6 +29,7 @@ function formatDeadlineText(deadline) {
 
 export function Card({
   study,
+  challengeId: challengeIdProp = undefined,
   status: statusProp = undefined,
   title: titleProp = undefined,
   chipType: chipTypeProp = undefined,
@@ -53,6 +55,7 @@ export function Card({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const router = useRouter();
   let status = statusProp;
   let title = titleProp;
   let chipType = chipTypeProp;
@@ -86,8 +89,31 @@ export function Card({
     showCtaResolved = study.isParticipating === true;
   }
 
+  const challengeId = challengeIdProp ?? study?.id;
+  const isCardNavigable = challengeId != null && challengeId !== '';
+
+  const goToChallenge = () => {
+    if (!isCardNavigable) return;
+    router.push(`/challenges/${challengeId}`);
+  };
+
   return (
-    <article className={styles.card}>
+    <article
+      className={`${styles.card}${isCardNavigable ? ` ${styles.cardClickable}` : ''}`}
+      onClick={isCardNavigable ? goToChallenge : undefined}
+      onKeyDown={
+        isCardNavigable
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                goToChallenge();
+              }
+            }
+          : undefined
+      }
+      role={isCardNavigable ? 'link' : undefined}
+      tabIndex={isCardNavigable ? 0 : undefined}
+    >
       <div className={styles.header}>
         <div className={styles.titleBlock}>
           {status != null && <ChipCard status={status} />}
@@ -173,7 +199,13 @@ export function Card({
               variant="outlineIcon"
               icon={<Icon name="arrowRight" />}
               iconPosition="right"
-              onClick={onCtaClick}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCtaClick();
+                if (isCardNavigable) {
+                  goToChallenge();
+                }
+              }}
             >
               도전 계속하기
             </Button>

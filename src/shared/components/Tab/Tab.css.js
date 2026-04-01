@@ -35,18 +35,19 @@ export const item = styleVariants({
     itemBase,
     {
       color: vars.color.gray[800],
+      borderBottom: `3px solid ${vars.color.gray[800]}`,
     },
   ],
 });
 
 export const indicator = style({
-  width: '100%',
-  height: '3px',
-  backgroundColor: vars.color.gray[800],
+  // width: '100%',
+  // height: '3px',
+  // backgroundColor: vars.color.gray[800],
   borderRadius: 0,
-  display: 'block',
-  alignSelf: 'stretch',
-  flexShrink: 0,
+  // display: 'block',
+  // alignSelf: 'stretch',
+  // flexShrink: 0,
 });
 
 export const indicatorInactive = style({

@@ -24,6 +24,22 @@ const config = {
 
     config.plugins = [...(config.plugins || []), vanillaExtractPlugin()];
 
+    config.optimizeDeps = {
+      ...(config.optimizeDeps || {}),
+      esbuildOptions: {
+        ...(config.optimizeDeps?.esbuildOptions || {}),
+        loader: {
+          ...(config.optimizeDeps?.esbuildOptions?.loader || {}),
+          '.js': 'jsx',
+        },
+      },
+    };
+
+    config.esbuild = {
+      ...(config.esbuild || {}),
+      jsx: 'automatic',
+    };
+
     return config;
   },
 };

@@ -2,6 +2,10 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 import { breakpoint } from '@/styles/breakpoints.css';
 
+export const cardClickable = style({
+  cursor: 'pointer',
+});
+
 export const card = style({
   display: 'flex',
   flexDirection: 'column',

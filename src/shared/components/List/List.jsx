@@ -64,7 +64,7 @@ export function ListRow({
   );
 }
 
-export function List({ children, withDivider }) {
+export function List({ children, withDivider = false }) {
   return (
     <div className={styles.list}>
       {children}
