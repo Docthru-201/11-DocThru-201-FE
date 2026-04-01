@@ -13,6 +13,7 @@ function FeedbackItem({
   onDelete,
   isUpdatePending,
   isDeletePending,
+  onProfileClick,
 }) {
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -61,7 +62,11 @@ function FeedbackItem({
           <div className={styles.avatar} />
         )}
         <div className={styles.authorInfo}>
-          <span className={styles.nickname}>
+          <span
+            className={styles.nickname}
+            onClick={() => comment.author && onProfileClick(comment.author.id)}
+            style={{ cursor: comment.author ? 'pointer' : 'default' }}
+          >
             {comment.author?.nickname ?? '탈퇴한 유저'}
           </span>
           <span className={styles.date}>{formatDate(comment.createdAt)}</span>
@@ -160,6 +165,7 @@ function FeedbackItem({
               onDelete={onDelete}
               isUpdatePending={isUpdatePending}
               isDeletePending={isDeletePending}
+              onProfileClick={onProfileClick}
             />
           ))}
         </div>
@@ -168,7 +174,7 @@ function FeedbackItem({
   );
 }
 
-export default function FeedbackList({ workId }) {
+export default function FeedbackList({ workId, onProfileClick }) {
   // ✅ useComments는 여기서 딱 한 번만 호출
   const {
     comments,
@@ -208,6 +214,7 @@ export default function FeedbackList({ workId }) {
               onDelete={deleteComment}
               isUpdatePending={isUpdatePending}
               isDeletePending={isDeletePending}
+              onProfileClick={onProfileClick}
             />
           ))}
           {hasMore && (

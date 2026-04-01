@@ -38,6 +38,7 @@ export default function WorkDetailViewer({
   isLiked,
   toggleLike,
   isLikePending,
+  onProfileClick,
 }) {
   const user = useAuthStore((state) => state.user);
 
@@ -67,8 +68,13 @@ export default function WorkDetailViewer({
         ) : (
           <div className={styles.avatar} />
         )}
-        <span className={styles.nickname}>{work.user.nickname}</span>
-
+        <span
+          className={styles.nickname}
+          onClick={() => onProfileClick(work.user.id)}
+          style={{ cursor: 'pointer' }}
+        >
+          {work.user.nickname}
+        </span>
         <button
           className={styles.likeButton}
           onClick={toggleLike}
