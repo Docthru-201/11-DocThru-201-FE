@@ -5,7 +5,6 @@ import { useLandingIntroPhase } from '@/shared/hooks/useIntroPhase';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { GNBContainer } from '@/shared/components/GNB/GNBContainer';
 import { Button, Icon } from '@/shared/components';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import * as styles from './page.css';
@@ -89,8 +88,6 @@ export default function LandingPage() {
   return (
     <>
       <div className={styles.page}>
-        <GNBContainer />
-
         <section className={styles.hero}>
           <Image
             src={heroBackground}

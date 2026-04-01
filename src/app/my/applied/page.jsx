@@ -10,7 +10,6 @@ import {
   Icon,
 } from '@/shared/components/index.js';
 import * as styles from './page.css.js';
-import { GNBContainer } from '@/shared/components/GNB/GNBContainer.jsx';
 import { formatDate } from '@/shared/utils/formatDate.js';
 
 const Tabs = [
@@ -166,7 +165,6 @@ export default function MyChallengePage() {
 
   return (
     <>
-      <GNBContainer />
       <main className={styles.page}>
         <div className={styles.header}>
           <span>나의 챌린지</span>
