@@ -1,9 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  createNewWork,
-  updateExistingWork,
-  deleteExistingWork,
-} from '../api/work.service';
+import { updateExistingWork, deleteExistingWork } from '../api/work.service';
+import { createWorkAction } from '@/shared/apis/user';
 import { QUERY_KEYS } from '@/shared/constants/queryKeys';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -13,10 +10,7 @@ export const useWorkMutation = (workId, challengeId) => {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: (body) => createNewWork(body),
-    onSuccess: (data) => {
-      toast.success('작업물이 생성되었습니다.');
-    },
+    mutationFn: () => createWorkAction(challengeId),
     onError: (error) => {
       toast.error(error.message || '작업물 생성에 실패했습니다.');
     },

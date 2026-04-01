@@ -24,10 +24,14 @@ import {
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
 import { useIsSize } from '@/shared/hooks/useIsSize';
 import * as styles from './Page.css.js';
+import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDetail.js';
+import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
+import { useMyWork } from '@/features/works/hooks/useMyWork.js';
+import { useWorkMutation } from '@/features/works/hooks/useWorkMutation.js';
 
 export default function ChallengeDetailPage() {
-  const router = useRouter();
   const { id: challengeId } = useParams();
+  const router = useRouter();
   const containerSize = useIsSize();
 
   const [currentPage, setCurrentPage] = useState(1);

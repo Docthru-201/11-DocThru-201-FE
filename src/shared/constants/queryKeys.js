@@ -10,4 +10,9 @@ export const QUERY_KEYS = {
   comments: {
     all: (workId) => ['comments', workId],
   },
+  challenge: {
+    detail: (challengeId) => ['challenges', challengeId],
+    ranking: (challengeId) => ['challenges', challengeId, 'ranking'],
+    myWork: (challengeId) => ['challenges', challengeId, 'myWork'],
+  },
 };
