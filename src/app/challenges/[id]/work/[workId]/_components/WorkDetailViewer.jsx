@@ -78,7 +78,15 @@ export default function WorkDetailViewer({
         </button>
       </div>
 
-      <WorkContent content={work.content} />
+      {work.content ? (
+        <WorkContent content={work.content} />
+      ) : (
+        <div
+          style={{ textAlign: 'center', padding: '60px 0', color: '#A3A3A3' }}
+        >
+          아직 아무런 번역을 진행하지 않았어요!
+        </div>
+      )}
     </div>
   );
 }

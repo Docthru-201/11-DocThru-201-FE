@@ -2,69 +2,43 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import React, { useState, useMemo } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
 import { ITEMSPERPAGE } from '@/shared/constants/file';
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
-import { List, ListRow } from '@/shared/components/List';
+import { List } from '@/shared/components/List';
 import LineDivider from '@/app/admin/_components/LineDivider';
 
 import ChallengeContent from '@/app/challenges/[id]/_components/ChallengeContent';
 import TopRankedList from '@/app/challenges/[id]/_components/TopRankedList';
 import ModalMessage from '@/app/challenges/[id]/_components/ModalMessage';
 
-import {
-  getChallengeDetail,
-  getRankingAction,
-  createWorkAction,
-} from '@/shared/apis/user.js';
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
 import { useIsSize } from '@/shared/hooks/useIsSize';
 import * as styles from './Page.css.js';
+import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDetail.js';
+import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
+import { useMyWork } from '@/features/works/hooks/useMyWork.js';
+import { useWorkMutation } from '@/features/works/hooks/useWorkMutation.js';
+import { RankingListRow } from './_components/RankingListRow.jsx';
 
 export default function ChallengeDetailPage() {
-  const router = useRouter();
   const { id: challengeId } = useParams();
+  const router = useRouter();
   const containerSize = useIsSize();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  // 챌린지 상세 데이터 (React Query)
-  const { data: challenge, isLoading: isChallengeLoading } = useQuery({
-    queryKey: ['challenge', challengeId],
-    queryFn: () => getChallengeDetail(challengeId),
-    enabled: !!challengeId,
-  });
-
-  // 랭킹 데이터 (React Query)
-  const { data: rankingData = [], isLoading: isRankingLoading } = useQuery({
-    queryKey: ['challenge-ranking', challengeId],
-    queryFn: () => getRankingAction(challengeId),
-    enabled: !!challengeId,
-    select: (data) => data || [],
-  });
-
-  // 작업물 생성 (Mutation)
-  const challengeMutation = useMutation({
-    mutationFn: () => createWorkAction(challengeId),
-    onSuccess: (response) => {
-      const workId = response.data.id;
-      router.push(`/challenges/${challengeId}/work/${workId}/edit`);
-    },
-    onError: () => {
-      setModalMessage(
-        `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
-      );
-      setIsModalOpen(true);
-    },
-  });
-
-  // 데이터 가공 (페이지네이션)
+  const { challenge, isPending: isChallengePending } =
+    useChallengeDetail(challengeId);
+  const { rankingData, isPending: isRankingPending } =
+    useChallengeRanking(challengeId);
+  const { myWork } = useMyWork(challengeId);
+  const { createWork } = useWorkMutation(null, challengeId);
 
   const { currentItems, totalPages } = useMemo(() => {
     const rankedData = getRankedList(rankingData);
@@ -78,7 +52,6 @@ export default function ChallengeDetailPage() {
     };
   }, [rankingData, currentPage]);
 
-  // 비활성화 로직
   const isDisabled = useMemo(() => {
     if (!challenge) return true;
     const isFull =
@@ -87,12 +60,35 @@ export default function ChallengeDetailPage() {
     return isFull || challenge.isClosed || isInactiveStatus;
   }, [challenge]);
 
-  // 로딩 처리
-  if (isChallengeLoading || isRankingLoading) {
+  const handleChallenge = () => {
+    if (myWork?.status === 'DRAFT') {
+      router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
+      return;
+    }
+    if (myWork && myWork.status !== 'DRAFT') {
+      setModalMessage(
+        `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
+      );
+      setIsModalOpen(true);
+      return;
+    }
+    createWork(undefined, {
+      onSuccess: (data) => {
+        router.push(`/challenges/${challengeId}/work/${data.id}/edit`);
+      },
+      onError: () => {
+        setModalMessage(
+          `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
+        );
+        setIsModalOpen(true);
+      },
+    });
+  };
+
+  if (isChallengePending || isRankingPending) {
     return <div className={styles.statusWrapper}>불러오는 중...</div>;
   }
 
-  // 예외 처리
   if (!challenge) {
     return (
       <div className={styles.statusWrapper}>챌린지를 찾을 수 없습니다.</div>
@@ -129,13 +125,15 @@ export default function ChallengeDetailPage() {
               deadlineText={dayjs(challenge.deadline).format('YYYY년 M월 D일')}
               personText={`${challenge.participants?.length || 0}/${challenge.maxParticipants || 0}`}
               originalLabel="원문 보기"
-              actionLabel="작업 도전하기"
-              onActionClick={() => challengeMutation.mutate()}
+              actionLabel={
+                myWork?.status === 'DRAFT' ? '이어서 작성하기' : '작업 도전하기'
+              }
+              onActionClick={handleChallenge}
               onOriginalViewClick={() => {
                 if (challenge.originalUrl)
                   window.open(challenge.originalUrl, '_blank');
               }}
-              isDisabled={isDisabled || challengeMutation.isPending}
+              isDisabled={isDisabled}
             />
           </div>
         </section>
@@ -178,22 +176,10 @@ export default function ChallengeDetailPage() {
               <List withDivider={false}>
                 {currentItems.map((item, index) => (
                   <React.Fragment key={item.workId}>
-                    <ListRow
-                      badgeRank={item.rank}
-                      badgeLabel={item.rank.toString().padStart(2, '0')}
-                      showBadge
-                      name={item.author.authorNickname}
-                      role={item.author.grade === 'EXPERT' ? '전문가' : '일반'}
-                      likeCount={item.likeCount}
-                      profileType={
-                        item.author.grade === 'EXPERT' ? 'admin' : 'member'
-                      }
-                      onWorkClick={() =>
-                        router.push(
-                          `/challenges/${challengeId}/work/${item.workId}`,
-                        )
-                      }
-                      onLikeClick={() => {}}
+                    <RankingListRow
+                      item={item}
+                      challengeId={challengeId}
+                      router={router}
                     />
                     {index < currentItems.length - 1 && (
                       <div className={styles.dividerWrapper}>

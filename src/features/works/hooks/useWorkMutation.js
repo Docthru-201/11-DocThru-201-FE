@@ -1,9 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  createNewWork,
-  updateExistingWork,
-  deleteExistingWork,
-} from '../api/work.service';
+import { updateExistingWork, deleteExistingWork } from '../api/work.service';
+import { createWorkAction } from '@/shared/apis/user';
 import { QUERY_KEYS } from '@/shared/constants/queryKeys';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -13,9 +10,14 @@ export const useWorkMutation = (workId, challengeId) => {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: (body) => createNewWork(body),
-    onSuccess: (data) => {
-      toast.success('작업물이 생성되었습니다.');
+    mutationFn: () => createWorkAction(challengeId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.detail(challengeId), // ← 추가
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+      });
     },
     onError: (error) => {
       toast.error(error.message || '작업물 생성에 실패했습니다.');
@@ -24,11 +26,19 @@ export const useWorkMutation = (workId, challengeId) => {
 
   const updateMutation = useMutation({
     mutationFn: (body) => updateExistingWork(workId, body),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       toast.success('작업물이 수정되었습니다.');
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.work.detail(workId),
       });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.myWork(challengeId),
+      });
+      if (variables?.action === 'SUBMIT') {
+        queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+        });
+      }
     },
     onError: (error) => {
       toast.error(error.message || '작업물 수정에 실패했습니다.');
@@ -40,8 +50,15 @@ export const useWorkMutation = (workId, challengeId) => {
     onSuccess: () => {
       toast.success('작업물이 삭제되었습니다.');
       queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.detail(challengeId), // ← 추가
+      });
+      queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.work.detail(workId),
       });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+      });
+
       router.push(`/challenges/${challengeId}`);
     },
     onError: (error) => {

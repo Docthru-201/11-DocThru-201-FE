@@ -182,13 +182,11 @@ export const memberDropdown = style({
   right: 0,
   zIndex: 100,
   width: '152px',
-  height: '137px',
-  overflow: 'hidden',
+  // height 제거, overflow도 제거
   backgroundColor: vars.color.white,
   borderRadius: vars.radius.md,
   border: `2px solid ${vars.color.gray[100]}`,
   boxShadow: vars.shadow.md,
-  // boxSizing: 'border-box',
 });
 
 export const memberDropdownHeader = style({
@@ -321,3 +319,100 @@ export const adminDropdownLogout = style([
     color: vars.color.gray[400],
   },
 ]);
+
+export const notificationContainer = style({
+  position: 'relative',
+  flexShrink: 0,
+  zIndex: 9999,
+});
+
+export const notificationButton = style({
+  position: 'relative',
+  border: 'none',
+  background: 'transparent',
+  padding: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 32,
+  height: 32,
+  flexShrink: 0,
+  cursor: 'pointer',
+});
+
+export const notificationBadge = style({
+  position: 'absolute',
+  top: 4,
+  right: 4,
+  width: 8,
+  height: 8,
+  borderRadius: '9999px',
+  backgroundColor: '#EF4444',
+});
+
+export const notificationDropdown = style({
+  position: 'absolute',
+  top: 'calc(100% + 8px)',
+  right: 0,
+  zIndex: 9999,
+  width: '363px',
+  maxHeight: '465px',
+  borderRadius: '8px',
+  border: '2px solid #E5E5E5',
+  background: '#FFF',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+export const notificationHeader = style({
+  height: '50px',
+  padding: '0 24px',
+  display: 'flex',
+  alignItems: 'center',
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: '16px',
+  fontWeight: 600,
+  lineHeight: '32px',
+  color: vars.color.gray[900],
+  flexShrink: 0,
+});
+
+export const notificationList = style({
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
+  overflowY: 'auto',
+  maxHeight: '415px',
+});
+
+export const notificationItem = style({
+  padding: '12px 16px',
+  borderBottom: '1px solid #E5E5E5',
+});
+
+export const notificationMessage = style({
+  padding: '12px 16px',
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: '14px',
+  fontWeight: 400,
+  lineHeight: 'normal',
+  color: vars.color.gray[900],
+  wordBreak: 'keep-all',
+});
+
+export const notificationDate = style({
+  margin: 0,
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize.xs,
+  lineHeight: vars.lineHeight.normal,
+  color: vars.color.gray[400],
+});
+
+export const notificationEmpty = style({
+  padding: '16px 20px',
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize.sm,
+  lineHeight: vars.lineHeight.normal,
+  color: vars.color.gray[500],
+});
