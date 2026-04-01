@@ -27,3 +27,6 @@ export async function updateMyProfile(data) {
     body: JSON.stringify(data),
   });
 }
+export async function getPublicProfile(userId) {
+  return fetchClient(`/users/${userId}`);
+}

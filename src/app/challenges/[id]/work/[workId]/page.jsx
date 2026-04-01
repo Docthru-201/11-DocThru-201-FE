@@ -9,6 +9,7 @@ import WorkDetailViewer from './_components/WorkDetailViewer';
 import WorkActionButtons from './_components/WorkActionButtons';
 import FeedbackList from './_components/FeedbackList';
 import FeedbackForm from './_components/FeedbackForm';
+import ProfileModal from '../../_components/ProfileModal';
 import * as styles from './page.css';
 
 export default function WorkPage() {
@@ -18,6 +19,7 @@ export default function WorkPage() {
   const { deleteWork, isDeletePending } = useWorkMutation(workId, id);
   const { likeCount, isLiked, toggleLike, isLikePending } = useLikes(workId);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [profileUserId, setProfileUserId] = useState(null);
 
   const handleDelete = () => {
     deleteWork();
@@ -37,6 +39,7 @@ export default function WorkPage() {
             isLiked={isLiked}
             toggleLike={toggleLike}
             isLikePending={isLikePending}
+            onProfileClick={(userId) => setProfileUserId(userId)}
           />
           <WorkActionButtons
             work={work}
@@ -47,7 +50,10 @@ export default function WorkPage() {
         </div>
 
         <FeedbackForm workId={workId} />
-        <FeedbackList workId={workId} />
+        <FeedbackList
+          workId={workId}
+          onProfileClick={(userId) => setProfileUserId(userId)}
+        />
       </div>
 
       <Modal
@@ -59,6 +65,12 @@ export default function WorkPage() {
         onPrimary={handleDelete}
         onSecondary={() => setIsDeleteModalOpen(false)}
       />
+      {profileUserId && (
+        <ProfileModal
+          userId={profileUserId}
+          onClose={() => setProfileUserId(null)}
+        />
+      )}
     </div>
   );
 }

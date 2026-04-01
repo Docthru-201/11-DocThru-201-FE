@@ -19,5 +19,6 @@ export const QUERY_KEYS = {
     me: ['user', 'me'],
     stats: ['user', 'stats'],
     works: ['user', 'works'],
+    profile: (userId) => ['user', 'profile', userId],
   },
 };
