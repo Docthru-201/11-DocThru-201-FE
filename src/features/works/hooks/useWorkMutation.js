@@ -13,6 +13,9 @@ export const useWorkMutation = (workId, challengeId) => {
     mutationFn: () => createWorkAction(challengeId),
     onSuccess: () => {
       queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.detail(challengeId), // ← 추가
+      });
+      queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.challenge.ranking(challengeId),
       });
     },
@@ -46,6 +49,9 @@ export const useWorkMutation = (workId, challengeId) => {
     mutationFn: () => deleteExistingWork(workId),
     onSuccess: () => {
       toast.success('작업물이 삭제되었습니다.');
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.detail(challengeId), // ← 추가
+      });
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.work.detail(workId),
       });
