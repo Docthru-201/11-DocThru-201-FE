@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(yarn --version)",
+      "Bash(pnpm --version)",
+      "Bash(pnpm add:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node -e \"require\\(''''./src/features/editor/Toolbar.jsx''''\\)\")",
+      "Bash(node -e \"const m = require\\(''./node_modules/@tiptap/extension-text-style/dist/index.js''\\); console.log\\(Object.keys\\(m\\)\\)\")",
+      "Bash(node -e \"const m = require\\(''./node_modules/@tiptap/extension-color/dist/index.js''\\); console.log\\(Object.keys\\(m\\)\\)\")",
+      "Bash(xargs grep:*)"
+    ]
+  }
+}

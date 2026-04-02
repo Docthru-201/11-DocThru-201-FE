@@ -1,11 +1,13 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useWork } from '@/features/works/hooks/useWork';
 import { useWorkMutation } from '@/features/works/hooks/useWorkMutation';
 import { useEditorStore } from '@/features/editor/store/useEditorStore';
 import TiptapEditor from '@/features/editor/TiptapEditor';
 import { Button } from '@/shared/components/Button';
+import { Icon } from '@/shared/components/Icon';
 import { Modal } from '@/shared/components/Modal';
 import * as styles from './page.css.js';
 
@@ -52,35 +54,51 @@ export default function WorkEditPage() {
   return (
     <div className={styles.pageWrapper}>
       <header className={styles.header}>
-        <div className={styles.headerLeft}>
+        <div className={styles.headerInner}>
+          <div className={styles.headerLeft}>
+            <Link href="/challenges" className={styles.logo}>
+              <span className={styles.logoIcon}>
+                <Icon name="docthruLogo" width={24} height={28} aria-hidden />
+              </span>
+              Docthru
+            </Link>
+          </div>
+          <div className={styles.headerRight}>
+            <Button
+              variant="filledTonal"
+              className={styles.headerButton}
+              onClick={() => setIsCancelModalOpen(true)}
+              disabled={isDeletePending}
+            >
+              {isDeletePending ? '삭제 중...' : '포기'}
+            </Button>
+            <Button
+              variant="outline"
+              className={styles.headerButton}
+              onClick={handleSave}
+              disabled={isUpdatePending || !content}
+            >
+              임시저장
+            </Button>
+            <Button
+              variant="solid"
+              className={styles.headerButton}
+              onClick={handleSubmit}
+              disabled={isUpdatePending || !content}
+            >
+              {isUpdatePending ? '제출 중...' : '제출하기'}
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className={styles.titleBar}>
+        <div className={styles.titleBarInner}>
           <span className={styles.challengeTitle}>
             {work?.challenge?.title}
           </span>
         </div>
-        <div className={styles.headerRight}>
-          <Button
-            variant="filledTonal"
-            onClick={() => setIsCancelModalOpen(true)}
-            disabled={isDeletePending}
-          >
-            {isDeletePending ? '삭제 중...' : '포기'}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleSave}
-            disabled={isUpdatePending || !content}
-          >
-            임시저장
-          </Button>
-          <Button
-            variant="solid"
-            onClick={handleSubmit}
-            disabled={isUpdatePending || !content}
-          >
-            {isUpdatePending ? '제출 중...' : '제출하기'}
-          </Button>
-        </div>
-      </header>
+      </div>
 
       <div className={styles.contentArea}>
         <div className={showOriginal ? styles.editorHalf : styles.editorArea}>

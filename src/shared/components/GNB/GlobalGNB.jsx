@@ -9,9 +9,10 @@ const NO_GNB_PREFIXES = ['/intro', '/login', '/signup'];
 export function GlobalGNB() {
   const pathname = usePathname();
 
-  const hideGnb = NO_GNB_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
-  );
+  const hideGnb =
+    NO_GNB_PREFIXES.some(
+      (p) => pathname === p || pathname.startsWith(`${p}/`),
+    ) || pathname.endsWith('/edit');
   if (hideGnb) return null;
 
   const adminTabs = pathname.startsWith('/admin')

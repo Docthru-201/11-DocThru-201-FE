@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 
 export const pageWrapper = style({
@@ -10,18 +10,60 @@ export const pageWrapper = style({
 });
 
 export const header = style({
+  backgroundColor: vars.color.white,
+  flexShrink: 0,
+});
+
+export const headerInner = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: `12px 24px`,
-  backgroundColor: vars.color.white,
-  borderBottom: `1px solid ${vars.color.gray[200]}`,
-  flexShrink: 0,
+  maxWidth: '960px',
+  margin: '0 auto',
+  padding: '12px 24px',
+  width: '100%',
 });
 
 export const headerLeft = style({
   display: 'flex',
   alignItems: 'center',
+});
+
+export const logo = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  fontFamily: vars.fontFamily.quantico,
+  fontWeight: vars.fontWeight.bold,
+  color: vars.color.gray[600],
+  textDecoration: 'none',
+  letterSpacing: '0.4px',
+  fontSize: '20px',
+  lineHeight: '24px',
+});
+
+export const logoIcon = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+globalStyle(`${logoIcon} img`, {
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+});
+
+export const titleBar = style({
+  backgroundColor: vars.color.white,
+  flexShrink: 0,
+});
+
+export const titleBarInner = style({
+  maxWidth: '960px',
+  margin: '0 auto',
+  padding: '14px 24px',
+  borderBottom: `1px solid ${vars.color.gray[200]}`,
 });
 
 export const challengeTitle = style({
@@ -34,6 +76,12 @@ export const headerRight = style({
   display: 'flex',
   alignItems: 'center',
   gap: vars.space.sm,
+});
+
+export const headerButton = style({
+  height: '38px !important',
+  padding: '0 16px !important',
+  fontSize: `${vars.fontSize.sm} !important`,
 });
 
 export const contentArea = style({

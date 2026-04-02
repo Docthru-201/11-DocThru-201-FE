@@ -1,20 +1,48 @@
 'use client';
-import { useRef } from 'react';
-import {
-  Bold,
-  Italic,
-  Underline,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  List,
-  ListOrdered,
-  ImageIcon,
-} from 'lucide-react';
+import { useRef, useState } from 'react';
+import Image from 'next/image';
+import { useFormatStore } from './store/useFormatStore';
 import * as styles from './Toolbar.css.js';
+
+const PRESET_COLORS = [
+  '#000000',
+  '#434343',
+  '#666666',
+  '#999999',
+  '#cccccc',
+  '#ffffff',
+  '#ff0000',
+  '#ff9900',
+  '#ffff00',
+  '#00ff00',
+  '#00ffff',
+  '#0000ff',
+  '#9900ff',
+  '#ff00ff',
+  '#f4cccc',
+  '#fce5cd',
+  '#fff2cc',
+  '#d9ead3',
+  '#d0e4f4',
+  '#cfe2f3',
+  '#d9d2e9',
+  '#ead1dc',
+];
 
 export default function Toolbar({ editor, onImageUpload }) {
   const fileInputRef = useRef(null);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const {
+    bold,
+    italic,
+    underline,
+    textAlign,
+    bulletList,
+    orderedList,
+    color,
+    setFormat,
+  } = useFormatStore();
 
   if (!editor) return null;
 
@@ -27,78 +55,199 @@ export default function Toolbar({ editor, onImageUpload }) {
     }
   };
 
+  const toggleBold = () => {
+    setFormat({ bold: !bold });
+    editor.chain().focus().toggleBold().run();
+  };
+
+  const toggleItalic = () => {
+    setFormat({ italic: !italic });
+    editor.chain().focus().toggleItalic().run();
+  };
+
+  const toggleUnderline = () => {
+    setFormat({ underline: !underline });
+    editor.chain().focus().toggleUnderline().run();
+  };
+
+  const setAlign = (align) => {
+    const next = textAlign === align ? null : align;
+    setFormat({ textAlign: next });
+    if (next) {
+      editor.chain().focus().setTextAlign(next).run();
+    } else {
+      editor.chain().focus().unsetTextAlign().run();
+    }
+  };
+
+  const toggleBulletList = () => {
+    setFormat({ bulletList: !bulletList, orderedList: false });
+    editor.chain().focus().toggleBulletList().run();
+  };
+
+  const toggleOrderedList = () => {
+    setFormat({ orderedList: !orderedList, bulletList: false });
+    editor.chain().focus().toggleOrderedList().run();
+  };
+
+  const handleColorSelect = (selectedColor) => {
+    setFormat({ color: selectedColor });
+    editor.chain().focus().setColor(selectedColor).run();
+    setShowColorPicker(false);
+  };
+
   return (
     <div className={styles.toolbar}>
-      <button
-        className={styles.button}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        data-active={editor.isActive('bold')}
-      >
-        <Bold size={16} />
+      <button className={styles.button} onClick={toggleBold} data-active={bold}>
+        <Image src="/icons/editor-bold.svg" alt="굵게" width={24} height={24} />
       </button>
       <button
         className={styles.button}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        data-active={editor.isActive('italic')}
+        onClick={toggleItalic}
+        data-active={italic}
       >
-        <Italic size={16} />
+        <Image
+          src="/icons/editor-italic.svg"
+          alt="기울임"
+          width={24}
+          height={24}
+        />
       </button>
       <button
         className={styles.button}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        data-active={editor.isActive('underline')}
+        onClick={toggleUnderline}
+        data-active={underline}
       >
-        <Underline size={16} />
-      </button>
-
-      <div className={styles.divider} />
-
-      <button
-        className={styles.button}
-        onClick={() => editor.chain().focus().setTextAlign('left').run()}
-        data-active={editor.isActive({ textAlign: 'left' })}
-      >
-        <AlignLeft size={16} />
-      </button>
-      <button
-        className={styles.button}
-        onClick={() => editor.chain().focus().setTextAlign('center').run()}
-        data-active={editor.isActive({ textAlign: 'center' })}
-      >
-        <AlignCenter size={16} />
-      </button>
-      <button
-        className={styles.button}
-        onClick={() => editor.chain().focus().setTextAlign('right').run()}
-        data-active={editor.isActive({ textAlign: 'right' })}
-      >
-        <AlignRight size={16} />
+        <Image
+          src="/icons/editor-underline.svg"
+          alt="밑줄"
+          width={24}
+          height={24}
+        />
       </button>
 
       <div className={styles.divider} />
 
       <button
         className={styles.button}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        data-active={editor.isActive('bulletList')}
+        onClick={() => setAlign('left')}
+        data-active={textAlign === 'left'}
       >
-        <List size={16} />
+        <Image
+          src="/icons/editor-alignment_left.svg"
+          alt="왼쪽 정렬"
+          width={24}
+          height={24}
+        />
       </button>
       <button
         className={styles.button}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        data-active={editor.isActive('orderedList')}
+        onClick={() => setAlign('center')}
+        data-active={textAlign === 'center'}
       >
-        <ListOrdered size={16} />
+        <Image
+          src="/icons/editor-alignment_center.svg"
+          alt="가운데 정렬"
+          width={24}
+          height={24}
+        />
+      </button>
+      <button
+        className={styles.button}
+        onClick={() => setAlign('right')}
+        data-active={textAlign === 'right'}
+      >
+        <Image
+          src="/icons/editor-alignment_right.svg"
+          alt="오른쪽 정렬"
+          width={24}
+          height={24}
+        />
       </button>
 
       <div className={styles.divider} />
+
+      <button
+        className={styles.button}
+        onClick={toggleBulletList}
+        data-active={bulletList}
+      >
+        <Image
+          src="/icons/editor-bullet.svg"
+          alt="글머리 기호"
+          width={24}
+          height={24}
+        />
+      </button>
+      <button
+        className={styles.button}
+        onClick={toggleOrderedList}
+        data-active={orderedList}
+      >
+        <Image
+          src="/icons/editor-numbering.svg"
+          alt="번호 목록"
+          width={24}
+          height={24}
+        />
+      </button>
+
+      <div className={styles.divider} />
+
+      <div className={styles.colorWrapper}>
+        <button
+          className={styles.button}
+          onClick={() => setShowColorPicker((v) => !v)}
+          title="글자 색상"
+        >
+          <div className={styles.colorIconWrapper}>
+            <Image
+              src="/icons/editor-coloring.svg"
+              alt="글자 색상"
+              width={24}
+              height={24}
+            />
+            <div
+              className={styles.colorIndicator}
+              style={{ backgroundColor: color }}
+            />
+          </div>
+        </button>
+        {showColorPicker && (
+          <div className={styles.colorDropdown}>
+            <div className={styles.colorGrid}>
+              {PRESET_COLORS.map((c) => (
+                <button
+                  key={c}
+                  className={styles.colorSwatch}
+                  style={{
+                    backgroundColor: c,
+                    outline: color === c ? '2px solid #6366f1' : undefined,
+                  }}
+                  onClick={() => handleColorSelect(c)}
+                  title={c}
+                />
+              ))}
+            </div>
+            <div className={styles.colorCustomRow}>
+              <span className={styles.colorCustomLabel}>직접 입력</span>
+              <input
+                type="color"
+                className={styles.colorCustomInput}
+                value={color}
+                onChange={(e) => handleColorSelect(e.target.value)}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       <button
         className={styles.button}
         onClick={() => fileInputRef.current?.click()}
+        title="이미지 삽입"
       >
-        <ImageIcon size={16} />
+        <span className={styles.imageButtonLabel}>이미지</span>
       </button>
       <input
         ref={fileInputRef}
