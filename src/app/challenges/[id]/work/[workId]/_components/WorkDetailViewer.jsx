@@ -2,9 +2,11 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
+import TextAlign from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
+import Color from '@tiptap/extension-color';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import * as styles from './WorkDetailViewer.css.js';
-import TextAlign from '@tiptap/extension-text-align';
 import '@/features/editor/TiptapEditor.css.js';
 
 function WorkContent({ content }) {
@@ -22,6 +24,8 @@ function WorkContent({ content }) {
       StarterKit,
       Image.configure({ inline: false, allowBase64: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextStyle,
+      Color,
     ],
     content: parsedContent,
     editable: false,
