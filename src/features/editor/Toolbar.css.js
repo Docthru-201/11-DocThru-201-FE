@@ -5,7 +5,6 @@ export const toolbar = style({
   alignItems: 'center',
   gap: '4px',
   padding: '8px 12px',
-  borderBottom: '1px solid #e5e7eb',
   flexWrap: 'wrap',
   backgroundColor: '#ffffff',
 });
