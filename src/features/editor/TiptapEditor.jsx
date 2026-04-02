@@ -1,5 +1,5 @@
 'use client';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, useEditorState } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
@@ -11,7 +11,7 @@ import { useEditorStore } from './store/useEditorStore';
 import { useFormatStore } from './store/useFormatStore';
 import { useImageUpload } from './hooks/useImageUpload';
 import Toolbar from './Toolbar';
-import './TiptapEditor.css';
+import * as editorStyles from './TiptapEditor.css.js';
 
 function buildMarks(format, schema) {
   const marks = [];
@@ -113,15 +113,29 @@ export function TiptapEditor({ initialContent = null, editable = true }) {
 
   const handleDragOver = (e) => e.preventDefault();
 
+  const isEmpty = useEditorState({
+    editor,
+    selector: (ctx) => ctx.editor?.isEmpty ?? true,
+  });
+
   if (!editor) return null;
 
   return (
-    <div onDrop={handleDrop} onDragOver={handleDragOver}>
+    <div
+      className="tiptap-editor-root"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
       <Toolbar editor={editor} onImageUpload={uploadImage} />
       <div
+        className={editorStyles.editorBody}
         onClick={() => editor.chain().focus().run()}
-        style={{ minHeight: '500px', cursor: 'text' }}
       >
+        {isEmpty && (
+          <p className={editorStyles.editorPlaceholder} aria-hidden>
+            번역 내용을 적어주세요
+          </p>
+        )}
         <EditorContent editor={editor} />
       </div>
     </div>

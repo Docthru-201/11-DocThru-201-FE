@@ -8,7 +8,7 @@ export const container = style({
   backgroundColor: '#ffffff',
   minHeight: '100vh',
   boxSizing: 'border-box',
-  padding: '40px 0',
+  padding: '10px 0',
 
   '@media': {
     // 테블릿 구간: 744px 고정형

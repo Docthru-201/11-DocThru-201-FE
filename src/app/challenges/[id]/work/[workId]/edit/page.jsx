@@ -19,7 +19,10 @@ export default function WorkEditPage() {
     useWorkMutation(workId, challengeId);
   const { content, resetContent } = useEditorStore();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  const [showOriginal, setShowOriginal] = useState(false);
+  const [showOriginal, setShowOriginal] = useState(true);
+
+  const originalUrl = work?.challenge?.originalUrl;
+  const hasOriginal = Boolean(originalUrl);
 
   const handleCancel = () => {
     deleteWork(undefined, {
@@ -49,81 +52,111 @@ export default function WorkEditPage() {
     );
   };
 
+  const openOriginalInNewTab = () => {
+    if (originalUrl) window.open(originalUrl, '_blank', 'noopener,noreferrer');
+  };
+
   if (isPending) return <div>로딩 중...</div>;
 
   return (
     <div className={styles.pageWrapper}>
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <div className={styles.headerLeft}>
-            <Link href="/challenges" className={styles.logo}>
-              <span className={styles.logoIcon}>
-                <Icon name="docthruLogo" width={24} height={28} aria-hidden />
-              </span>
-              Docthru
-            </Link>
-          </div>
-          <div className={styles.headerRight}>
-            <Button
-              variant="filledTonal"
-              className={styles.headerButton}
-              onClick={() => setIsCancelModalOpen(true)}
-              disabled={isDeletePending}
-            >
-              {isDeletePending ? '삭제 중...' : '포기'}
-            </Button>
-            <Button
-              variant="outline"
-              className={styles.headerButton}
-              onClick={handleSave}
-              disabled={isUpdatePending || !content}
-            >
-              임시저장
-            </Button>
-            <Button
-              variant="solid"
-              className={styles.headerButton}
-              onClick={handleSubmit}
-              disabled={isUpdatePending || !content}
-            >
-              {isUpdatePending ? '제출 중...' : '제출하기'}
-            </Button>
+      <div className={styles.mainRow}>
+        <div className={styles.leftPane}>
+          <div className={styles.leftPaneInner}>
+            <header className={styles.headerRow}>
+              <Link href={`/challenges/${challengeId}`} className={styles.logo}>
+                <span className={styles.logoIcon}>
+                  <Icon
+                    name="docthruLogo"
+                    width={17.55}
+                    height={28}
+                    aria-hidden
+                  />
+                </span>
+                Docthru
+              </Link>
+              <div className={styles.headerRight}>
+                <Button
+                  variant="filledTonal"
+                  className={`${styles.headerButton} ${styles.headerButtonGiveUp}`}
+                  onClick={() => setIsCancelModalOpen(true)}
+                  disabled={isDeletePending}
+                  icon={<Icon name="out" width={24} height={24} aria-hidden />}
+                  iconPosition="right"
+                >
+                  {isDeletePending ? '삭제 중...' : '포기'}
+                </Button>
+                <Button
+                  variant="outline"
+                  className={styles.headerButton}
+                  onClick={handleSave}
+                  disabled={isUpdatePending || !content}
+                >
+                  임시저장
+                </Button>
+                <Button
+                  variant="solid"
+                  className={styles.headerButton}
+                  onClick={handleSubmit}
+                  disabled={isUpdatePending || !content}
+                >
+                  {isUpdatePending ? '제출 중...' : '제출하기'}
+                </Button>
+              </div>
+            </header>
+
+            <div className={styles.titleBlock}>
+              <h1 className={styles.challengeTitle}>
+                {work?.challenge?.title}
+              </h1>
+            </div>
+
+            <div className={styles.editorSection}>
+              <TiptapEditor
+                initialContent={work?.content ? JSON.parse(work.content) : null}
+              />
+            </div>
           </div>
         </div>
-      </header>
 
-      <div className={styles.titleBar}>
-        <div className={styles.titleBarInner}>
-          <span className={styles.challengeTitle}>
-            {work?.challenge?.title}
-          </span>
-        </div>
-      </div>
-
-      <div className={styles.contentArea}>
-        <div className={showOriginal ? styles.editorHalf : styles.editorArea}>
-          <TiptapEditor
-            initialContent={work?.content ? JSON.parse(work.content) : null}
-          />
-        </div>
-
-        {showOriginal && work?.challenge?.originalUrl && (
-          <div className={styles.originalArea}>
-            <iframe
-              src={work.challenge.originalUrl}
-              className={styles.originalIframe}
-              title="원문"
-            />
-          </div>
+        {hasOriginal && showOriginal && (
+          <aside className={styles.originalPane} aria-label="원문 미리보기">
+            <div className={styles.originalToolbar}>
+              <button
+                type="button"
+                className={styles.originalCloseBtn}
+                onClick={() => setShowOriginal(false)}
+                aria-label="원문 패널 닫기"
+              >
+                <Icon name="outCircle" width={32} height={32} aria-hidden />
+              </button>
+              <button
+                type="button"
+                className={styles.openLinkBtn}
+                onClick={openOriginalInNewTab}
+              >
+                링크 열기
+                <Icon name="outCircle" width={24} height={24} aria-hidden />
+              </button>
+            </div>
+            <div className={styles.originalFrameWrap}>
+              <iframe
+                src={originalUrl}
+                className={styles.originalIframe}
+                title="원문"
+              />
+            </div>
+          </aside>
         )}
       </div>
 
-      {work?.challenge?.originalUrl && (
+      {hasOriginal && !showOriginal && (
         <button
-          className={styles.originalButton}
-          onClick={() => setShowOriginal((prev) => !prev)}
+          type="button"
+          className={styles.showOriginalTab}
+          onClick={() => setShowOriginal(true)}
         >
-          {showOriginal ? '원문\n닫기' : '원문'}
+          원문 보기
         </button>
       )}
 
