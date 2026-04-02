@@ -132,12 +132,13 @@ export default function AdminChallengePage() {
           </div>
         </div>
 
-        <StatusSection challenge={challenge} />
-        <LineDivider />
+        {challenge.status !== 'PENDING' && (
+          <StatusSection challenge={challenge} />
+        )}
         <ChallengeInfo challenge={challenge} />
         <LineDivider />
         <OriginalUrlSection originalPageUrl={challenge.originalUrl} />
-
+        <LineDivider />
         {challenge.status === 'PENDING' && (
           <div className={styles.buttonWrapper}>
             <Button

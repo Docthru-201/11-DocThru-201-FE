@@ -40,6 +40,6 @@ export const linkBtn = style({
 
 export const previewIframe = style({
   width: '100%',
-  height: 'calc(100vh - 500px)', // ✅ 인라인에 있던 스타일을 이쪽으로 이동
+  height: '490px',
   border: 'none', // border-0
 });
