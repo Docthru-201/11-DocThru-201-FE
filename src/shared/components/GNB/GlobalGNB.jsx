@@ -9,9 +9,10 @@ const NO_GNB_PREFIXES = ['/intro', '/login', '/signup'];
 export function GlobalGNB() {
   const pathname = usePathname();
 
-  const hideGnb = NO_GNB_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
-  );
+  const hideGnb =
+    NO_GNB_PREFIXES.some(
+      (p) => pathname === p || pathname.startsWith(`${p}/`),
+    ) || pathname.endsWith('/edit');
   if (hideGnb) return null;
 
   const adminTabs = pathname.startsWith('/admin')
@@ -23,7 +24,7 @@ export function GlobalGNB() {
         },
         {
           label: '챌린지 목록',
-          href: '/challenges',
+          href: '/admin/challenges',
           active: pathname.includes('/challenges'),
         },
       ]

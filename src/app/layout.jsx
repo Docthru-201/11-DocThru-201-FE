@@ -9,7 +9,7 @@ import '@/styles/global.css';
 export default function RootLayout({ children }) {
   return (
     <html lang="ko" className={`${pretendard.variable} ${quantico.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <QueryProvider>
           <AuthProvider>
             <GlobalGNB />

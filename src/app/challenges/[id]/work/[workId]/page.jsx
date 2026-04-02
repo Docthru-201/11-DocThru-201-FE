@@ -32,28 +32,34 @@ export default function WorkPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentWrapper}>
-        <div className={styles.topRow}>
-          <WorkDetailViewer
-            work={work}
-            likeCount={likeCount}
-            isLiked={isLiked}
-            toggleLike={toggleLike}
-            isLikePending={isLikePending}
+        <WorkDetailViewer
+          work={work}
+          likeCount={likeCount}
+          isLiked={isLiked}
+          toggleLike={toggleLike}
+          isLikePending={isLikePending}
+          onProfileClick={(userId) => setProfileUserId(userId)}
+          headerActions={
+            <WorkActionButtons
+              work={work}
+              onEdit={() =>
+                router.push(`/challenges/${id}/work/${workId}/edit`)
+              }
+              onDelete={() => setIsDeleteModalOpen(true)}
+              isDeletePending={isDeletePending}
+            />
+          }
+        />
+
+        <hr className={styles.sectionDivider} />
+
+        <div className={styles.feedbackSection}>
+          <FeedbackForm workId={workId} />
+          <FeedbackList
+            workId={workId}
             onProfileClick={(userId) => setProfileUserId(userId)}
           />
-          <WorkActionButtons
-            work={work}
-            onEdit={() => router.push(`/challenges/${id}/work/${workId}/edit`)}
-            onDelete={() => setIsDeleteModalOpen(true)}
-            isDeletePending={isDeletePending}
-          />
         </div>
-
-        <FeedbackForm workId={workId} />
-        <FeedbackList
-          workId={workId}
-          onProfileClick={(userId) => setProfileUserId(userId)}
-        />
       </div>
 
       <Modal

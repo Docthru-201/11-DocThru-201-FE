@@ -17,6 +17,14 @@ export const inputWrap = style({
   border: `1px solid ${vars.color.gray[200]}`,
   borderRadius: vars.radius.full,
   boxSizing: 'border-box',
+  outline: 'none',
+  selectors: {
+    '&:focus-within': {
+      outline: 'none',
+      boxShadow: 'none',
+      border: `1px solid ${vars.color.gray[200]}`,
+    },
+  },
 });
 
 export const iconWrap = style({
@@ -35,9 +43,40 @@ export const input = style({
   fontSize: vars.fontSize.base,
   fontWeight: vars.fontWeight.regular,
   color: vars.color.gray[900],
+  WebkitAppearance: 'none',
+  appearance: 'none',
   selectors: {
     '&::placeholder': {
       color: vars.color.gray[400],
+    },
+    '&::-webkit-search-decoration': {
+      WebkitAppearance: 'none',
+      appearance: 'none',
+    },
+    '&::-webkit-search-cancel-button': {
+      WebkitAppearance: 'none',
+      appearance: 'none',
+      display: 'none',
+      width: 0,
+      height: 0,
+    },
+    '&::-webkit-search-results-button': {
+      WebkitAppearance: 'none',
+      appearance: 'none',
+      display: 'none',
+    },
+    '&::-webkit-search-results-decoration': {
+      WebkitAppearance: 'none',
+      appearance: 'none',
+      display: 'none',
+    },
+    '&:focus': {
+      outline: 'none',
+      boxShadow: 'none',
+    },
+    '&:focus-visible': {
+      outline: 'none',
+      boxShadow: 'none',
     },
   },
 });

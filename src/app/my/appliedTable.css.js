@@ -1,39 +1,9 @@
-import { globalStyle } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
 
-globalStyle('body', {
-  backgroundColor: '#FAFAFA',
-});
-
-export const page = style({
-  width: '996px',
+export const appliedWrap = style({
+  width: '100%',
+  maxWidth: '996px',
   margin: '0 auto',
-});
-
-export const header = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginTop: '24px',
-  fontSize: '20px',
-  fontWeight: 600,
-  color: '#262626',
-});
-
-export const newBtn = style({
-  borderRadius: '19.5px',
-  padding: '10px 12px',
-  maxHeight: '39px',
-  fontSize: '16px',
-  lineHeight: '24px',
-  display: 'flex',
-  alignItems: 'center',
-});
-
-export const tabWrap = style({
-  marginBottom: '24px',
-  paddingBottom: '5.5px',
-  borderBottom: '1px solid #D4D4D4',
 });
 
 export const filterRow = style({
@@ -88,12 +58,14 @@ export const table = style({
   fontSize: '14px',
 });
 
-export const tab = style({
+export const tableSection = style({
   marginTop: '16px',
 });
-export const search = style({
+
+export const searchApplied = style({
   flex: 1,
 });
+
 export const sort = style({
   height: '40px',
   fontSize: '16px',

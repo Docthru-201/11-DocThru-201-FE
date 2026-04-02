@@ -48,6 +48,7 @@ const SECTIONS = [
     image: landingImg3,
     imageWidth: 800,
     imageHeight: 600,
+    imageMaxWidth: 505,
     alt: '작업물에 대한 피드백 이미지',
   },
 ];
@@ -99,7 +100,7 @@ export default function LandingPage() {
           />
           <div className={styles.heroContent}>
             <span className={styles.heroLogo} aria-hidden>
-              <Icon name="docthruLogo" width={28} height={28} aria-hidden />
+              <Icon name="docthruLogo" width={18} height={28} aria-hidden />
               Docthru
             </span>
             <h1 className={styles.heroHeadline}>{HERO_HEADLINE}</h1>
@@ -126,19 +127,26 @@ export default function LandingPage() {
                       aria-hidden
                     />
                   </span>
-                  <h2 className={styles.sectionTitle}>{section.title}</h2>
-                  <p className={styles.sectionDescription}>
-                    {section.description}
-                  </p>
+                  <div className={styles.sectionTextBlock}>
+                    <h2 className={styles.sectionTitle}>{section.title}</h2>
+                    <p className={styles.sectionDescription}>
+                      {section.description}
+                    </p>
+                  </div>
                 </div>
 
                 <Image
                   src={section.image}
                   alt={section.alt}
                   className={styles.sectionImage}
+                  style={
+                    section.imageMaxWidth
+                      ? { maxWidth: section.imageMaxWidth }
+                      : undefined
+                  }
                   width={section.imageWidth ?? 800}
                   height={section.imageHeight ?? 600}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 570px, 100vw"
                 />
               </article>
 

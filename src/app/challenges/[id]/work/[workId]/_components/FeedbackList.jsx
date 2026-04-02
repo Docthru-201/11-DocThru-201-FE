@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import { useComments } from '@/features/comments/hooks/useComments';
 import FeedbackForm from './FeedbackForm';
-import * as styles from './FeedbackList.css';
+import * as styles from './FeedbackList.css.js';
 
 function FeedbackItem({
   comment,

@@ -2,16 +2,17 @@ import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 
 export const container = style({
-  padding: `${vars.space.lg} ${vars.space['2xl']}`,
+  width: '100%',
+  padding: 0,
 });
 
 export const item = style({
-  paddingBottom: vars.space.xl,
-  borderBottom: `1px solid ${vars.color.gray[100]}`,
-  marginBottom: vars.space.xl,
+  padding: '16px',
+  borderRadius: '12px',
+  backgroundColor: vars.color.gray[50],
+  marginBottom: '16px',
   selectors: {
     '&:last-child': {
-      borderBottom: 'none',
       marginBottom: 0,
     },
   },
@@ -19,23 +20,23 @@ export const item = style({
 
 export const itemHeader = style({
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   gap: vars.space.sm,
-  marginBottom: vars.space.sm,
+  marginBottom: '15px',
 });
 
 export const avatar = style({
-  width: '28px',
-  height: '28px',
+  width: '32px',
+  height: '32px',
   borderRadius: vars.radius.full,
   objectFit: 'cover',
   backgroundColor: vars.color.brand.point,
+  flexShrink: 0,
 });
 
 export const authorInfo = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '2px',
 });
 
 export const nickname = style({
@@ -50,12 +51,14 @@ export const date = style({
 });
 
 export const content = style({
-  fontSize: vars.fontSize.sm,
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.regular,
   color: vars.color.gray[700],
   lineHeight: vars.lineHeight.normal,
-  marginBottom: vars.space.sm,
+  marginBottom: '15px',
   wordBreak: 'break-word',
   overflowWrap: 'break-word',
+  whiteSpace: 'pre-wrap',
 });
 
 export const actions = style({
@@ -94,22 +97,26 @@ export const replies = style({
   marginLeft: vars.space.xl,
   marginTop: vars.space.md,
   paddingLeft: vars.space.lg,
-  borderLeft: `2px solid ${vars.color.gray[100]}`,
+  borderLeft: `2px solid ${vars.color.gray[200]}`,
 });
 
 export const moreButton = style({
   display: 'block',
-  margin: '0 auto',
-  padding: `${vars.space.sm} ${vars.space.xl}`,
-  border: `1px solid ${vars.color.gray[300]}`,
-  borderRadius: vars.radius.md,
-  backgroundColor: vars.color.white,
-  fontSize: vars.fontSize.sm,
-  color: vars.color.gray[600],
+  margin: `${vars.space.lg} auto 0`,
+  width: '180px',
+  maxWidth: '100%',
+  height: '48px',
+  padding: `0 ${vars.space.lg}`,
+  border: 'none',
+  borderRadius: vars.radius.lg,
+  backgroundColor: vars.color.gray[100],
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.medium,
+  color: vars.color.gray[500],
   cursor: 'pointer',
   selectors: {
     '&:hover': {
-      backgroundColor: vars.color.gray[50],
+      backgroundColor: vars.color.gray[200],
     },
   },
 });
@@ -138,6 +145,7 @@ export const editActions = style({
   gap: vars.space.sm,
   marginTop: vars.space.sm,
 });
+
 export const deletedContent = style({
   fontSize: vars.fontSize.sm,
   color: vars.color.gray[400],

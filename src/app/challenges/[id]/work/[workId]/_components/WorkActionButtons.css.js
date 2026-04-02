@@ -3,6 +3,7 @@ import { vars } from '@/styles/tokens.css';
 
 export const wrapper = style({
   position: 'relative',
+  flexShrink: 0,
 });
 
 export const triggerButton = style({
@@ -43,7 +44,7 @@ export const dropdownItem = style({
   display: 'block',
   width: '100%',
   padding: `${vars.space.sm} ${vars.space.lg}`,
-  textAlign: 'left',
+  textAlign: 'center',
   border: 'none',
   backgroundColor: 'transparent',
   fontSize: vars.fontSize.sm,
