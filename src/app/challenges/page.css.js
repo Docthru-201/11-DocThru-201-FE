@@ -33,8 +33,8 @@ export const header = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: vars.space.md,
-  paddingTop: 24,
-  paddingBottom: 16,
+  padding: '8px 0',
+  marginBottom: '16px',
 });
 
 export const headerMy = style({

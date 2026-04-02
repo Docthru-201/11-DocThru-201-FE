@@ -7,10 +7,10 @@ export const container = style({
 });
 
 export const item = style({
-  padding: vars.space.lg,
-  borderRadius: vars.radius.lg,
+  padding: '16px',
+  borderRadius: '12px',
   backgroundColor: vars.color.gray[50],
-  marginBottom: vars.space.md,
+  marginBottom: '16px',
   selectors: {
     '&:last-child': {
       marginBottom: 0,
@@ -22,7 +22,7 @@ export const itemHeader = style({
   display: 'flex',
   alignItems: 'flex-start',
   gap: vars.space.sm,
-  marginBottom: vars.space.md,
+  marginBottom: '15px',
 });
 
 export const avatar = style({
@@ -37,7 +37,6 @@ export const avatar = style({
 export const authorInfo = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '4px',
 });
 
 export const nickname = style({
@@ -56,7 +55,7 @@ export const content = style({
   fontWeight: vars.fontWeight.regular,
   color: vars.color.gray[700],
   lineHeight: vars.lineHeight.normal,
-  marginBottom: vars.space.sm,
+  marginBottom: '15px',
   wordBreak: 'break-word',
   overflowWrap: 'break-word',
   whiteSpace: 'pre-wrap',

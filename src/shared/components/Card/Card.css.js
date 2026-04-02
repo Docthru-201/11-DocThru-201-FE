@@ -87,8 +87,8 @@ export const adminDropdownMenu = style({
 export const adminDropdownButton = style({
   padding: '10px 16px',
   fontSize: vars.fontSize.sm,
+  textAlign: 'center',
   color: vars.color.gray[700],
-  textAlign: 'left',
   border: 'none',
   background: 'none',
   cursor: 'pointer',

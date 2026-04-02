@@ -33,7 +33,11 @@ import * as styles from './page.css.js';
 
 const PAGE_SIZE = 5;
 
-export default function ChallengesPage() {
+/**
+ * @param {{ hideNewChallengeButton?: boolean }} props
+ * `/admin/challenges` 에서는 신규 챌린지 신청 버튼을 숨길 때 `true`
+ */
+export default function ChallengesPage({ hideNewChallengeButton = false }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
@@ -150,7 +154,7 @@ export default function ChallengesPage() {
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>
-          {user?.role === 'ADMIN' && (
+          {user?.role === 'ADMIN' && !hideNewChallengeButton && (
             <Link href="/challenges/new">
               <Button
                 variant="solidIcon"

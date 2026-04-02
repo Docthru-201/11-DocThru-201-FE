@@ -50,13 +50,13 @@ export const metaRow = style({
   justifyContent: 'space-between',
   gap: vars.space.lg,
   minHeight: '24px',
-  marginBottom: vars.space.md,
+  margin: '12px 0',
 });
 
 export const metaLeft = style({
   display: 'flex',
   alignItems: 'center',
-  gap: vars.space.sm,
+  gap: '12px',
   minWidth: 0,
 });
 
@@ -120,13 +120,11 @@ export const metaDate = style({
   marginLeft: 'auto',
 });
 
-/** TipTap 래퍼 */
 export const workProse = style({
   width: '100%',
   minHeight: '120px',
 });
 
-/** TipTap `.ProseMirror` — `style()` 안에서 `& :global(.ProseMirror)` 는 VE 규칙 위반이므로 `globalStyle` 사용 */
 globalStyle(`${workProse} .ProseMirror`, {
   fontSize: vars.fontSize.base,
   fontWeight: vars.fontWeight.regular,

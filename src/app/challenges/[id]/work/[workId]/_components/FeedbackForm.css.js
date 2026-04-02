@@ -22,6 +22,7 @@ export const inputRowMain = style({
   backgroundColor: vars.color.white,
   minHeight: '89px',
   boxSizing: 'border-box',
+  margin: '24px 0',
 });
 
 export const textareaMain = style({

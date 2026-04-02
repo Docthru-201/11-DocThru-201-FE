@@ -13,7 +13,7 @@ export const pageContainer = style({
 export const contentWrapper = style({
   width: '100%',
   maxWidth: '890px',
-  paddingTop: vars.space.xl,
+  paddingTop: '40px',
   paddingLeft: vars.space.lg,
   paddingRight: vars.space.lg,
   boxSizing: 'border-box',

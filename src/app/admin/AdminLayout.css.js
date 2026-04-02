@@ -12,7 +12,7 @@ export const adminRoot = style({
 export const adminMain = style({
   flex: 1,
   backgroundColor: vars.color.white,
-  // paddingTop: '64px',
+  paddingTop: '24px',
   paddingBottom: vars.space['2xl'],
 });
 
