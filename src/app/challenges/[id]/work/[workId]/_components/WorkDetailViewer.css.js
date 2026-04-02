@@ -1,46 +1,75 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
-
 export const container = style({
   flex: 1,
-  paddingBottom: vars.space.xl,
+  width: '100%',
+});
+
+export const titleRow = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: vars.space.md,
+  marginBottom: vars.space.md,
 });
 
 export const title = style({
-  fontSize: vars.fontSize.xl,
-  fontWeight: vars.fontWeight.bold,
-  color: vars.color.gray[900],
+  flex: 1,
+  minWidth: 0,
+  fontSize: vars.fontSize['2xl'],
+  fontWeight: vars.fontWeight.semibold,
+  color: vars.color.gray[800],
   lineHeight: vars.lineHeight.normal,
-  marginBottom: vars.space.sm,
 });
 
 export const tagRow = style({
   display: 'flex',
+  flexWrap: 'wrap',
   gap: vars.space.sm,
-  marginBottom: vars.space.lg,
+  marginBottom: vars.space.md,
 });
 
-export const tag = style({
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: `2px ${vars.space.sm}`,
-  borderRadius: vars.radius.full,
-  fontSize: vars.fontSize['2xs'],
-  fontWeight: vars.fontWeight.medium,
-  backgroundColor: vars.color.brand.point,
-  color: vars.color.gray[900],
+export const divider = style({
+  border: 'none',
+  borderTop: `1px solid ${vars.color.gray[200]}`,
+  margin: 0,
+  width: '100%',
 });
+
+export const dividerSpaced = style([
+  divider,
+  {
+    marginTop: vars.space.md,
+    marginBottom: vars.space.md,
+  },
+]);
 
 export const metaRow = style({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: vars.space.lg,
+  minHeight: '24px',
+  marginBottom: vars.space.md,
+});
+
+export const metaLeft = style({
+  display: 'flex',
+  alignItems: 'center',
   gap: vars.space.sm,
-  marginBottom: vars.space.xl,
+  minWidth: 0,
+});
+
+export const authorBlock = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: vars.space.sm,
+  flexShrink: 0,
 });
 
 export const avatar = style({
-  width: '32px',
-  height: '32px',
+  width: '24px',
+  height: '24px',
   borderRadius: vars.radius.full,
   objectFit: 'cover',
   backgroundColor: vars.color.brand.point,
@@ -48,35 +77,34 @@ export const avatar = style({
 });
 
 export const nickname = style({
-  fontSize: vars.fontSize.sm,
+  fontSize: vars.fontSize['2xs'],
   fontWeight: vars.fontWeight.medium,
-  color: vars.color.gray[700],
+  color: vars.color.gray[800],
 });
 
-export const likeCount = style({
+export const likeBlock = style({
   display: 'flex',
   alignItems: 'center',
   gap: vars.space.xs,
+  marginLeft: vars.space.sm,
+});
+
+export const likeCount = style({
   fontSize: vars.fontSize.sm,
+  fontWeight: vars.fontWeight.medium,
   color: vars.color.gray[500],
 });
 
 export const likeButton = style({
-  display: 'flex',
+  display: 'inline-flex',
   alignItems: 'center',
-  gap: vars.space.xs,
-  padding: `${vars.space.xs} ${vars.space.sm}`,
-  borderRadius: vars.radius.md,
-  border: `1px solid ${vars.color.gray[200]}`,
-  backgroundColor: vars.color.white,
-  fontSize: vars.fontSize.sm,
-  color: vars.color.gray[600],
+  justifyContent: 'center',
+  padding: 0,
+  border: 'none',
+  background: 'transparent',
   cursor: 'pointer',
-  transition: `all ${vars.transition.duration.fast} ${vars.transition.timing.ease}`,
+  lineHeight: 0,
   selectors: {
-    '&:hover:not(:disabled)': {
-      borderColor: vars.color.gray[400],
-    },
     '&:disabled': {
       opacity: Number(vars.opacity.disabled),
       cursor: 'not-allowed',
@@ -84,18 +112,84 @@ export const likeButton = style({
   },
 });
 
-export const contentBox = style({
-  border: `1px solid ${vars.color.gray[200]}`,
-  borderRadius: vars.radius.md,
-  padding: vars.space.xl,
-  minHeight: '200px',
-  lineHeight: vars.lineHeight.normal,
+export const metaDate = style({
+  fontSize: vars.fontSize.sm,
+  fontWeight: vars.fontWeight.medium,
+  color: vars.color.gray[500],
+  flexShrink: 0,
+  marginLeft: 'auto',
+});
+
+/** TipTap 래퍼 */
+export const workProse = style({
+  width: '100%',
+  minHeight: '120px',
+});
+
+/** TipTap `.ProseMirror` — `style()` 안에서 `& :global(.ProseMirror)` 는 VE 규칙 위반이므로 `globalStyle` 사용 */
+globalStyle(`${workProse} .ProseMirror`, {
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.regular,
+  lineHeight: 1.6,
   color: vars.color.gray[800],
+  outline: 'none',
+});
+
+globalStyle(`${workProse} .ProseMirror p`, {
+  marginBottom: '1em',
+});
+
+globalStyle(`${workProse} .ProseMirror p:last-child`, {
+  marginBottom: 0,
+});
+
+globalStyle(`${workProse} .ProseMirror ul`, {
+  listStyle: 'disc',
+  paddingLeft: '1.5em',
+  marginBottom: '1em',
+});
+
+globalStyle(`${workProse} .ProseMirror ol`, {
+  listStyle: 'decimal',
+  paddingLeft: '1.5em',
+  marginBottom: '1em',
+});
+
+globalStyle(`${workProse} .ProseMirror li`, {
+  marginBottom: '0.25em',
+});
+
+globalStyle(
+  `${workProse} .ProseMirror h1, ${workProse} .ProseMirror h2, ${workProse} .ProseMirror h3, ${workProse} .ProseMirror h4`,
+  {
+    fontWeight: vars.fontWeight.semibold,
+    color: vars.color.gray[800],
+    marginBottom: '0.5em',
+    marginTop: '1em',
+  },
+);
+
+globalStyle(`${workProse} .ProseMirror h1`, {
+  fontSize: vars.fontSize.lg,
+});
+
+globalStyle(`${workProse} .ProseMirror h2`, {
+  fontSize: vars.fontSize.md,
+});
+
+globalStyle(`${workProse} .ProseMirror h3`, {
   fontSize: vars.fontSize.base,
 });
-export const header = style({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  marginBottom: vars.space.lg,
+
+globalStyle(`${workProse} .ProseMirror img`, {
+  maxWidth: '100%',
+  height: 'auto',
+  borderRadius: vars.radius.md,
+});
+
+export const emptyBody = style({
+  textAlign: 'center',
+  padding: `${vars.space['2xl']} 0`,
+  color: vars.color.gray[400],
+  fontSize: vars.fontSize.sm,
 });

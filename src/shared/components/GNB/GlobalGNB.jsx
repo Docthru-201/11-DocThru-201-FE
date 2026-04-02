@@ -23,7 +23,7 @@ export function GlobalGNB() {
         },
         {
           label: '챌린지 목록',
-          href: '/challenges',
+          href: '/admin/challenges',
           active: pathname.includes('/challenges'),
         },
       ]

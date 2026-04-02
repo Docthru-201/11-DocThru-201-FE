@@ -3,6 +3,7 @@ import { vars } from '@/styles/tokens.css';
 
 export const wrapper = style({
   position: 'relative',
+  flexShrink: 0,
 });
 
 export const triggerButton = style({

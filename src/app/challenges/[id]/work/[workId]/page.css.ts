@@ -12,13 +12,23 @@ export const pageContainer = style({
 
 export const contentWrapper = style({
   width: '100%',
-  maxWidth: '760px',
+  maxWidth: '890px',
   paddingTop: vars.space.xl,
+  paddingLeft: vars.space.lg,
+  paddingRight: vars.space.lg,
+  boxSizing: 'border-box',
 });
 
-export const topRow = style({
+export const sectionDivider = style({
+  border: 'none',
+  borderTop: `1px solid ${vars.color.gray[200]}`,
+  margin: `${vars.space['2xl']} 0 0`,
+  width: '100%',
+});
+
+export const feedbackSection = style({
+  width: '100%',
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  gap: vars.space.sm,
+  flexDirection: 'column',
+  gap: vars.space.lg,
 });

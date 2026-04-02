@@ -149,8 +149,8 @@ export const emptyState = style({
 export const paginationContainer = style({
   display: 'flex',
   justifyContent: 'center',
-  marginTop: '40px',
-  paddingBottom: '40px',
+  // marginTop: '40px',
+  // paddingBottom: '40px',
 });
 
 export const errorWrapper = style({

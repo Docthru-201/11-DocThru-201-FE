@@ -68,6 +68,7 @@ export const useWorkMutation = (workId, challengeId) => {
 
   return {
     createWork: createMutation.mutate,
+    isCreatePending: createMutation.isPending,
     updateWork: updateMutation.mutate,
     isUpdatePending: updateMutation.isPending,
     deleteWork: deleteMutation.mutate,

@@ -1,4 +1,5 @@
 import { style, globalStyle } from '@vanilla-extract/css';
+import { vars } from '@/styles/tokens.css';
 
 export const rowLayout = style({
   display: 'grid',
@@ -10,7 +11,7 @@ export const rowLayout = style({
   backgroundColor: '#ffffff',
   transition: 'background-color 0.2s',
   ':hover': {
-    backgroundColor: '#f9fafb',
+    backgroundColor: vars.color.gray[50],
     cursor: 'pointer',
   },
 });
@@ -21,12 +22,12 @@ export const tableCell = style({
   justifyContent: 'center',
   padding: '0 4px',
   fontSize: '16px',
-  color: '#374151',
+  color: vars.color.gray[500],
 });
 
 // Chip 내부 텍스트 스타일을 tableCell과 완전히 일치시킴
 globalStyle(`${tableCell} span, ${tableCell} div`, {
-  color: '#374151 !important',
+  color: vars.color.gray[500],
   fontSize: '16px !important',
   fontWeight: '400 !important',
   backgroundColor: 'transparent !important',
