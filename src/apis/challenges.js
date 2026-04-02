@@ -49,6 +49,20 @@ export async function createChallenge(body) {
   return handleResponse(response, '챌린지 신청에 실패했습니다.');
 }
 
+export async function updateChallenge(payload) {
+  const { id, ...updateData } = payload;
+  const response = await fetch(`${BASE_URL}/challenges/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(updateData),
+  });
+
+  return handleResponse(response, '챌린지 수정에 실패했습니다.');
+}
+
 export async function getMyChallenges(params = {}) {
   const qs = new URLSearchParams();
   if (params.tab) qs.set('tab', String(params.tab));
