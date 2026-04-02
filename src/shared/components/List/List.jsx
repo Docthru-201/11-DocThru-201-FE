@@ -12,7 +12,6 @@ export function ListRow({
   profileType,
   likeCount: likeCountProp,
   onWorkClick,
-  onLikeClick,
   showBadge = true,
 }) {
   const isExpert =
@@ -38,17 +37,12 @@ export function ListRow({
         <span className={styles.role}>{role}</span>
       </div>
       <div className={styles.right}>
-        <Button
-          type="button"
-          variant="transparent"
-          className={styles.likeCount}
-          onClick={onLikeClick}
-          aria-label="좋아요"
-          icon={<Icon name="heartActive" width={16} height={16} aria-hidden />}
-          iconPosition="left"
-        >
-          {likeCountProp != null ? likeCountProp.toLocaleString() : '0'}
-        </Button>
+        <div className={styles.likeCount}>
+          <Icon name="heartActive" width={16} height={16} aria-hidden />
+          <span>
+            {likeCountProp != null ? likeCountProp.toLocaleString() : '0'}
+          </span>
+        </div>
         <Button
           type="button"
           variant="transparent"
