@@ -5,6 +5,7 @@ export const editorBody = style({
   position: 'relative',
   minHeight: 'min(60vh, 862px)',
   cursor: 'text',
+  marginTop: '16px',
 });
 
 export const editorPlaceholder = style({

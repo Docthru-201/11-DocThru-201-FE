@@ -103,7 +103,7 @@ export const headerButtonGiveUp = style({
 export const titleBlock = style({
   flexShrink: 0,
   width: '100%',
-  paddingBottom: vars.space.md,
+  // paddingBottom: vars.space.md,
   borderBottom: `1px solid ${vars.color.gray[200]}`,
   marginBottom: vars.space.md,
 });
@@ -123,14 +123,51 @@ export const editorSection = style({
   width: '100%',
 });
 
-/** 우측 원문 패널 — Figma 640px */
-export const originalPane = style({
-  width: '640px',
-  maxWidth: '100%',
+/** 원문 패널 래퍼 — 열릴 때 가로(세로) 슬라이드 */
+const originalPaneWrapperBase = {
   flexShrink: 0,
   display: 'flex',
   flexDirection: 'column',
   minHeight: 0,
+  alignSelf: 'stretch',
+  overflow: 'hidden',
+  transition:
+    'width 0.35s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+};
+
+export const originalPaneWrapperOpen = style({
+  ...originalPaneWrapperBase,
+  width: '640px',
+  pointerEvents: 'auto',
+  '@media': {
+    [breakpoint.maxSm]: {
+      width: '100%',
+      maxHeight: '100vh',
+    },
+  },
+});
+
+export const originalPaneWrapperClosed = style({
+  ...originalPaneWrapperBase,
+  width: 0,
+  pointerEvents: 'none',
+  '@media': {
+    [breakpoint.maxSm]: {
+      width: '100%',
+      maxHeight: 0,
+    },
+  },
+});
+
+/** 우측 원문 패널 — Figma 640px, iframe 전체 + 상단 플로팅 툴바 */
+export const originalPane = style({
+  position: 'relative',
+  width: '640px',
+  maxWidth: '100%',
+  flexShrink: 0,
+  minHeight: 0,
+  flex: 1,
+  overflow: 'hidden',
   backgroundColor: vars.color.white,
   borderLeft: `1px solid ${vars.color.gray[200]}`,
   '@media': {
@@ -144,26 +181,36 @@ export const originalPane = style({
 });
 
 export const originalToolbar = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 2,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  height: '56px',
+  minHeight: '56px',
   padding: `${vars.space.md} ${vars.space.lg}`,
   boxSizing: 'border-box',
-  backgroundColor: 'rgba(246, 248, 250, 0.5)',
+  pointerEvents: 'none',
+  background: 'transparent',
 });
 
 export const originalCloseBtn = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  width: '40px',
+  height: '40px',
   padding: 0,
   border: 'none',
-  background: 'transparent',
+  backgroundColor: 'rgba(255, 255, 255, 0.88)',
+  boxShadow: '0 1px 4px rgba(0, 0, 0, 0.12)',
   cursor: 'pointer',
-  borderRadius: vars.radius.md,
+  borderRadius: '50%',
   color: vars.color.gray[800],
+  pointerEvents: 'auto',
   selectors: {
     '&:focus-visible': {
       outline: `2px solid ${vars.color.gray[400]}`,
@@ -185,6 +232,7 @@ export const openLinkBtn = style({
   borderRadius: '10px',
   backgroundColor: 'rgba(246, 248, 250, 0.5)',
   cursor: 'pointer',
+  pointerEvents: 'auto',
   fontFamily: vars.fontFamily.pretendard,
   fontSize: '14px',
   fontWeight: vars.fontWeight.bold,
@@ -204,8 +252,9 @@ export const openLinkBtn = style({
 });
 
 export const originalFrameWrap = style({
-  position: 'relative',
-  flex: 1,
+  position: 'absolute',
+  inset: 0,
+  zIndex: 0,
   minHeight: 0,
   backgroundColor: '#0a0a0a',
 });
@@ -217,26 +266,52 @@ export const originalIframe = style({
   display: 'block',
 });
 
-/** 원문 패널을 닫았을 때 다시 열기 */
 export const showOriginalTab = style({
   position: 'fixed',
   right: 0,
   top: '50%',
-  transform: 'translateY(-50%)',
+  transform: 'translateY(-350%)',
   zIndex: 20,
-  padding: `${vars.space.md} ${vars.space.sm}`,
-  border: 'none',
-  borderTopLeftRadius: vars.radius.md,
-  borderBottomLeftRadius: vars.radius.md,
-  backgroundColor: vars.color.gray[800],
-  color: vars.color.white,
-  fontSize: vars.fontSize.sm,
-  fontWeight: vars.fontWeight.semibold,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '8px',
+  width: '52px',
+  height: '99px',
+  padding: 0,
+  border: '2px solid #F5F5F5',
+  borderRight: 'none',
+  borderRadius: '24px 0 0 24px',
+  backgroundColor: '#FFF',
+  boxShadow: '0 4px 4px 0 rgba(88, 92, 130, 0.05)',
   cursor: 'pointer',
-  writingMode: 'vertical-rl',
+  boxSizing: 'border-box',
   selectors: {
     '&:hover': {
-      backgroundColor: vars.color.gray[900],
+      backgroundColor: vars.color.gray[50],
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${vars.color.gray[400]}`,
+      outlineOffset: 2,
     },
   },
+});
+
+export const showOriginalTabIcon = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '24px',
+  height: '24px',
+  flexShrink: 0,
+});
+
+export const showOriginalTabLabel = style({
+  fontFamily: vars.fontFamily.pretendard,
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.semibold,
+  lineHeight: 'normal',
+  color: vars.color.gray[500],
+  textAlign: 'center',
 });

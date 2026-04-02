@@ -12,17 +12,26 @@ export const container = style({
   marginTop: vars.space.md,
 });
 
-export const inputRowMain = style({
+/** 메인: 입력 박스 + 전송 버튼(박스 바깥), 상단 정렬 */
+export const mainInputRow = style({
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: 24,
+  marginTop: '24px 0',
+});
+
+export const textareaMainBox = style({
+  flex: 1,
+  minWidth: 0,
   display: 'flex',
   alignItems: 'center',
-  gap: vars.space.sm,
   border: `1px solid ${vars.color.gray[200]}`,
   borderRadius: vars.radius.lg,
   padding: vars.space.lg,
   backgroundColor: vars.color.white,
   minHeight: '89px',
   boxSizing: 'border-box',
-  margin: '24px 0',
+  marginTop: '24px',
 });
 
 export const textareaMain = style({
@@ -52,12 +61,13 @@ export const submitButtonMain = style({
   flexShrink: 0,
   width: '40px',
   height: '40px',
+  marginTop: vars.space.lg,
+  padding: 0,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: vars.radius.full,
   border: 'none',
-  backgroundColor: vars.color.gray[100],
+  backgroundColor: 'transparent',
   cursor: 'pointer',
   transition: `opacity ${vars.transition.duration.fast} ${vars.transition.timing.ease}`,
   selectors: {
@@ -66,15 +76,28 @@ export const submitButtonMain = style({
       cursor: 'not-allowed',
     },
     '&:not(:disabled):hover': {
-      backgroundColor: vars.color.gray[200],
+      opacity: 0.85,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${vars.color.gray[400]}`,
+      outlineOffset: 2,
+      borderRadius: vars.radius.sm,
     },
   },
 });
 
-export const inputWrapper = style({
+/** 대댓글: 입력 박스 + 전송(박스 바깥), 상단 정렬 */
+export const replyInputRow = style({
   display: 'flex',
-  alignItems: 'flex-end',
+  alignItems: 'flex-start',
   gap: vars.space.sm,
+});
+
+export const inputWrapper = style({
+  flex: 1,
+  minWidth: 0,
+  display: 'flex',
+  alignItems: 'flex-start',
   border: `1px solid ${vars.color.gray[300]}`,
   borderRadius: vars.radius.md,
   padding: `${vars.space.sm} ${vars.space.md}`,
@@ -102,21 +125,29 @@ export const textarea = style({
 
 export const submitButton = style({
   flexShrink: 0,
-  width: '32px',
-  height: '32px',
+  width: '40px',
+  height: '40px',
+  marginTop: vars.space.sm,
+  padding: 0,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: vars.radius.full,
   border: 'none',
-  backgroundColor: vars.color.brand.point,
-  color: vars.color.gray[900],
+  backgroundColor: 'transparent',
   cursor: 'pointer',
   transition: `opacity ${vars.transition.duration.fast} ${vars.transition.timing.ease}`,
   selectors: {
     '&:disabled': {
       opacity: Number(vars.opacity.disabled),
       cursor: 'not-allowed',
+    },
+    '&:not(:disabled):hover': {
+      opacity: 0.85,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${vars.color.gray[400]}`,
+      outlineOffset: 2,
+      borderRadius: vars.radius.sm,
     },
   },
 });
@@ -161,5 +192,6 @@ export const charCount = style({
   fontSize: vars.fontSize['2xs'],
   color: vars.color.gray[400],
   textAlign: 'right',
-  marginTop: vars.space.xs,
+  marginTop: '8px',
+  marginRight: '56px',
 });

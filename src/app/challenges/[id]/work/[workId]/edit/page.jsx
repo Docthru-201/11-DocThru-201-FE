@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useWork } from '@/features/works/hooks/useWork';
@@ -81,7 +82,14 @@ export default function WorkEditPage() {
                   className={`${styles.headerButton} ${styles.headerButtonGiveUp}`}
                   onClick={() => setIsCancelModalOpen(true)}
                   disabled={isDeletePending}
-                  icon={<Icon name="out" width={24} height={24} aria-hidden />}
+                  icon={
+                    <Icon
+                      name="workGiveup"
+                      width={24}
+                      height={24}
+                      aria-hidden
+                    />
+                  }
                   iconPosition="right"
                 >
                   {isDeletePending ? '삭제 중...' : '포기'}
@@ -100,7 +108,7 @@ export default function WorkEditPage() {
                   onClick={handleSubmit}
                   disabled={isUpdatePending || !content}
                 >
-                  {isUpdatePending ? '제출 중...' : '제출하기'}
+                  {isUpdatePending ? '제출중' : '제출하기'}
                 </Button>
               </div>
             </header>
@@ -119,34 +127,47 @@ export default function WorkEditPage() {
           </div>
         </div>
 
-        {hasOriginal && showOriginal && (
-          <aside className={styles.originalPane} aria-label="원문 미리보기">
-            <div className={styles.originalToolbar}>
-              <button
-                type="button"
-                className={styles.originalCloseBtn}
-                onClick={() => setShowOriginal(false)}
-                aria-label="원문 패널 닫기"
+        {hasOriginal && (
+          <div
+            className={
+              showOriginal
+                ? styles.originalPaneWrapperOpen
+                : styles.originalPaneWrapperClosed
+            }
+            aria-hidden={!showOriginal}
+          >
+            <aside className={styles.originalPane} aria-label="원문 미리보기">
+              <div className={styles.originalFrameWrap}>
+                <iframe
+                  src={originalUrl}
+                  className={styles.originalIframe}
+                  title="원문"
+                />
+              </div>
+              <div
+                className={styles.originalToolbar}
+                role="toolbar"
+                aria-label="원문 도구"
               >
-                <Icon name="outCircle" width={32} height={32} aria-hidden />
-              </button>
-              <button
-                type="button"
-                className={styles.openLinkBtn}
-                onClick={openOriginalInNewTab}
-              >
-                링크 열기
-                <Icon name="outCircle" width={24} height={24} aria-hidden />
-              </button>
-            </div>
-            <div className={styles.originalFrameWrap}>
-              <iframe
-                src={originalUrl}
-                className={styles.originalIframe}
-                title="원문"
-              />
-            </div>
-          </aside>
+                <button
+                  type="button"
+                  className={styles.originalCloseBtn}
+                  onClick={() => setShowOriginal(false)}
+                  aria-label="원문 패널 닫기"
+                >
+                  <Icon name="outCircle" width={32} height={32} aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  className={styles.openLinkBtn}
+                  onClick={openOriginalInNewTab}
+                >
+                  링크 열기
+                  <Icon name="outCircle" width={24} height={24} aria-hidden />
+                </button>
+              </div>
+            </aside>
+          </div>
         )}
       </div>
 
@@ -155,8 +176,18 @@ export default function WorkEditPage() {
           type="button"
           className={styles.showOriginalTab}
           onClick={() => setShowOriginal(true)}
+          aria-label="원문"
         >
-          원문 보기
+          <span className={styles.showOriginalTabIcon}>
+            <Image
+              src="/icons/list-origin-url.svg"
+              alt=""
+              width={24}
+              height={24}
+              aria-hidden
+            />
+          </span>
+          <span className={styles.showOriginalTabLabel}>원문</span>
         </button>
       )}
 

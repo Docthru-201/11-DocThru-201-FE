@@ -114,6 +114,7 @@ export default function ChallengeDetailPage() {
                 }
               }}
               isDisabled={isDisabled || isCreatePending}
+              ㅅ
             />
           </div>
         </section>
