@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Dropdown, TextBox } from '@/shared/components';
+import { TYPE_OPTIONS, CATEGORY_OPTIONS } from '@/shared/constants/file.js';
 import { createChallengeFormSchema } from '@/features/challenges/schema/challenges.schema';
 import * as styles from './ChallengeForm.css';
 
@@ -94,7 +95,7 @@ export default function ChallengeForm({
               <Dropdown
                 label="분야"
                 placeholder="카테고리"
-                options={categoryOptions}
+                options={TYPE_OPTIONS}
                 value={field.value}
                 onChange={field.onChange}
                 showLabel
@@ -112,7 +113,7 @@ export default function ChallengeForm({
               <Dropdown
                 label="문서 타입"
                 placeholder="카테고리"
-                options={docTypeOptions}
+                options={CATEGORY_OPTIONS}
                 value={field.value}
                 onChange={field.onChange}
                 showLabel
