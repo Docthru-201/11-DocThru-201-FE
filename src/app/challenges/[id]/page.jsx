@@ -103,7 +103,7 @@ export default function ChallengeDetailPage() {
             <Chip status={challenge.status} />
             <ChallengeContent
               challengeId={challengeId}
-              paricipants={rankingData.length}
+              participants={rankingData.length}
               {...challenge}
             />
             <div className={styles.authorInfo}>
