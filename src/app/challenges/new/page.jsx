@@ -3,16 +3,6 @@
 import ChallengeForm from '@/app/admin/_components/ChallengeForm';
 import { useCreateChallenge } from '@/features/challenges/hooks/useCreateChallenge';
 
-const DEFAULT_CHALLENGE_VALUES = {
-  title: '',
-  originalUrl: '',
-  category: '',
-  type: '',
-  deadline: '',
-  maxParticipants: '',
-  description: '',
-};
-
 export default function NewChallengePage() {
   const { createChallenge, isPending } = useCreateChallenge();
 
@@ -24,7 +14,6 @@ export default function NewChallengePage() {
         : null,
       maxParticipants: Number(formData.maxParticipants),
     };
-
     createChallenge(payload);
   };
 
