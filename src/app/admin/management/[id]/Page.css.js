@@ -101,11 +101,11 @@ export const declineBtn = style([
   baseActionBtn,
   {
     color: '#F24744;',
-    backgroundColor: '#fca5a5',
-    border: '1px solid #fca5a5',
+    backgroundColor: '#FFE7E7',
+    border: '1px solid #FFE7E7',
     selectors: {
       '&:hover': {
-        backgroundColor: '#fff5f5',
+        backgroundColor: '#F24744;',
       },
     },
   },
