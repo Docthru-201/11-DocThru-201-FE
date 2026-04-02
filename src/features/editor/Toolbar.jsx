@@ -1,5 +1,17 @@
 'use client';
 import { useRef } from 'react';
+import {
+  Bold,
+  Italic,
+  Underline,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  List,
+  ListOrdered,
+  ImageIcon,
+} from 'lucide-react';
+import * as styles from './Toolbar.css.js';
 
 export default function Toolbar({ editor, onImageUpload }) {
   const fileInputRef = useRef(null);
@@ -16,47 +28,78 @@ export default function Toolbar({ editor, onImageUpload }) {
   };
 
   return (
-    <div>
-      {/* 텍스트 서식 */}
+    <div className={styles.toolbar}>
       <button
+        className={styles.button}
         onClick={() => editor.chain().focus().toggleBold().run()}
         data-active={editor.isActive('bold')}
       >
-        B
+        <Bold size={16} />
       </button>
       <button
+        className={styles.button}
         onClick={() => editor.chain().focus().toggleItalic().run()}
         data-active={editor.isActive('italic')}
       >
-        I
+        <Italic size={16} />
       </button>
       <button
-        onClick={() => editor.chain().focus().toggleUnderline?.().run()}
+        className={styles.button}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
         data-active={editor.isActive('underline')}
       >
-        U
+        <Underline size={16} />
       </button>
+
+      <div className={styles.divider} />
+
       <button
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        data-active={editor.isActive('strike')}
+        className={styles.button}
+        onClick={() => editor.chain().focus().setTextAlign('left').run()}
+        data-active={editor.isActive({ textAlign: 'left' })}
       >
-        S
+        <AlignLeft size={16} />
       </button>
       <button
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        data-active={editor.isActive('code')}
+        className={styles.button}
+        onClick={() => editor.chain().focus().setTextAlign('center').run()}
+        data-active={editor.isActive({ textAlign: 'center' })}
       >
-        {'</>'}
+        <AlignCenter size={16} />
       </button>
       <button
+        className={styles.button}
+        onClick={() => editor.chain().focus().setTextAlign('right').run()}
+        data-active={editor.isActive({ textAlign: 'right' })}
+      >
+        <AlignRight size={16} />
+      </button>
+
+      <div className={styles.divider} />
+
+      <button
+        className={styles.button}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         data-active={editor.isActive('bulletList')}
       >
-        ≡
+        <List size={16} />
+      </button>
+      <button
+        className={styles.button}
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        data-active={editor.isActive('orderedList')}
+      >
+        <ListOrdered size={16} />
       </button>
 
-      {/* 이미지 업로드 버튼 */}
-      <button onClick={() => fileInputRef.current?.click()}>🖼 이미지</button>
+      <div className={styles.divider} />
+
+      <button
+        className={styles.button}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <ImageIcon size={16} />
+      </button>
       <input
         ref={fileInputRef}
         type="file"
@@ -65,7 +108,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) handleImageFile(file);
-          e.target.value = ''; // 같은 파일 재업로드 허용
+          e.target.value = '';
         }}
       />
     </div>

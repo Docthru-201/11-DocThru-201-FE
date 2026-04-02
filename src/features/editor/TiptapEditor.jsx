@@ -2,10 +2,13 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
 import { useCallback } from 'react';
 import { useEditorStore } from './store/useEditorStore';
 import { useImageUpload } from './hooks/useImageUpload';
 import Toolbar from './Toolbar';
+import './TiptapEditor.css';
 
 export function TiptapEditor({ initialContent = null, editable = true }) {
   const { setContent } = useEditorStore();
@@ -15,6 +18,8 @@ export function TiptapEditor({ initialContent = null, editable = true }) {
     extensions: [
       StarterKit,
       Image.configure({ inline: false, allowBase64: true }),
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Underline,
     ],
     content: initialContent,
     editable,
@@ -50,7 +55,12 @@ export function TiptapEditor({ initialContent = null, editable = true }) {
   return (
     <div onDrop={handleDrop} onDragOver={handleDragOver}>
       <Toolbar editor={editor} onImageUpload={uploadImage} />
-      <EditorContent editor={editor} />
+      <div
+        onClick={() => editor.chain().focus().run()}
+        style={{ minHeight: '500px', cursor: 'text' }}
+      >
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }
