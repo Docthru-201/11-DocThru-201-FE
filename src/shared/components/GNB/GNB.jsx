@@ -161,9 +161,17 @@ export function GNB({
   const isMember = status === 'member';
   const isGuest = status === 'guest' && sessionReady;
 
-  const logoHref = isAdmin || isMember ? '/challenges' : '/';
+  const logoHref = isAdmin
+    ? '/admin/management'
+    : isMember
+      ? '/challenges'
+      : '/';
   const logoAriaLabel =
-    logoHref === '/challenges' ? '챌린지 목록으로 이동' : 'Docthru 홈';
+    logoHref === '/admin/management'
+      ? '어드민 관리로 이동'
+      : logoHref === '/challenges'
+        ? '챌린지 목록으로 이동'
+        : 'Docthru 홈';
 
   const [memberMenuOpen, setMemberMenuOpen] = useState(false);
   const memberMenuRef = useRef(null);
