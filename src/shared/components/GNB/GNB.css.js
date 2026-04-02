@@ -342,12 +342,19 @@ export const notificationButton = style({
 
 export const notificationBadge = style({
   position: 'absolute',
-  top: 4,
-  right: 4,
-  width: 8,
-  height: 8,
+  top: 0,
+  right: -2,
+  minWidth: 16,
+  height: 16,
+  padding: '0 4px',
   borderRadius: '9999px',
-  backgroundColor: '#EF4444',
+  backgroundColor: '#ef4444',
+  color: '#fff',
+  fontSize: '9px',
+  fontWeight: 700,
+  lineHeight: '16px',
+  textAlign: 'center',
+  zIndex: 1,
 });
 
 export const notificationDropdown = style({
@@ -387,12 +394,20 @@ export const notificationList = style({
 });
 
 export const notificationItem = style({
-  padding: '12px 16px',
-  borderBottom: '1px solid #E5E5E5',
+  position: 'relative',
+  padding: '16px 44px 16px 16px',
+  borderBottom: '1px solid #d9d9d9',
+  backgroundColor: '#ffffff',
+  cursor: 'pointer',
+  transition: 'background-color 0.2s ease',
+
+  ':hover': {
+    backgroundColor: '#f9fafb',
+  },
 });
 
 export const notificationMessage = style({
-  padding: '12px 16px',
+  padding: '12px 0',
   fontFamily: vars.fontFamily.pretendard,
   fontSize: '14px',
   fontWeight: 400,
@@ -415,4 +430,44 @@ export const notificationEmpty = style({
   fontSize: vars.fontSize.sm,
   lineHeight: vars.lineHeight.normal,
   color: vars.color.gray[500],
+});
+
+export const notificationItemRead = style({
+  backgroundColor: '#f3f4f6',
+
+  ':hover': {
+    backgroundColor: '#edeff2',
+  },
+});
+
+export const notificationItemClickable = style({
+  cursor: 'pointer',
+});
+
+export const notificationItemContent = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '6px',
+});
+
+export const notificationDeleteButton = style({
+  position: 'absolute',
+  top: '12px',
+  right: '12px',
+  width: '20px',
+  height: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: 'none',
+  background: 'transparent',
+  color: '#9ca3af',
+  fontSize: '20px',
+  lineHeight: 1,
+  cursor: 'pointer',
+  zIndex: 1,
+
+  ':hover': {
+    color: '#111827',
+  },
 });
