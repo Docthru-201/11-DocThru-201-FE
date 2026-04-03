@@ -18,6 +18,10 @@ import {
   Sort,
   Chip,
 } from '@/shared/components';
+import {
+  ChallengeListSkeleton,
+  AppliedTableSkeleton,
+} from '@/shared/components/Skeleton';
 import ModalDecline from '@/app/challenges/[id]/_components/ModalDecline';
 import ModalSuccess from '@/app/challenges/[id]/_components/ModalSuccess';
 import ModalError from '@/app/challenges/[id]/_components/ModalError';
@@ -25,6 +29,12 @@ import * as styles from '../challenges/page.css.js';
 import * as appliedStyles from './appliedTable.css.js';
 
 const PAGE_SIZE = 5;
+
+const EMPTY_TAB_COPY = {
+  participating: '참여중인 챌린지가 없습니다.',
+  done: '완료한 챌린지가 없습니다.',
+  applied: '신청한 챌린지가 없습니다.',
+};
 
 const SORT_OPTIONS = [
   { value: 'all', label: '승인 대기' },
@@ -380,7 +390,18 @@ export default function MyChallengesPage() {
         )}
 
         {isPending && (
-          <p className={styles.feedback}>챌린지 목록을 불러오는 중…</p>
+          <div
+            className={styles.listSkeletonWrap}
+            role="status"
+            aria-live="polite"
+            aria-label="나의 챌린지 목록 로딩 중"
+          >
+            {value === 'applied' ? (
+              <AppliedTableSkeleton />
+            ) : (
+              <ChallengeListSkeleton count={5} />
+            )}
+          </div>
         )}
         {isError && (
           <p className={styles.feedback} role="alert">
@@ -389,69 +410,92 @@ export default function MyChallengesPage() {
         )}
 
         {!isPending && !isError && showCardList && (
-          <div className={styles.cardList}>
-            {displayedChallenges.map((study) => (
-              <Card
-                key={study.id}
-                study={study}
-                onCtaClick={() => {}}
-                showEditMenu={user?.id != null && study.authorId === user.id}
-                compactEditMenu
-                onEditClick={() => handleEdit(study)}
-                onDeleteClick={() => handleDeleteClick(study)}
-              />
-            ))}
-          </div>
+          <>
+            {challengeItems.length === 0 ? (
+              <p className={styles.emptyState}>{EMPTY_TAB_COPY[value]}</p>
+            ) : filteredChallenges.length === 0 ? (
+              <p className={styles.emptyState}>검색 결과가 없습니다.</p>
+            ) : (
+              <div className={styles.cardList}>
+                {displayedChallenges.map((study) => (
+                  <Card
+                    key={study.id}
+                    study={study}
+                    onCtaClick={() => {}}
+                    showEditMenu={
+                      user?.id != null && study.authorId === user.id
+                    }
+                    compactEditMenu
+                    onEditClick={() => handleEdit(study)}
+                    onDeleteClick={() => handleDeleteClick(study)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
 
         {!isPending && !isError && value === 'applied' && (
           <div className={appliedStyles.tableSection}>
-            <table className={appliedStyles.table}>
-              <thead>
-                <tr>
-                  <th
-                    className={`${appliedStyles.headerCell} ${appliedStyles.headerFirst}`}
-                  >
-                    No.
-                  </th>
-                  <th className={appliedStyles.headerCell}>분야</th>
-                  <th className={appliedStyles.headerCell}>카테고리</th>
-                  <th className={appliedStyles.headerCell}>챌린지 제목</th>
-                  <th className={appliedStyles.headerCell}>모집 인원</th>
-                  <th className={appliedStyles.headerCell}>신청일</th>
-                  <th className={appliedStyles.headerCell}>마감 기한</th>
-                  <th
-                    className={`${appliedStyles.headerCell} ${appliedStyles.headerLast}`}
-                  >
-                    상태
-                  </th>
-                </tr>
-                <tr>
-                  <th colSpan={8} className={appliedStyles.headerGapCell}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAppliedRows.map((row) => (
-                  <tr
-                    key={row.id ?? String(row.no)}
-                    className={appliedStyles.row}
-                  >
-                    <td className={appliedStyles.bodyCell}>{row.no}</td>
-                    <td className={appliedStyles.bodyCell}>{row.field}</td>
-                    <td className={appliedStyles.bodyCell}>{row.category}</td>
-                    <td className={appliedStyles.bodyTitleCell}>{row.title}</td>
-                    <td className={appliedStyles.bodyCell}>
-                      {row.maxParticipants}
-                    </td>
-                    <td className={appliedStyles.bodyCell}>{row.appliedAt}</td>
-                    <td className={appliedStyles.bodyCell}>{row.deadline}</td>
-                    <td className={appliedStyles.bodyCell}>
-                      <Chip status={statusChip(row.status)} />
-                    </td>
+            {challengeItems.length === 0 ? (
+              <p className={styles.emptyState}>{EMPTY_TAB_COPY.applied}</p>
+            ) : filteredAppliedRows.length === 0 ? (
+              <p className={styles.emptyState}>검색 결과가 없습니다.</p>
+            ) : (
+              <table className={appliedStyles.table}>
+                <thead>
+                  <tr>
+                    <th
+                      className={`${appliedStyles.headerCell} ${appliedStyles.headerFirst}`}
+                    >
+                      No.
+                    </th>
+                    <th className={appliedStyles.headerCell}>분야</th>
+                    <th className={appliedStyles.headerCell}>카테고리</th>
+                    <th className={appliedStyles.headerCell}>챌린지 제목</th>
+                    <th className={appliedStyles.headerCell}>모집 인원</th>
+                    <th className={appliedStyles.headerCell}>신청일</th>
+                    <th className={appliedStyles.headerCell}>마감 기한</th>
+                    <th
+                      className={`${appliedStyles.headerCell} ${appliedStyles.headerLast}`}
+                    >
+                      상태
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                  <tr>
+                    <th
+                      colSpan={8}
+                      className={appliedStyles.headerGapCell}
+                    ></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredAppliedRows.map((row) => (
+                    <tr
+                      key={row.id ?? String(row.no)}
+                      className={appliedStyles.row}
+                    >
+                      <td className={appliedStyles.bodyCell}>{row.no}</td>
+                      <td className={appliedStyles.bodyCell}>{row.field}</td>
+                      <td className={appliedStyles.bodyCell}>{row.category}</td>
+                      <td className={appliedStyles.bodyTitleCell}>
+                        {row.title}
+                      </td>
+                      <td className={appliedStyles.bodyCell}>
+                        {row.maxParticipants}
+                      </td>
+                      <td className={appliedStyles.bodyCell}>
+                        {row.appliedAt}
+                      </td>
+                      <td className={appliedStyles.bodyCell}>{row.deadline}</td>
+                      <td className={appliedStyles.bodyCell}>
+                        <Chip status={statusChip(row.status)} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 
