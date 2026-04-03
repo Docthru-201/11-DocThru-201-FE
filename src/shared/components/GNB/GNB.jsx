@@ -121,9 +121,9 @@ function NotificationBell() {
   };
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open) return;
 
-    if (!items.length && !loading && !error) {
+    if (!loading) {
       void loadNotifications();
     }
 
@@ -146,7 +146,7 @@ function NotificationBell() {
       document.removeEventListener('mousedown', handlePointerDown);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, items.length, loading, error]);
+  }, [open]);
 
   return (
     <div ref={containerRef} className={styles.notificationContainer}>
