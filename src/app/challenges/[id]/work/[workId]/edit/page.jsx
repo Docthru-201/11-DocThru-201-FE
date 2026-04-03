@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useWork } from '@/features/works/hooks/useWork';
@@ -51,9 +51,6 @@ export default function WorkEditPage() {
       },
     );
   };
-  useEffect(() => {
-    if (work?.title) setWorkTitle(work.title);
-  }, [work]);
 
   if (isPending) return <div>로딩 중...</div>;
 
@@ -113,7 +110,7 @@ export default function WorkEditPage() {
           </span>
           <input
             className={styles.titleInput}
-            value={workTitle}
+            defaultValue={work?.title || ''}
             onChange={(e) => setWorkTitle(e.target.value)}
             placeholder="제목을 입력하세요"
           />
