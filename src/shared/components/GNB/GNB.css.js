@@ -402,17 +402,15 @@ export const notificationItem = style({
   transition: 'background-color 0.2s ease',
 
   ':hover': {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#ffffffdf',
   },
 });
 
 export const notificationMessage = style({
-  padding: '12px 0',
   fontFamily: vars.fontFamily.pretendard,
   fontSize: '14px',
   fontWeight: 400,
   lineHeight: 'normal',
-  color: vars.color.gray[900],
   wordBreak: 'keep-all',
 });
 
@@ -433,11 +431,7 @@ export const notificationEmpty = style({
 });
 
 export const notificationItemRead = style({
-  backgroundColor: '#f3f4f6',
-
-  ':hover': {
-    backgroundColor: '#edeff2',
-  },
+  color: vars.color.gray[400],
 });
 
 export const notificationItemClickable = style({
