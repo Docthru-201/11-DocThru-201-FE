@@ -48,7 +48,7 @@ export const pageContainer = style({
 });
 
 export const contentWrapper = style({
-  width: '1200px',
+  width: '900px',
   display: 'flex',
   flexDirection: 'column',
 
@@ -67,7 +67,9 @@ export const contentWrapper = style({
 });
 
 export const dividerWrapper = style({
-  padding: '0 20px',
+  width: '100%',
+  borderTop: '1px solid #E5E7EB',
+  margin: 0,
 });
 
 export const topSection = style({
@@ -75,9 +77,7 @@ export const topSection = style({
   width: '100%',
   flexDirection: 'row',
   justifyContent: 'flex-start',
-  gap: '24px',
-  marginBottom: '32px',
-
+  marginBottom: '10px',
   '@media': {
     'screen and (max-width: 743px)': {
       flexDirection: 'column',
@@ -92,7 +92,6 @@ export const leftInfoArea = style({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
   paddingTop: '24px',
   minWidth: 0,
 
@@ -108,7 +107,7 @@ export const authorInfo = style({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  marginTop: '8px',
+  marginTop: '12px',
 });
 
 export const authorNickname = style({
@@ -146,7 +145,7 @@ export const rankingSection = style({
   borderRadius: '12px',
   border: '2px solid #1f2937',
   backgroundColor: '#ffffff',
-  marginTop: '40px',
+  marginTop: '24px',
   overflow: 'hidden',
   boxSizing: 'border-box',
 
@@ -161,7 +160,7 @@ export const rankingHeader = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '16px 20px',
+  padding: '16px 20px 7px 20px',
   borderBottom: 'none',
 
   '@media': {
@@ -196,7 +195,7 @@ export const totalPageText = style({
 export const rankingListContainer = style({
   width: '100%',
   margin: '0 auto',
-  padding: '0 24px 40px 24px',
+  padding: '0 24px 24px 24px',
   boxSizing: 'border-box',
 
   '@media': {

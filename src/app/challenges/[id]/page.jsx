@@ -98,7 +98,7 @@ export default function ChallengeDetailPage() {
           <div
             style={{
               background: '#FFFFFF',
-              padding: 24,
+              padding: '24px 0 24px 24px',
             }}
           >
             <Container
@@ -114,12 +114,11 @@ export default function ChallengeDetailPage() {
                 }
               }}
               isDisabled={isDisabled || isCreatePending}
-              ㅅ
             />
           </div>
         </section>
 
-        <LineDivider />
+        <div className={styles.dividerWrapper}></div>
         {challenge?.isClosed === true && (
           <div className={styles.bestWorkWrapper}>
             <TopRankedList rankingData={rankingData} />
@@ -175,9 +174,7 @@ export default function ChallengeDetailPage() {
                       onLikeClick={() => {}}
                     />
                     {index < currentItems.length - 1 && (
-                      <div className={styles.dividerWrapper}>
-                        <LineDivider />
-                      </div>
+                      <div className={styles.dividerWrapper}></div>
                     )}
                   </React.Fragment>
                 ))}
