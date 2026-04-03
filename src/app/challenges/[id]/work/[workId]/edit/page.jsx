@@ -28,6 +28,9 @@ export default function WorkEditPage() {
   const originalUrl = work?.challenge?.originalUrl;
   const hasOriginal = Boolean(originalUrl);
 
+  const isSubmitDisabled =
+    isUpdatePending || !content || !(workTitle || work?.title);
+
   const handleCancel = () => {
     deleteWork(undefined, {
       onSuccess: () => {
@@ -91,7 +94,7 @@ export default function WorkEditPage() {
                   variant="filledTonal"
                   className={`${styles.headerButton} ${styles.headerButtonGiveUp}`}
                   onClick={() => setIsCancelModalOpen(true)}
-                  disabled={isDeletePending}
+                  disabled={isDeletePending || isUpdatePending}
                   icon={
                     <Icon
                       name="workGiveup"
@@ -116,7 +119,7 @@ export default function WorkEditPage() {
                   variant="solid"
                   className={styles.headerButton}
                   onClick={handleSubmit}
-                  disabled={isUpdatePending || !content}
+                  disabled={isSubmitDisabled}
                 >
                   {isUpdatePending
                     ? '저장 중...'
