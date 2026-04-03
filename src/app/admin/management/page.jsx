@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  Suspense,
+} from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
@@ -17,7 +23,7 @@ import Pagination from '@/app/admin/_components/Pagination';
 import { getChallengesAction } from '@/shared/apis/admin.js';
 import * as styles from './Page.css.js';
 
-export default function AdminManagementPage() {
+function AdminManagementContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -151,5 +157,13 @@ export default function AdminManagementPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminManagementPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <AdminManagementContent />
+    </Suspense>
   );
 }
