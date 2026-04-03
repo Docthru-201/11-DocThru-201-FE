@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import { useComments } from '@/features/comments/hooks/useComments';
+import { CommentListSkeleton } from '@/shared/components/Skeleton';
+
 import FeedbackForm from './FeedbackForm';
 import * as styles from './FeedbackList.css.js';
 
@@ -188,7 +190,7 @@ export default function FeedbackList({ workId, onProfileClick }) {
 
   const [visibleCount, setVisibleCount] = useState(3);
 
-  if (isPending) return <div>댓글 불러오는 중...</div>;
+  if (isPending) return <CommentListSkeleton />;
   if (isError) return <div>댓글을 불러오는데 실패했습니다.</div>;
 
   // ✅ 최상위 댓글만 필터링 (parentId 없는 것)

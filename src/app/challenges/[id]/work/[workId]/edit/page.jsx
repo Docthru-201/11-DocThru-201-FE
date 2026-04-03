@@ -10,6 +10,8 @@ import TiptapEditor from '@/features/editor/TiptapEditor';
 import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import { Modal } from '@/shared/components/Modal';
+import { WorkEditSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './page.css.js';
 
 export default function WorkEditPage() {
@@ -57,7 +59,7 @@ export default function WorkEditPage() {
     if (originalUrl) window.open(originalUrl, '_blank', 'noopener,noreferrer');
   };
 
-  if (isPending) return <div>로딩 중...</div>;
+  if (isPending) return <WorkEditSkeleton />;
 
   return (
     <div className={styles.pageWrapper}>

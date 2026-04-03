@@ -29,14 +29,12 @@ import {
   hasActiveChallengeFilter,
 } from './_components/ChallengeFilterPopover';
 
+import { ChallengeListSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './page.css.js';
 
 const PAGE_SIZE = 5;
 
-/**
- * @param {{ hideNewChallengeButton?: boolean }} props
- * `/admin/challenges` 에서는 신규 챌린지 신청 버튼을 숨길 때 `true`
- */
 export default function ChallengesPage({ hideNewChallengeButton = false }) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -198,9 +196,7 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
           />
         </div>
 
-        {isPending && (
-          <p className={styles.feedback}>챌린지 목록을 불러오는 중…</p>
-        )}
+        {isPending && <ChallengeListSkeleton />}
         {isError && (
           <p className={styles.feedback} role="alert">
             {error?.message ?? '챌린지 목록을 불러오지 못했습니다.'}
