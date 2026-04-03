@@ -10,6 +10,14 @@ const withVanillaExtract = createVanillaExtractPlugin({
 const nextConfig = {
   reactStrictMode: true,
   reactCompiler: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'resgqvkfdnaunibowexs.supabase.co',
+      },
+    ],
+  },
 };
 
 export default withVanillaExtract(nextConfig);
