@@ -123,7 +123,13 @@ export default function WorkEditPage() {
       <div className={styles.contentArea}>
         <div className={showOriginal ? styles.editorHalf : styles.editorArea}>
           <TiptapEditor
-            initialContent={work?.content ? JSON.parse(work.content) : null}
+            initialContent={
+              work?.draftContent
+                ? JSON.parse(work.draftContent)
+                : work?.content
+                  ? JSON.parse(work.content)
+                  : null
+            }
           />
         </div>
 
