@@ -6,19 +6,18 @@ export const commonBtnStyle = style({
   alignItems: 'center',
   width: '100%',
   height: '35px',
-  marginTop: '16px', // mt-4
+  marginTop: '16px',
   borderRadius: '17.5px',
-  fontSize: '14px', // text-sm
+  fontSize: '14px',
   fontWeight: 600,
   '@media': {
     'screen and (min-width: 768px)': {
-      marginTop: '24px', // md:mt-6
-      fontSize: '16px', // md:text-base
+      marginTop: '24px',
+      fontSize: '16px',
     },
   },
 });
 
-// 상태별 스타일 맵
 export const statusStyles = {
   PENDING: style([
     commonBtnStyle,
@@ -39,23 +38,23 @@ export const statusStyles = {
 };
 
 export const reasonBox = style({
-  marginTop: '16px', // mt-4
+  marginTop: '16px',
   display: 'flex',
   height: '149px',
   width: '100%',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  borderRadius: '16px', // rounded-2xl
-  border: '1px solid #e5e7eb', // border-gray-200
-  backgroundColor: '#f9fafb', // bg-gray-50
-  padding: '16px', // p-4
+  borderRadius: '16px',
+  border: '1px solid #e5e7eb',
+  backgroundColor: '#f9fafb',
+  padding: '16px',
 });
 
 export const reasonTitle = style({
   textAlign: 'center',
   fontSize: '14px',
   fontWeight: 600,
-  color: '#1f2937', // text-gray-800
+  color: '#1f2937',
 });
 
 export const reasonContent = style({
@@ -78,17 +77,17 @@ export const footerWrapper = style({
 });
 
 export const footerBrand = style({
-  color: '#374151', // text-gray-700
+  color: '#374151',
 });
 
 export const divider = style({
-  margin: '0 8px', // mx-2
+  margin: '0 8px',
   display: 'flex',
-  height: '16px', // h-4
+  height: '16px',
   flexDirection: 'column',
   border: '1px solid #e5e7eb',
 });
 
 export const footerDate = style({
-  color: '#6b7280', // text-gray-500
+  color: '#6b7280',
 });
