@@ -96,15 +96,27 @@ export const editorArea = style({
   width: '100%',
   maxWidth: '960px',
   backgroundColor: vars.color.white,
-  overflow: 'auto',
+  overflowY: 'auto', // 세로 스크롤 허용
   padding: '0 24px',
+  // 내부 에디터 영역이 늘어나도록 설정
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 export const editorHalf = style({
   flex: 1,
   backgroundColor: vars.color.white,
-  overflow: 'auto',
+  overflowY: 'auto',
   padding: '0 24px',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+globalStyle(`${editorArea} .ProseMirror, ${editorHalf} .ProseMirror`, {
+  minHeight: '600px', // ← 여기서 원하는 높이(px)를 조절하세요!
+  height: '100%',
+  outline: 'none',
+  padding: '20px 0', // 위아래 여백 추가 (선택사항)
 });
 
 export const originalArea = style({
