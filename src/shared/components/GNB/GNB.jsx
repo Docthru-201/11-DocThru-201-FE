@@ -6,7 +6,11 @@ import clsx from 'clsx';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './GNB.css.js';
 import { Button } from '@/shared/components';
-import { getMyNotifications } from '@/apis/notification';
+import {
+  deleteMyNotification,
+  getMyNotifications,
+  markNotificationAsRead,
+} from '@/apis/notification';
 
 function gradeToLabel(grade) {
   if (grade === 'EXPERT') return '전문가';
@@ -32,21 +36,25 @@ function formatNotificationDate(value) {
 
 function NotificationBell() {
   const [open, setOpen] = useState(false);
-  const [hideBadge, setHideBadge] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [items, setItems] = useState([]);
   const containerRef = useRef(null);
-  const visibleItems = items.filter((n) => n.message?.trim());
-  const hasUnread = visibleItems.some((n) => !n.isRead);
-  const showBadge = hasUnread && !hideBadge;
+
+  const visibleItems = Array.isArray(items)
+    ? items.filter((n) => n?.message?.trim())
+    : [];
+
+  const unreadCount = visibleItems.filter((n) => !n.isRead).length;
+  const hasUnread = unreadCount > 0;
+  const badgeText = unreadCount > 9 ? '9+' : unreadCount;
 
   async function loadNotifications() {
     try {
       setLoading(true);
       setError(null);
       const data = await getMyNotifications();
-      setItems(data);
+      setItems(Array.isArray(data) ? data : (data?.items ?? []));
     } catch (e) {
       setError(e);
     } finally {
@@ -54,9 +62,62 @@ function NotificationBell() {
     }
   }
 
-  const handleToggle = () => {
-    setOpen((prev) => !prev);
-    setHideBadge(true);
+  useEffect(() => {
+    void loadNotifications();
+  }, []);
+
+  async function handleNotificationClick(notification) {
+    try {
+      if (!notification?.isRead) {
+        await markNotificationAsRead(notification.id, true);
+
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === notification.id ? { ...item, isRead: true } : item,
+          ),
+        );
+      }
+
+      setOpen(false);
+
+      if (notification?.targetUrl && typeof window !== 'undefined') {
+        window.location.assign(notification.targetUrl);
+      }
+    } catch (err) {
+      console.error('알림 읽음 처리 실패:', err);
+    }
+  }
+
+  async function handleDeleteNotification(e, notificationId) {
+    e.stopPropagation();
+
+    try {
+      await deleteMyNotification(notificationId);
+      await loadNotifications();
+    } catch (err) {
+      console.error('알림 삭제 실패:', err);
+    }
+  }
+
+  const handleToggle = async () => {
+    const nextOpen = !open;
+    setOpen(nextOpen);
+
+    if (!nextOpen) return;
+
+    if (!items.length && !loading && !error) {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getMyNotifications();
+        const nextItems = Array.isArray(data) ? data : (data?.items ?? []);
+        setItems(nextItems);
+      } catch (e) {
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   useEffect(() => {
@@ -80,12 +141,12 @@ function NotificationBell() {
 
     document.addEventListener('mousedown', handlePointerDown);
     document.addEventListener('keydown', handleKeyDown);
+
     return () => {
       document.removeEventListener('mousedown', handlePointerDown);
       document.removeEventListener('keydown', handleKeyDown);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, items.length, loading, error]);
 
   return (
     <div ref={containerRef} className={styles.notificationContainer}>
@@ -98,7 +159,11 @@ function NotificationBell() {
         onClick={handleToggle}
       >
         <Icon name="notificationBellEmpty" width={24} height={24} aria-hidden />
-        {showBadge && <span className={styles.notificationBadge} aria-hidden />}
+        {hasUnread && (
+          <span className={styles.notificationBadge} aria-hidden>
+            {badgeText}
+          </span>
+        )}
       </button>
 
       {open && (
@@ -114,22 +179,44 @@ function NotificationBell() {
                 알림을 불러오는 중입니다.
               </li>
             )}
+
             {error && !loading && (
               <li className={styles.notificationEmpty}>
                 알림을 불러오지 못했습니다.
               </li>
             )}
+
             {!loading && !error && visibleItems.length === 0 && (
               <li className={styles.notificationEmpty}>알림이 없습니다.</li>
             )}
+
             {!loading &&
               !error &&
               visibleItems.map((n) => (
-                <li key={n.id} className={styles.notificationItem}>
-                  <p className={styles.notificationMessage}>{n.message}</p>
-                  <p className={styles.notificationDate}>
-                    {formatNotificationDate(n.createdAt)}
-                  </p>
+                <li
+                  key={n.id}
+                  className={clsx(
+                    styles.notificationItem,
+                    n.isRead && styles.notificationItemRead,
+                    n.targetUrl && styles.notificationItemClickable,
+                  )}
+                  onClick={() => handleNotificationClick(n)}
+                >
+                  <button
+                    type="button"
+                    className={styles.notificationDeleteButton}
+                    aria-label="알림 삭제"
+                    onClick={(e) => handleDeleteNotification(e, n.id)}
+                  >
+                    ×
+                  </button>
+
+                  <div className={styles.notificationItemContent}>
+                    <p className={styles.notificationMessage}>{n.message}</p>
+                    <p className={styles.notificationDate}>
+                      {formatNotificationDate(n.createdAt)}
+                    </p>
+                  </div>
                 </li>
               ))}
           </ul>
@@ -150,7 +237,6 @@ export function GNB({
   memberGradeLabel = undefined,
   memberHasGoogleAccount = false,
 
-  /** 세션 확인 전에는 로그인 버튼을 숨겨 쿠키만 있는 사용자에게 잠깐 로그인 UI가 노출되지 않게 함 */
   sessionReady = true,
 
   adminNickname = '체다치즈',
@@ -212,7 +298,6 @@ export function GNB({
       onLogout();
       return;
     }
-    /* Storybook 등 App Router 컨텍스트 밖에서는 useRouter 대신 이동 */
     if (typeof window !== 'undefined') {
       window.location.assign('/login');
     }
@@ -225,6 +310,7 @@ export function GNB({
           {(isAdmin || isMember || status === 'guest') && (
             <Logo href={logoHref} ariaLabel={logoAriaLabel} />
           )}
+
           {isAdmin && tabs.length > 0 && (
             <nav className={styles.tabs} aria-label="주 메뉴">
               {tabs.map((tab, i) => {
@@ -269,94 +355,91 @@ export function GNB({
           {(isMember || isAdmin) && <NotificationBell />}
 
           {isMember && (
-            <>
-              <div className={styles.memberMenu} ref={memberMenuRef}>
-                <button
-                  type="button"
-                  className={styles.memberTrigger}
-                  aria-label="프로필 메뉴"
-                  aria-haspopup="menu"
-                  aria-expanded={memberMenuOpen}
-                  onClick={() => setMemberMenuOpen((open) => !open)}
+            <div className={styles.memberMenu} ref={memberMenuRef}>
+              <button
+                type="button"
+                className={styles.memberTrigger}
+                aria-label="프로필 메뉴"
+                aria-haspopup="menu"
+                aria-expanded={memberMenuOpen}
+                onClick={() => setMemberMenuOpen((open) => !open)}
+              >
+                <Icon name="profileMember" width={32} height={32} aria-hidden />
+              </button>
+
+              {memberMenuOpen && (
+                <div
+                  className={styles.memberDropdown}
+                  role="menu"
+                  aria-label="회원 메뉴"
                 >
-                  <Icon
-                    name="profileMember"
-                    width={32}
-                    height={32}
-                    aria-hidden
-                  />
-                </button>
-                {memberMenuOpen && (
-                  <div
-                    className={styles.memberDropdown}
-                    role="menu"
-                    aria-label="회원 메뉴"
-                  >
-                    <div className={styles.memberDropdownHeader}>
-                      <span className={styles.memberDropdownAvatar} aria-hidden>
-                        <Icon name="profileMember" width={32} height={32} />
-                      </span>
-                      <div className={styles.memberDropdownMeta}>
-                        <p className={styles.memberDropdownName}>
-                          <span className={styles.memberDropdownNameText}>
-                            {memberNickname}
-                          </span>
-                          {memberHasGoogleAccount && (
-                            <span
-                              className={styles.memberDropdownGoogleIconWrap}
+                  <div className={styles.memberDropdownHeader}>
+                    <span className={styles.memberDropdownAvatar} aria-hidden>
+                      <Icon name="profileMember" width={32} height={32} />
+                    </span>
+
+                    <div className={styles.memberDropdownMeta}>
+                      <p className={styles.memberDropdownName}>
+                        <span className={styles.memberDropdownNameText}>
+                          {memberNickname}
+                        </span>
+                        {memberHasGoogleAccount && (
+                          <span
+                            className={styles.memberDropdownGoogleIconWrap}
+                            aria-hidden
+                          >
+                            <Icon
+                              name="loginGoogle"
+                              width={14}
+                              height={14}
                               aria-hidden
-                            >
-                              <Icon
-                                name="loginGoogle"
-                                width={14}
-                                height={14}
-                                aria-hidden
-                              />
-                            </span>
-                          )}
-                        </p>
-                        <p className={styles.memberDropdownGrade}>
-                          {memberGradeLabel ?? gradeToLabel(memberGrade)}
-                        </p>
-                      </div>
+                            />
+                          </span>
+                        )}
+                      </p>
+                      <p className={styles.memberDropdownGrade}>
+                        {memberGradeLabel ?? gradeToLabel(memberGrade)}
+                      </p>
                     </div>
-                    <ul className={styles.memberDropdownList}>
-                      <li className={styles.memberDropdownItem}>
-                        <Link
-                          href="/mypage"
-                          className={styles.memberDropdownLink}
-                          role="menuitem"
-                          onClick={() => setMemberMenuOpen(false)}
-                        >
-                          마이페이지
-                        </Link>
-                      </li>
-                      <li className={styles.memberDropdownItem}>
-                        <Link
-                          href="/my"
-                          className={styles.memberDropdownLink}
-                          role="menuitem"
-                          onClick={() => setMemberMenuOpen(false)}
-                        >
-                          나의 챌린지
-                        </Link>
-                      </li>
-                      <li className={styles.memberDropdownItem}>
-                        <button
-                          type="button"
-                          className={styles.memberDropdownLogout}
-                          role="menuitem"
-                          onClick={handleLogoutClick}
-                        >
-                          로그아웃
-                        </button>
-                      </li>
-                    </ul>
                   </div>
-                )}
-              </div>
-            </>
+
+                  <ul className={styles.memberDropdownList}>
+                    <li className={styles.memberDropdownItem}>
+                      <Link
+                        href="/mypage"
+                        className={styles.memberDropdownLink}
+                        role="menuitem"
+                        onClick={() => setMemberMenuOpen(false)}
+                      >
+                        마이페이지
+                      </Link>
+                    </li>
+                    <li className={styles.memberDropdownItem}>
+                      <Link
+                        href="/my"
+                        className={styles.memberDropdownLink}
+                        role="menuitem"
+                        onClick={() => setMemberMenuOpen(false)}
+                      >
+                        나의 챌린지
+                      </Link>
+                    </li>
+                    <li className={styles.memberDropdownItem}>
+                      <button
+                        type="button"
+                        className={styles.memberDropdownLogout}
+                        role="menuitem"
+                        onClick={handleLogoutClick}
+                      >
+                        로그아웃
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
+
           {isAdmin && (
             <div className={styles.memberMenu} ref={adminMenuRef}>
               <button
@@ -369,6 +452,7 @@ export function GNB({
               >
                 <Icon name="profileAdmin" width={32} height={32} aria-hidden />
               </button>
+
               {adminMenuOpen && (
                 <div
                   className={clsx(styles.memberDropdown, styles.adminDropdown)}
@@ -379,6 +463,7 @@ export function GNB({
                     <span className={styles.memberDropdownAvatar} aria-hidden>
                       <Icon name="profileAdmin" width={32} height={32} />
                     </span>
+
                     <div className={styles.memberDropdownMeta}>
                       <p className={styles.memberDropdownName}>
                         {adminNickname}
@@ -388,6 +473,7 @@ export function GNB({
                       </p>
                     </div>
                   </div>
+
                   <ul className={styles.memberDropdownList}>
                     <li className={styles.memberDropdownItem}>
                       <button
