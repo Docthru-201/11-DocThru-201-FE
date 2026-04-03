@@ -22,6 +22,7 @@ export default function WorkEditPage() {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [showOriginal, setShowOriginal] = useState(false);
   const [workTitle, setWorkTitle] = useState(work?.title || '');
+  const isSubmitted = work?.status === 'SUBMITTED';
 
   const handleCancel = () => {
     deleteWork(undefined, {
@@ -95,7 +96,11 @@ export default function WorkEditPage() {
               onClick={handleSubmit}
               disabled={isUpdatePending || !content}
             >
-              {isUpdatePending ? '제출 중...' : '제출하기'}
+              {isUpdatePending
+                ? '저장 중...'
+                : isSubmitted
+                  ? '수정하기'
+                  : '제출하기'}
             </Button>
           </div>
         </div>
