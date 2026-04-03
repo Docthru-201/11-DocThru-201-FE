@@ -14,6 +14,7 @@ export function ListRow({
   likeCount: likeCountProp,
   onWorkClick,
   showBadge = true,
+  profileImage = null,
 }) {
   const isExpert =
     profileType === 'admin' || (profileType == null && role === '전문가');
@@ -31,7 +32,17 @@ export function ListRow({
         </span>
       )}
       <div className={styles.profile}>
-        <Icon name={profileIconName} width={24} height={24} aria-hidden />
+        {profileImage ? (
+          <img
+            src={profileImage}
+            alt="프로필"
+            width={24}
+            height={24}
+            style={{ borderRadius: '50%', objectFit: 'cover' }}
+          />
+        ) : (
+          <Icon name={profileIconName} width={24} height={24} aria-hidden />
+        )}
       </div>
       <div className={styles.info}>
         <span className={styles.name}>{name}</span>

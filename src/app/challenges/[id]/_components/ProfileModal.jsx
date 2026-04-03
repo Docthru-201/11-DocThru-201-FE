@@ -17,7 +17,19 @@ export default function ProfileModal({ userId, onClose }) {
         ) : profile ? (
           <>
             <div className={styles.imageWrapper}>
-              <Icon name="profileMember" width={80} height={80} />
+              <div className={styles.imageWrapper}>
+                {profile.image ? (
+                  <img
+                    src={profile.image}
+                    alt="프로필"
+                    width={80}
+                    height={80}
+                    style={{ borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <Icon name="profileMember" width={80} height={80} />
+                )}
+              </div>
             </div>
             <span className={styles.nickname}>{profile.nickname}</span>
             <span className={styles.grade}>

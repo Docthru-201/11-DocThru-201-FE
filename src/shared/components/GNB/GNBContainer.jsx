@@ -24,6 +24,7 @@ export function GNBContainer({ tabs = [], onTabChange = undefined }) {
       memberNickname={user?.nickname}
       memberHasGoogleAccount={Boolean(user?.hasGoogleAccount)}
       memberGrade={user?.grade}
+      memberImage={user?.image}
       adminNickname={user?.nickname}
       onLogout={logout}
       tabs={tabs}

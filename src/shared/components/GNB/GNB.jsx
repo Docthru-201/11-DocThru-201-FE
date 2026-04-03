@@ -242,6 +242,7 @@ export function GNB({
   adminNickname = '체다치즈',
   adminSubtitleLabel = '어드민',
   onLogout = undefined,
+  memberImage = null,
 }) {
   const isAdmin = status === 'admin';
   const isMember = status === 'member';
@@ -364,7 +365,22 @@ export function GNB({
                 aria-expanded={memberMenuOpen}
                 onClick={() => setMemberMenuOpen((open) => !open)}
               >
-                <Icon name="profileMember" width={32} height={32} aria-hidden />
+                {memberImage ? (
+                  <img
+                    src={memberImage}
+                    alt="프로필"
+                    width={32}
+                    height={32}
+                    style={{ borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <Icon
+                    name="profileMember"
+                    width={32}
+                    height={32}
+                    aria-hidden
+                  />
+                )}
               </button>
 
               {memberMenuOpen && (
@@ -375,7 +391,17 @@ export function GNB({
                 >
                   <div className={styles.memberDropdownHeader}>
                     <span className={styles.memberDropdownAvatar} aria-hidden>
-                      <Icon name="profileMember" width={32} height={32} />
+                      {memberImage ? (
+                        <img
+                          src={memberImage}
+                          alt="프로필"
+                          width={32}
+                          height={32}
+                          style={{ borderRadius: '50%', objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <Icon name="profileMember" width={32} height={32} />
+                      )}
                     </span>
 
                     <div className={styles.memberDropdownMeta}>
