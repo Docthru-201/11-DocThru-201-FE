@@ -8,7 +8,6 @@ import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
 import { List, ListRow } from '@/shared/components/List';
-import LineDivider from '@/app/admin/_components/LineDivider';
 
 import ChallengeContent from '@/app/challenges/[id]/_components/ChallengeContent';
 import TopRankedList from '@/app/challenges/[id]/_components/TopRankedList';
