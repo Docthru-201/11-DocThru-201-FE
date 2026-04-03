@@ -8,19 +8,6 @@ import { TYPE_OPTIONS, CATEGORY_OPTIONS } from '@/shared/constants/file.js';
 import { createChallengeFormSchema } from '@/features/challenges/schema/challenges.schema';
 import * as styles from './ChallengeForm.css';
 
-const categoryOptions = [
-  { value: 'DOCUMENT', label: '공식문서' },
-  { value: 'BLOG', label: '블로그' },
-];
-
-const docTypeOptions = [
-  { value: 'NEXT_JS', label: 'Next.js' },
-  { value: 'API', label: 'API' },
-  { value: 'CAREER', label: 'Career' },
-  { value: 'MODERN_JS', label: 'Modern JS' },
-  { value: 'WEB', label: 'Web' },
-];
-
 export default function ChallengeForm({
   initialData,
   onSubmit,
@@ -63,6 +50,7 @@ export default function ChallengeForm({
             control={control}
             render={({ field }) => (
               <Input
+                className=""
                 label="제목"
                 placeholder="제목을 입력해주세요"
                 value={field.value}
@@ -78,6 +66,7 @@ export default function ChallengeForm({
             control={control}
             render={({ field }) => (
               <Input
+                className=""
                 label="원문 링크"
                 placeholder="http://"
                 value={field.value}
@@ -89,7 +78,7 @@ export default function ChallengeForm({
           />
 
           <Controller
-            name="category"
+            name="type"
             control={control}
             render={({ field }) => (
               <Dropdown
@@ -102,12 +91,12 @@ export default function ChallengeForm({
               />
             )}
           />
-          {errors.category && (
-            <p className={styles.errorMessage}>{errors.category.message}</p>
+          {errors.type && (
+            <p className={styles.errorMessage}>{String(errors.type.message)}</p>
           )}
 
           <Controller
-            name="type"
+            name="category"
             control={control}
             render={({ field }) => (
               <Dropdown
@@ -120,8 +109,10 @@ export default function ChallengeForm({
               />
             )}
           />
-          {errors.type && (
-            <p className={styles.errorMessage}>{errors.type.message}</p>
+          {errors.category && (
+            <p className={styles.errorMessage}>
+              {String(errors.category.message)}
+            </p>
           )}
 
           <Controller
@@ -129,6 +120,7 @@ export default function ChallengeForm({
             control={control}
             render={({ field }) => (
               <Input
+                className=""
                 label="마감일"
                 type="date"
                 placeholder="YY/MM/DD"
@@ -145,6 +137,7 @@ export default function ChallengeForm({
             control={control}
             render={({ field }) => (
               <Input
+                className=""
                 label="최대 인원"
                 type="number"
                 min={1}
@@ -163,6 +156,7 @@ export default function ChallengeForm({
               control={control}
               render={({ field }) => (
                 <TextBox
+                  maxHeight=""
                   label="내용"
                   placeholder="내용을 입력해주세요"
                   value={field.value ?? ''}
@@ -177,7 +171,7 @@ export default function ChallengeForm({
             />
             {errors.description && (
               <p className={styles.errorMessage}>
-                {errors.description.message}
+                {String(errors.description.message)}
               </p>
             )}
           </div>
