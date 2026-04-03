@@ -160,3 +160,16 @@ export const originalButton = style({
     },
   },
 });
+export const giveUpButton = style({
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  cursor: 'pointer',
+  opacity: 1,
+  transition: 'opacity 0.2s',
+  selectors: {
+    '&:hover': {
+      opacity: 0.8,
+    },
+  },
+});

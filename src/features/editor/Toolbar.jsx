@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useFormatStore } from './store/useFormatStore';
 import * as styles from './Toolbar.css.js';
+import { ImageIcon } from 'lucide-react';
 
 const PRESET_COLORS = [
   '#000000',
@@ -207,10 +208,6 @@ export default function Toolbar({ editor, onImageUpload }) {
               width={24}
               height={24}
             />
-            <div
-              className={styles.colorIndicator}
-              style={{ backgroundColor: color }}
-            />
           </div>
         </button>
         {showColorPicker && (
@@ -247,7 +244,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         onClick={() => fileInputRef.current?.click()}
         title="이미지 삽입"
       >
-        <span className={styles.imageButtonLabel}>이미지</span>
+        <ImageIcon size={20} strokeWidth={1.5} />
       </button>
       <input
         ref={fileInputRef}

@@ -9,6 +9,7 @@ import TiptapEditor from '@/features/editor/TiptapEditor';
 import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import { Modal } from '@/shared/components/Modal';
+import Image from 'next/image';
 import * as styles from './page.css.js';
 
 export default function WorkEditPage() {
@@ -64,14 +65,18 @@ export default function WorkEditPage() {
             </Link>
           </div>
           <div className={styles.headerRight}>
-            <Button
-              variant="filledTonal"
-              className={styles.headerButton}
+            <button
+              className={styles.giveUpButton}
               onClick={() => setIsCancelModalOpen(true)}
               disabled={isDeletePending}
             >
-              {isDeletePending ? '삭제 중...' : '포기'}
-            </Button>
+              <Image
+                src="/icons/btn-filled-tonal.svg"
+                alt="포기"
+                width={80}
+                height={36}
+              />
+            </button>
             <Button
               variant="outline"
               className={styles.headerButton}
