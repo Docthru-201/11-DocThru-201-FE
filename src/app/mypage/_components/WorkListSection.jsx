@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMyWorks } from '@/features/users/hooks/useMyWorks';
 import * as styles from './WorkListSection.css.js';
 import WorkCard from './WorkCard.jsx';
@@ -22,9 +22,10 @@ export default function WorkListSection() {
     filter === 'ALL' ? true : work.status === filter,
   );
 
-  useEffect(() => {
+  const handleFilterChange = (next) => {
+    setFilter(next);
     setVisibleCount(PAGE_SIZE);
-  }, [filter]);
+  };
 
   const visibleWorks = filteredWorks.slice(0, visibleCount);
   const hasMore = filteredWorks.length > visibleCount;
@@ -44,7 +45,7 @@ export default function WorkListSection() {
                   ? styles.filterButtonActive
                   : styles.filterButton
               }
-              onClick={() => setFilter(f.value)}
+              onClick={() => handleFilterChange(f.value)}
             >
               {f.label}
             </button>
