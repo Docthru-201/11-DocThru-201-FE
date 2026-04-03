@@ -124,6 +124,8 @@ export const titleBlock = style({
   padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
+  margin: '24px 0',
+  gap: '8px',
 });
 
 export const editorSection = style({
@@ -139,7 +141,7 @@ globalStyle(`${editorSection} .ProseMirror`, {
   minHeight: '600px',
   height: '100%',
   outline: 'none',
-  padding: '20px 0',
+  // padding: '20px 0',
 });
 
 const originalPaneWrapperBase = {

@@ -55,24 +55,3 @@ export const editorLineShort = style({
   height: '11px',
   width: '84%',
 });
-
-export const rightPane = style({
-  width: '640px',
-  flexShrink: 0,
-  borderLeft: `1px solid ${vars.color.gray[200]}`,
-  padding: `${vars.space.md} ${vars.space.lg}`,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: vars.space.sm,
-  boxSizing: 'border-box',
-});
-
-export const iframeBar = style({
-  height: '56px',
-  width: '100%',
-});
-
-export const iframeBody = style({
-  flex: 1,
-  minHeight: '240px',
-});

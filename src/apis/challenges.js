@@ -31,6 +31,25 @@ export async function getChallenges(params = {}) {
   return handleResponse(response, '챌린지 목록을 불러오지 못했습니다.');
 }
 
+/** 커서 페이지를 순회해 목록 전체를 가져옵니다(API limit 상한까지 반복). */
+export async function getChallengesAll(params = {}) {
+  const limit = 100;
+  let cursor;
+  const allItems = [];
+  const maxIterations = 100;
+
+  for (let i = 0; i < maxIterations; i += 1) {
+    const res = await getChallenges({ ...params, limit, cursor });
+    const items = res?.data?.items ?? [];
+    allItems.push(...items);
+    const { hasNext, nextCursor } = res?.data?.pagination ?? {};
+    if (!hasNext || nextCursor == null || nextCursor === '') break;
+    cursor = nextCursor;
+  }
+
+  return allItems;
+}
+
 export async function getChallengeById(id) {
   void id;
   return challengeDetailResponseMock;

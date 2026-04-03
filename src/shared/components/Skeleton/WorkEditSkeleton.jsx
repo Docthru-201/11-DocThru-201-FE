@@ -10,7 +10,11 @@ export default function WorkEditSkeleton() {
       <div className={pageStyles.mainRow}>
         <div className={pageStyles.leftPane}>
           <div className={pageStyles.leftPaneInner}>
-            <div className={sk.headerBar}>
+            <div
+              className={sk.headerBar}
+              role="status"
+              aria-label="작업물 편집 화면 로딩 중"
+            >
               <div className={`${bone.boneRounded} ${sk.logo}`} />
               <div className={sk.actions}>
                 <div className={`${bone.boneRounded} ${sk.btn}`} />
@@ -30,10 +34,6 @@ export default function WorkEditSkeleton() {
               </div>
             </div>
           </div>
-        </div>
-        <div className={sk.rightPane} aria-hidden>
-          <div className={`${bone.boneRounded} ${sk.iframeBar}`} />
-          <div className={`${bone.boneRounded} ${sk.iframeBody}`} />
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/shared/store/useAuthStore';
-import { getChallenges } from '@/apis/challenges';
+import { getChallengesAll } from '@/apis/challenges';
 import { deleteChallengeAction } from '@/shared/apis/admin.js';
 
 import {
@@ -61,10 +61,7 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
     error,
   } = useQuery({
     queryKey: ['challenges', 'list'],
-    queryFn: async () => {
-      const res = await getChallenges({ limit: 100 });
-      return res?.data?.items ?? [];
-    },
+    queryFn: () => getChallengesAll(),
     staleTime: 60 * 1000,
   });
 
@@ -152,7 +149,7 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>
-          {user?.role === 'ADMIN' && !hideNewChallengeButton && (
+          {user && !hideNewChallengeButton && (
             <Link href="/challenges/new">
               <Button
                 variant="solidIcon"
