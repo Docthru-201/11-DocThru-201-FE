@@ -1,0 +1,86 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  LAST_INTRO_KEY,
+  useIntroPagePhase,
+} from '@/shared/hooks/useIntroPhase';
+
+export default function IntroPage() {
+  const router = useRouter();
+  const [videoError, setVideoError] = useState(false);
+  const phase = useIntroPagePhase();
+
+  const handleIntroDone = () => {
+    localStorage.setItem(LAST_INTRO_KEY, String(Date.now()));
+    router.replace('/');
+  };
+
+  useEffect(() => {
+    if (phase === 'skip') {
+      router.replace('/');
+    }
+  }, [phase, router]);
+
+  if (phase === 'unknown' || phase === 'skip') {
+    return (
+      <main
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#171717',
+          position: 'relative',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+        }}
+        aria-busy="true"
+      />
+    );
+  }
+
+  return (
+    <main
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#171717',
+        position: 'relative',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+      }}
+    >
+      {videoError ? (
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            background: '#0A0A0A',
+            color: '#F1F2F5',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 16,
+          }}
+        >
+          인트로 영상을 불러오지 못했습니다.
+        </div>
+      ) : (
+        <video
+          src="/videos/docthru-intro.mp4"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          onEnded={handleIntroDone}
+          onError={() => setVideoError(true)}
+          style={{
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            display: 'block',
+            background: '#000',
+          }}
+        />
+      )}
+    </main>
+  );
+}
