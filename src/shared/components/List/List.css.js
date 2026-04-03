@@ -41,8 +41,9 @@ export const info = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '2px',
-  flex: 1,
+  flexShrink: 0,
   minWidth: 0,
+  width: '80px',
 });
 
 export const name = style({
@@ -80,15 +81,6 @@ export const likeCount = style({
   cursor: 'pointer',
   transition,
   outline: 'none',
-  selectors: {
-    '&:hover': {
-      color: vars.color.gray[700],
-      backgroundColor: vars.color.gray[100],
-    },
-    '&:focus-visible': {
-      boxShadow: `0 0 0 2px ${vars.color.gray[900]}26`,
-    },
-  },
 });
 
 export const workLink = style({
@@ -129,4 +121,17 @@ export const list = style({
   flexDirection: 'column',
   gap: vars.space.md,
   width: '100%',
+});
+export const workTitle = style({
+  flex: 1,
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[600],
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  paddingLeft: vars.space.md,
+});
+export const titleDivider = style({
+  color: vars.color.gray[300],
+  marginRight: vars.space.sm,
 });

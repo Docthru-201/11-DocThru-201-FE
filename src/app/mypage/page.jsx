@@ -1,5 +1,7 @@
 'use client';
 
+import { MyPageSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './page.css.js';
 import ProfileSection from './_components/ProfileSection';
 import StatsSection from './_components/StatsSection';
@@ -12,8 +14,7 @@ export default function MyPage() {
   const { me, isPending } = useMyProfile();
   const { stats } = useMyStats();
 
-  if (isPending)
-    return <div className={styles.statusWrapper}>불러오는 중...</div>;
+  if (isPending) return <MyPageSkeleton />;
   if (!me)
     return (
       <div className={styles.statusWrapper}>유저 정보를 찾을 수 없습니다.</div>

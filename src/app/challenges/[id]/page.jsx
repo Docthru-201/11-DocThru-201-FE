@@ -4,6 +4,7 @@ import { useRouter, useParams } from 'next/navigation';
 import React, { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 
+import { ITEMSPERPAGE } from '@/shared/constants/file';
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
@@ -14,15 +15,20 @@ import TopRankedList from '@/app/challenges/[id]/_components/TopRankedList';
 import ModalMessage from '@/app/challenges/[id]/_components/ModalMessage';
 
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
+import { useIsSize } from '@/shared/hooks/useIsSize';
+import { ChallengeDetailSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './Page.css.js';
 import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDetail.js';
 import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
+import { useMyWork } from '@/features/works/hooks/useMyWork.js';
 import { useWorkMutation } from '@/features/works/hooks/useWorkMutation.js';
-import { ITEMSPERPAGE } from '@/shared/constants/file.js';
+import { RankingListRow } from './_components/RankingListRow.jsx';
 
 export default function ChallengeDetailPage() {
   const { id: challengeId } = useParams();
   const router = useRouter();
+  const containerSize = useIsSize();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +38,8 @@ export default function ChallengeDetailPage() {
     useChallengeDetail(challengeId);
   const { rankingData, isPending: isRankingPending } =
     useChallengeRanking(challengeId);
-  const { createWork, isCreatePending } = useWorkMutation(null, challengeId);
+  const { myWork } = useMyWork(challengeId);
+  const { createWork } = useWorkMutation(null, challengeId);
 
   const { currentItems, totalPages } = useMemo(() => {
     const rankedData = getRankedList(rankingData);
@@ -54,20 +61,38 @@ export default function ChallengeDetailPage() {
     return isFull || challenge.isClosed || isInactiveStatus;
   }, [challenge]);
 
+  const handleChallenge = () => {
+    if (myWork?.status === 'DRAFT') {
+      router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
+      return;
+    }
+    if (myWork && myWork.status !== 'DRAFT') {
+      setModalMessage(
+        `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
+      );
+      setIsModalOpen(true);
+      return;
+    }
+    createWork(undefined, {
+      onSuccess: (data) => {
+        router.push(`/challenges/${challengeId}/work/${data.id}/edit`);
+      },
+      onError: () => {
+        setModalMessage(
+          `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
+        );
+        setIsModalOpen(true);
+      },
+    });
+  };
+
   if (isChallengePending || isRankingPending) {
-    return <div className={styles.statusWrapper}>불러오는 중...</div>;
+    return <ChallengeDetailSkeleton />;
   }
 
   if (!challenge) {
     return (
-      <div className={styles.page}>
-        <main className={styles.main}>
-          <header className={styles.pageHeader}>
-            <h1 className={styles.pageTitle}>챌린지 상세</h1>
-          </header>
-          <div className={styles.statusWrapper}>챌린지를 찾을 수 없습니다.</div>
-        </main>
-      </div>
+      <div className={styles.statusWrapper}>챌린지를 찾을 수 없습니다.</div>
     );
   }
 
@@ -84,13 +109,13 @@ export default function ChallengeDetailPage() {
             />
             <div className={styles.authorInfo}>
               <Icon
-                name={'profileMember'}
+                name="profileMember"
                 width={32}
                 height={32}
                 className={styles.authorImage}
               />
               <span className={styles.authorNickname}>
-                {challenge?.author?.nickname || '작성자 없음'}
+                {challenge.author?.nickname || '작성자 없음'}
               </span>
             </div>
           </div>
@@ -101,16 +126,17 @@ export default function ChallengeDetailPage() {
             }}
           >
             <Container
-              size="large"
-              deadlineText={dayjs(challenge?.deadline).format('YYYY년 M월 D일')}
-              personText={`${challenge?.participants?.length || 0}/${challenge?.maxParticipants || 0}`}
+              size={containerSize}
+              deadlineText={dayjs(challenge.deadline).format('YYYY년 M월 D일')}
+              personText={`${challenge.participants?.length || 0}/${challenge.maxParticipants || 0}`}
               originalLabel="원문 보기"
-              actionLabel="작업 도전하기"
-              onActionClick={() => createWork()}
+              actionLabel={
+                myWork?.status === 'DRAFT' ? '이어서 작성하기' : '작업 도전하기'
+              }
+              onActionClick={handleChallenge}
               onOriginalViewClick={() => {
-                if (challenge?.originalUrl) {
+                if (challenge.originalUrl)
                   window.open(challenge.originalUrl, '_blank');
-                }
               }}
               isDisabled={isDisabled || isCreatePending}
             />
@@ -127,7 +153,6 @@ export default function ChallengeDetailPage() {
         <section className={styles.rankingSection}>
           <div className={styles.rankingHeader}>
             <h3 className={styles.rankingTitle}>참여현황</h3>
-
             {rankingData.length > 0 && (
               <div className={styles.paginationGroup}>
                 <span className={styles.currentPageText}>{currentPage}</span>
@@ -136,7 +161,7 @@ export default function ChallengeDetailPage() {
                   onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                   disabled={currentPage === 1}
                 >
-                  <Icon name="chevronLeftActive" alt="이전" />
+                  <Icon name="chevronLeftActive" />
                 </button>
                 <button
                   onClick={() =>
@@ -144,7 +169,7 @@ export default function ChallengeDetailPage() {
                   }
                   disabled={currentPage === totalPages}
                 >
-                  <Icon name="chevronRightActive" alt="다음" />
+                  <Icon name="chevronRightActive" />
                 </button>
               </div>
             )}
@@ -155,22 +180,10 @@ export default function ChallengeDetailPage() {
               <List withDivider={false}>
                 {currentItems.map((item, index) => (
                   <React.Fragment key={item.workId}>
-                    <ListRow
-                      badgeRank={item.rank}
-                      badgeLabel={item.rank.toString().padStart(2, '0')}
-                      showBadge
-                      name={item.author.authorNickname}
-                      role={item.author.grade === 'EXPERT' ? '전문가' : '일반'}
-                      likeCount={item.likeCount}
-                      profileType={
-                        item.author.grade === 'EXPERT' ? 'admin' : 'member'
-                      }
-                      onWorkClick={() =>
-                        router.push(
-                          `/challenges/${challengeId}/work/${item.workId}`,
-                        )
-                      }
-                      onLikeClick={() => {}}
+                    <RankingListRow
+                      item={item}
+                      challengeId={challengeId}
+                      router={router}
                     />
                     {index < currentItems.length - 1 && (
                       <div className={styles.dividerWrapper}></div>

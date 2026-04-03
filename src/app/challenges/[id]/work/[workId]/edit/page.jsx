@@ -10,6 +10,7 @@ import TiptapEditor from '@/features/editor/TiptapEditor';
 import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import { Modal } from '@/shared/components/Modal';
+import { WorkEditSkeleton } from '@/shared/components/Skeleton';
 import * as styles from './page.css.js';
 
 export default function WorkEditPage() {
@@ -20,7 +21,9 @@ export default function WorkEditPage() {
     useWorkMutation(workId, challengeId);
   const { content, resetContent } = useEditorStore();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  const [showOriginal, setShowOriginal] = useState(true);
+  const [showOriginal, setShowOriginal] = useState(false);
+  const [workTitle, setWorkTitle] = useState('');
+  const isSubmitted = work?.status === 'SUBMITTED';
 
   const originalUrl = work?.challenge?.originalUrl;
   const hasOriginal = Boolean(originalUrl);
@@ -37,13 +40,20 @@ export default function WorkEditPage() {
 
   const handleSave = () => {
     if (!content) return;
-    updateWork({ content: JSON.stringify(content) });
+    updateWork({
+      content: JSON.stringify(content),
+      title: workTitle || work?.title || '',
+    });
   };
 
   const handleSubmit = () => {
     if (!content) return;
     updateWork(
-      { content: JSON.stringify(content), action: 'SUBMIT' },
+      {
+        content: JSON.stringify(content),
+        action: 'SUBMIT',
+        title: workTitle || work?.title || '',
+      },
       {
         onSuccess: () => {
           resetContent();
@@ -57,7 +67,7 @@ export default function WorkEditPage() {
     if (originalUrl) window.open(originalUrl, '_blank', 'noopener,noreferrer');
   };
 
-  if (isPending) return <div>로딩 중...</div>;
+  if (isPending) return <WorkEditSkeleton />;
 
   return (
     <div className={styles.pageWrapper}>
@@ -108,20 +118,36 @@ export default function WorkEditPage() {
                   onClick={handleSubmit}
                   disabled={isUpdatePending || !content}
                 >
-                  {isUpdatePending ? '제출중' : '제출하기'}
+                  {isUpdatePending
+                    ? '저장 중...'
+                    : isSubmitted
+                      ? '수정하기'
+                      : '제출하기'}
                 </Button>
               </div>
             </header>
 
             <div className={styles.titleBlock}>
-              <h1 className={styles.challengeTitle}>
+              <span className={styles.challengeSubTitle}>
                 {work?.challenge?.title}
-              </h1>
+              </span>
+              <input
+                className={styles.titleInput}
+                defaultValue={work?.title || ''}
+                onChange={(e) => setWorkTitle(e.target.value)}
+                placeholder="제목을 입력하세요"
+              />
             </div>
 
             <div className={styles.editorSection}>
               <TiptapEditor
-                initialContent={work?.content ? JSON.parse(work.content) : null}
+                initialContent={
+                  work?.draftContent
+                    ? JSON.parse(work.draftContent)
+                    : work?.content
+                      ? JSON.parse(work.content)
+                      : null
+                }
               />
             </div>
           </div>

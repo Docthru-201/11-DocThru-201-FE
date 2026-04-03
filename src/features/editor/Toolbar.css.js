@@ -57,12 +57,6 @@ export const colorIconWrapper = style({
   gap: '2px',
 });
 
-export const colorIndicator = style({
-  width: '16px',
-  height: '3px',
-  borderRadius: '1px',
-});
-
 export const colorDropdown = style({
   position: 'absolute',
   top: 'calc(100% + 4px)',
