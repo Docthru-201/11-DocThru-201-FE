@@ -13,3 +13,33 @@ export async function getMyNotifications() {
   const json = await res.json();
   return Array.isArray(json) ? json : (json.data ?? []);
 }
+
+export async function markNotificationAsRead(id, isRead = true) {
+  const res = await fetch(`${API_BASE_URL}/api/notifications/me/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ isRead }),
+  });
+
+  if (!res.ok) {
+    throw new Error('알림 읽음 처리에 실패했습니다');
+  }
+
+  return res.json();
+}
+
+export async function deleteMyNotification(id) {
+  const res = await fetch(`${API_BASE_URL}/api/notifications/me/${id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error('알림 삭제에 실패했습니다');
+  }
+
+  return true;
+}

@@ -10,6 +10,8 @@ import WorkActionButtons from './_components/WorkActionButtons';
 import FeedbackList from './_components/FeedbackList';
 import FeedbackForm from './_components/FeedbackForm';
 import ProfileModal from '../../_components/ProfileModal';
+import { WorkDetailSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './page.css';
 
 export default function WorkPage() {
@@ -26,7 +28,7 @@ export default function WorkPage() {
     setIsDeleteModalOpen(false);
   };
 
-  if (isPending) return <div>로딩 중...</div>;
+  if (isPending) return <WorkDetailSkeleton />;
   if (isError) return <div>작업물을 불러오는데 실패했습니다.</div>;
 
   return (

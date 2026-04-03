@@ -17,6 +17,8 @@ import ModalMessage from '@/app/challenges/[id]/_components/ModalMessage';
 
 import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.js';
 import { useIsSize } from '@/shared/hooks/useIsSize';
+import { ChallengeDetailSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './Page.css.js';
 import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDetail.js';
 import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
@@ -86,7 +88,7 @@ export default function ChallengeDetailPage() {
   };
 
   if (isChallengePending || isRankingPending) {
-    return <div className={styles.statusWrapper}>불러오는 중...</div>;
+    return <ChallengeDetailSkeleton />;
   }
 
   if (!challenge) {

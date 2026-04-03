@@ -26,11 +26,6 @@ const cardBase = style({
   backgroundColor: '#f9fafb',
   transition: 'all 0.3s ease',
   boxSizing: 'border-box',
-  // '@media': {
-  //   'screen and (max-width: 767px)': {
-  //     width: '88%',
-  //   },
-  // },
 });
 
 export const cardVariants = styleVariants({

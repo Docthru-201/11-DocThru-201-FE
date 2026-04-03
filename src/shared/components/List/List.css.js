@@ -81,15 +81,6 @@ export const likeCount = style({
   cursor: 'pointer',
   transition,
   outline: 'none',
-  selectors: {
-    '&:hover': {
-      color: vars.color.gray[700],
-      backgroundColor: vars.color.gray[100],
-    },
-    '&:focus-visible': {
-      boxShadow: `0 0 0 2px ${vars.color.gray[900]}26`,
-    },
-  },
 });
 
 export const workLink = style({

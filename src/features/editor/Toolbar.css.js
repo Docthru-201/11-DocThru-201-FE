@@ -3,8 +3,8 @@ import { style } from '@vanilla-extract/css';
 export const toolbar = style({
   display: 'flex',
   alignItems: 'center',
-  gap: '4px',
-  padding: '8px 12px',
+  gap: '2px',
+  padding: '8px 0',
   flexWrap: 'wrap',
   backgroundColor: '#ffffff',
 });
@@ -13,8 +13,8 @@ export const button = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '32px',
-  height: '32px',
+  width: '24px',
+  height: '24px',
   borderRadius: '4px',
   border: 'none',
   backgroundColor: 'transparent',

@@ -35,15 +35,21 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
   if (!user) {
     return (
       <div className={isReply ? styles.container : styles.containerMain}>
-        <div className={isReply ? styles.inputWrapper : styles.inputRowMain}>
-          <textarea
-            className={isReply ? styles.disabledTextarea : styles.textareaMain}
-            disabled
-            placeholder="댓글을 작성하려면 로그인이 필요합니다."
-          />
+        <div className={isReply ? styles.replyInputRow : styles.mainInputRow}>
+          <div
+            className={isReply ? styles.inputWrapper : styles.textareaMainBox}
+          >
+            <textarea
+              className={
+                isReply ? styles.disabledTextarea : styles.textareaMain
+              }
+              disabled
+              placeholder="댓글을 작성하려면 로그인이 필요합니다."
+            />
+          </div>
           {!isReply && (
             <button type="button" className={styles.submitButtonMain} disabled>
-              <Icon name="arrowDownBold" width={20} height={20} aria-hidden />
+              <Icon name="commentActive" width={40} height={40} aria-hidden />
             </button>
           )}
         </div>
@@ -51,17 +57,22 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
     );
   }
 
+  const commentIconName =
+    content.length > 0 ? 'commentActive' : 'commentInactive';
+
   if (isReply) {
     return (
       <div className={styles.container}>
-        <div className={styles.inputWrapper}>
-          <textarea
-            className={styles.textarea}
-            value={content}
-            onChange={handleChange}
-            placeholder="대댓글을 입력하세요."
-            disabled={isCreatePending}
-          />
+        <div className={styles.replyInputRow}>
+          <div className={styles.inputWrapper}>
+            <textarea
+              className={styles.textarea}
+              value={content}
+              onChange={handleChange}
+              placeholder="대댓글을 입력하세요."
+              disabled={isCreatePending}
+            />
+          </div>
           <button
             type="button"
             className={styles.submitButton}
@@ -69,7 +80,7 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
             disabled={isCreatePending || !content.trim()}
             aria-label="답글 등록"
           >
-            →
+            <Icon name={commentIconName} width={40} height={40} aria-hidden />
           </button>
         </div>
         <div className={styles.charCount}>
@@ -99,15 +110,17 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
 
   return (
     <div className={styles.containerMain}>
-      <div className={styles.inputRowMain}>
-        <textarea
-          className={styles.textareaMain}
-          value={content}
-          onChange={handleChange}
-          placeholder="피드백을 남겨주세요"
-          disabled={isCreatePending}
-          rows={2}
-        />
+      <div className={styles.mainInputRow}>
+        <div className={styles.textareaMainBox}>
+          <textarea
+            className={styles.textareaMain}
+            value={content}
+            onChange={handleChange}
+            placeholder="피드백을 남겨주세요"
+            disabled={isCreatePending}
+            rows={2}
+          />
+        </div>
         <button
           type="button"
           className={styles.submitButtonMain}
@@ -115,7 +128,7 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
           disabled={isCreatePending || !content.trim()}
           aria-label="피드백 등록"
         >
-          <Icon name="arrowDownBold" width={20} height={20} aria-hidden />
+          <Icon name={commentIconName} width={40} height={40} aria-hidden />
         </button>
       </div>
       <div className={styles.charCount}>

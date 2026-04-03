@@ -44,7 +44,7 @@ export const dropdownItem = style({
   display: 'block',
   width: '100%',
   padding: `${vars.space.sm} ${vars.space.lg}`,
-  textAlign: 'left',
+  textAlign: 'center',
   border: 'none',
   backgroundColor: 'transparent',
   fontSize: vars.fontSize.sm,

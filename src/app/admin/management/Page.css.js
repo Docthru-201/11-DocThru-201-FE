@@ -1,22 +1,19 @@
 import { style, globalStyle } from '@vanilla-extract/css';
 
 export const container = style({
-  // [핵심 수정] 1200px을 최대치로 잡고 중앙 정렬
   width: '100%',
   maxWidth: '1200px',
   margin: '0 auto',
   backgroundColor: '#ffffff',
   minHeight: '100vh',
   boxSizing: 'border-box',
-  padding: '40px 0',
+  padding: '10px 0',
 
   '@media': {
-    // 테블릿 구간: 744px 고정형
     'screen and (max-width: 1199px)': {
       maxWidth: '744px',
       padding: '24px',
     },
-    // 모바일 구간: 375px 고정형
     'screen and (max-width: 743px)': {
       maxWidth: '375px',
       padding: '16px',
@@ -173,7 +170,6 @@ export const errorBox = style({
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
 });
 
-// 하위 p 태그 스타일
 globalStyle(`${errorBox} p`, {
   margin: '0 0 16px 0',
   color: '#cf1322',
@@ -182,7 +178,6 @@ globalStyle(`${errorBox} p`, {
   wordBreak: 'keep-all',
 });
 
-// 하위 button 태그 스타일
 globalStyle(`${errorBox} button`, {
   padding: '10px 24px',
   backgroundColor: '#ffffff',

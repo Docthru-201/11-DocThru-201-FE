@@ -146,7 +146,7 @@ export const rankingSection = style({
   borderRadius: '12px',
   border: '2px solid #1f2937',
   backgroundColor: '#ffffff',
-  marginTop: '40px',
+  marginTop: '8px',
   overflow: 'hidden',
   boxSizing: 'border-box',
 

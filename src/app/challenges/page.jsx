@@ -29,11 +29,13 @@ import {
   hasActiveChallengeFilter,
 } from './_components/ChallengeFilterPopover';
 
+import { ChallengeListSkeleton } from '@/shared/components/Skeleton';
+
 import * as styles from './page.css.js';
 
 const PAGE_SIZE = 5;
 
-export default function ChallengesPage() {
+export default function ChallengesPage({ hideNewChallengeButton = false }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
@@ -150,7 +152,7 @@ export default function ChallengesPage() {
       <main className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>챌린지 목록</h1>
-          {user?.role === 'ADMIN' && (
+          {user?.role === 'ADMIN' && !hideNewChallengeButton && (
             <Link href="/challenges/new">
               <Button
                 variant="solidIcon"
@@ -194,9 +196,7 @@ export default function ChallengesPage() {
           />
         </div>
 
-        {isPending && (
-          <p className={styles.feedback}>챌린지 목록을 불러오는 중…</p>
-        )}
+        {isPending && <ChallengeListSkeleton />}
         {isError && (
           <p className={styles.feedback} role="alert">
             {error?.message ?? '챌린지 목록을 불러오지 못했습니다.'}
