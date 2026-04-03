@@ -4,6 +4,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
+import Highlight from '@tiptap/extension-highlight';
 import Color from '@tiptap/extension-color';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import { Chip } from '@/shared/components';
@@ -51,6 +52,7 @@ function WorkContent({ content }) {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       TextStyle,
       Color,
+      Highlight.configure({ multicolor: true }),
     ],
     content: parsedContent,
     editable: false,
@@ -76,7 +78,6 @@ export default function WorkDetailViewer({
   headerActions = null,
 }) {
   const user = useAuthStore((state) => state.user);
-
   const typeKey = work?.challenge?.type ? TYPE_MAP[work.challenge.type] : null;
   const categoryKey = work?.challenge?.category
     ? CATEGORY_MAP[work.challenge.category]
