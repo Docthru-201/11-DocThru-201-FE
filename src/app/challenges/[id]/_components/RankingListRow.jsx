@@ -12,6 +12,7 @@ export const RankingListRow = ({ item, challengeId, router }) => {
       showBadge
       name={item.author.authorNickname}
       role={item.author.grade === 'EXPERT' ? '전문가' : '일반'}
+      title={item.title}
       likeCount={likeCount}
       isLiked={isLiked}
       profileType={item.author.grade === 'EXPERT' ? 'admin' : 'member'}

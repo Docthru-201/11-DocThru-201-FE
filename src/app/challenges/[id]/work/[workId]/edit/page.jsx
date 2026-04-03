@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useWork } from '@/features/works/hooks/useWork';
@@ -21,6 +21,7 @@ export default function WorkEditPage() {
   const { content, resetContent } = useEditorStore();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [showOriginal, setShowOriginal] = useState(false);
+  const [workTitle, setWorkTitle] = useState(work?.title || '');
 
   const handleCancel = () => {
     deleteWork(undefined, {
@@ -34,13 +35,13 @@ export default function WorkEditPage() {
 
   const handleSave = () => {
     if (!content) return;
-    updateWork({ content: JSON.stringify(content) });
+    updateWork({ content: JSON.stringify(content), title: workTitle });
   };
 
   const handleSubmit = () => {
     if (!content) return;
     updateWork(
-      { content: JSON.stringify(content), action: 'SUBMIT' },
+      { content: JSON.stringify(content), action: 'SUBMIT', title: workTitle },
       {
         onSuccess: () => {
           resetContent();
@@ -49,6 +50,9 @@ export default function WorkEditPage() {
       },
     );
   };
+  useEffect(() => {
+    if (work?.title) setWorkTitle(work.title);
+  }, [work]);
 
   if (isPending) return <div>로딩 중...</div>;
 
@@ -99,9 +103,15 @@ export default function WorkEditPage() {
 
       <div className={styles.titleBar}>
         <div className={styles.titleBarInner}>
-          <span className={styles.challengeTitle}>
+          <span className={styles.challengeSubTitle}>
             {work?.challenge?.title}
           </span>
+          <input
+            className={styles.titleInput}
+            value={workTitle}
+            onChange={(e) => setWorkTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
+          />
         </div>
       </div>
 

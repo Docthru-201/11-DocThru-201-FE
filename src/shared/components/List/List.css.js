@@ -41,8 +41,9 @@ export const info = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '2px',
-  flex: 1,
+  flexShrink: 0,
   minWidth: 0,
+  width: '80px',
 });
 
 export const name = style({
@@ -129,4 +130,17 @@ export const list = style({
   flexDirection: 'column',
   gap: vars.space.md,
   width: '100%',
+});
+export const workTitle = style({
+  flex: 1,
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[600],
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  paddingLeft: vars.space.md,
+});
+export const titleDivider = style({
+  color: vars.color.gray[300],
+  marginRight: vars.space.sm,
 });

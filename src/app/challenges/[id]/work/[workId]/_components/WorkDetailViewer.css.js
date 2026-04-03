@@ -193,3 +193,8 @@ export const emptyBody = style({
   color: vars.color.gray[400],
   fontSize: vars.fontSize.sm,
 });
+export const challengeSubTitle = style({
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[500],
+  display: 'block',
+});

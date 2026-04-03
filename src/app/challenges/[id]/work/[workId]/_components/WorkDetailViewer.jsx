@@ -92,7 +92,12 @@ export default function WorkDetailViewer({
   return (
     <div className={styles.container}>
       <div className={styles.titleRow}>
-        <h1 className={styles.title}>{work.challenge.title}</h1>
+        <div>
+          <span className={styles.challengeSubTitle}>
+            {work.challenge.title}
+          </span>
+          <h1 className={styles.title}>{work.title || '제목 없음'}</h1>
+        </div>
         {headerActions}
       </div>
 

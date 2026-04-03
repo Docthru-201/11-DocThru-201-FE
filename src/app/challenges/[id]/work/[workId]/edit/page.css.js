@@ -66,12 +66,6 @@ export const titleBarInner = style({
   borderBottom: `1px solid ${vars.color.gray[200]}`,
 });
 
-export const challengeTitle = style({
-  fontSize: vars.fontSize.base,
-  fontWeight: vars.fontWeight.medium,
-  color: vars.color.gray[800],
-});
-
 export const headerRight = style({
   display: 'flex',
   alignItems: 'center',
@@ -172,4 +166,17 @@ export const giveUpButton = style({
       opacity: 0.8,
     },
   },
+});
+export const challengeSubTitle = style({
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[500],
+});
+
+export const titleInput = style({
+  fontSize: vars.fontSize.xl,
+  fontWeight: vars.fontWeight.bold,
+  border: 'none',
+  outline: 'none',
+  width: '100%',
+  background: 'transparent',
 });
