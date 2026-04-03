@@ -14,7 +14,7 @@ import Link from 'next/link'; // Next.js의 Link 컴포넌트
 import { Icon } from '@/shared/components/Icon';
 import { BASE_URL } from '@/apis/common';
 
-import * as s from './login.css'; // 스타일 재사용
+import * as s from './login.css.ts'; // 스타일 재사용
 
 export default function LoginPage() {
   const router = useRouter();
