@@ -99,10 +99,13 @@ export const statusSubmitted = style({
 export const workMeta = style({
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
+  gap: '25px',
 });
 
 export const likeCount = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
   fontSize: '13px',
   color: '#6b7280',
 });
@@ -124,4 +127,25 @@ export const loading = style({
   padding: '40px 0',
   textAlign: 'center',
   color: '#6b7280',
+});
+
+export const moreButton = style({
+  display: 'block',
+  margin: '16px auto 0',
+  width: '180px',
+  maxWidth: '100%',
+  height: '48px',
+  padding: '0 16px',
+  border: 'none',
+  borderRadius: '12px',
+  backgroundColor: '#f3f4f6',
+  fontSize: '15px',
+  fontWeight: 500,
+  color: '#6b7280',
+  cursor: 'pointer',
+  selectors: {
+    '&:hover': {
+      backgroundColor: '#e5e7eb',
+    },
+  },
 });

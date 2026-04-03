@@ -67,7 +67,17 @@ export const editButton = style({
   },
 });
 
+/** 마이페이지 등에서 더보기 버튼만 살짝 작게 */
+export const editButtonCompact = style({
+  width: 20,
+  height: 20,
+});
+
 // ✅ 관리자 드롭다운 메뉴 스타일
+export const adminDropdownMenuCompact = style({
+  top: '24px',
+});
+
 export const adminDropdownMenu = style({
   position: 'absolute',
   top: '28px',

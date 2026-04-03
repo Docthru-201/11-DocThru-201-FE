@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/shared/store/useAuthStore';
@@ -37,13 +37,14 @@ const PAGE_SIZE = 5;
 
 export default function ChallengesPage({ hideNewChallengeButton = false }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
 
   const [searchValue, setSearchValue] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   const [appliedFilter, setAppliedFilter] = useState(DEFAULT_CHALLENGE_FILTER);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const [targetChallenge, setTargetChallenge] = useState(null);
   const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
@@ -53,6 +54,27 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
 
   const filterWrapRef = useRef(null);
   const skipScrollToTopRef = useRef(true);
+
+  const rawPageParam = Number(searchParams.get('page'));
+  const currentPageFromUrl =
+    Number.isFinite(rawPageParam) && rawPageParam >= 1
+      ? Math.floor(rawPageParam)
+      : 1;
+
+  const replacePageInUrl = useCallback(
+    (page) => {
+      const p = Math.max(1, Math.floor(Number(page)) || 1);
+      const params = new URLSearchParams(searchParams.toString());
+      if (p <= 1) {
+        params.delete('page');
+      } else {
+        params.set('page', String(p));
+      }
+      const qs = params.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
 
   const {
     data: challengeItems = [],
@@ -116,14 +138,6 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
     };
   }, [filterOpen]);
 
-  useEffect(() => {
-    if (skipScrollToTopRef.current) {
-      skipScrollToTopRef.current = false;
-      return;
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
-
   const filteredChallenges = useMemo(
     () => filterChallengeItems(challengeItems, appliedFilter, searchValue),
     [challengeItems, appliedFilter, searchValue],
@@ -134,7 +148,35 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
     [filteredChallenges.length],
   );
 
-  const safePage = Math.min(currentPage, totalPages);
+  const safePage = Math.min(currentPageFromUrl, totalPages);
+
+  useEffect(() => {
+    if (totalPages < 1) return;
+    if (currentPageFromUrl > totalPages) {
+      replacePageInUrl(totalPages);
+    }
+  }, [currentPageFromUrl, totalPages, replacePageInUrl]);
+
+  useEffect(() => {
+    if (skipScrollToTopRef.current) {
+      skipScrollToTopRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [safePage]);
+
+  const setPage = useCallback(
+    (next) => {
+      const cap = Math.max(1, totalPages);
+      const resolved =
+        typeof next === 'function'
+          ? next(Math.min(currentPageFromUrl, cap))
+          : next;
+      const p = Math.max(1, Math.min(Math.floor(Number(resolved)) || 1, cap));
+      replacePageInUrl(p);
+    },
+    [currentPageFromUrl, replacePageInUrl, totalPages],
+  );
 
   const displayedChallenges = useMemo(() => {
     const start = (safePage - 1) * PAGE_SIZE;
@@ -176,7 +218,7 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
                 applied={appliedFilter}
                 onApply={(next) => {
                   setAppliedFilter(next);
-                  setCurrentPage(1);
+                  replacePageInUrl(1);
                 }}
                 onClose={() => setFilterOpen(false)}
               />
@@ -188,7 +230,7 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
             value={searchValue}
             onChange={(v) => {
               setSearchValue(v);
-              setCurrentPage(1);
+              replacePageInUrl(1);
             }}
           />
         </div>
@@ -231,7 +273,7 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
             <PageIndicator
               current={safePage}
               total={totalPages}
-              onChange={setCurrentPage}
+              onChange={setPage}
             />
           </div>
         )}

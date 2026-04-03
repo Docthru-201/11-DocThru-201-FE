@@ -61,7 +61,17 @@ export default function ChallengeDetailPage() {
     return isFull || challenge.isClosed || isInactiveStatus;
   }, [challenge]);
 
+  const actionLabel = useMemo(() => {
+    if (myWork?.status === 'DRAFT') return '도전 계속하기';
+    if (myWork?.status === 'SUBMITTED') return '제출 완료';
+    return '작업 도전하기';
+  }, [myWork?.status]);
+
+  const isActionDisabled =
+    isDisabled || isCreatePending || myWork?.status === 'SUBMITTED';
+
   const handleChallenge = () => {
+    if (myWork?.status === 'SUBMITTED') return;
     if (myWork?.status === 'DRAFT') {
       router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
       return;
@@ -130,15 +140,13 @@ export default function ChallengeDetailPage() {
               deadlineText={dayjs(challenge.deadline).format('YYYY년 M월 D일')}
               personText={`${challenge.participants?.length || 0}/${challenge.maxParticipants || 0}`}
               originalLabel="원문 보기"
-              actionLabel={
-                myWork?.status === 'DRAFT' ? '이어서 작성하기' : '작업 도전하기'
-              }
+              actionLabel={actionLabel}
               onActionClick={handleChallenge}
               onOriginalViewClick={() => {
                 if (challenge.originalUrl)
                   window.open(challenge.originalUrl, '_blank');
               }}
-              isDisabled={isDisabled || isCreatePending}
+              isDisabled={isActionDisabled}
             />
           </div>
         </section>

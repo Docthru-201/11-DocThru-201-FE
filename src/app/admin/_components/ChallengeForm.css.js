@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 
 export const page = style({
@@ -6,6 +6,16 @@ export const page = style({
   flexDirection: 'column',
   minHeight: '100vh',
   backgroundColor: vars.color.white,
+});
+
+/* 전역 :focus-visible(회색 테두리)가 input/textarea에 겹침 — 챌린지 신청·수정 폼에서만 제거 */
+globalStyle(`${page} input:focus-visible`, {
+  outline: 'none',
+  outlineOffset: 0,
+});
+globalStyle(`${page} textarea:focus-visible`, {
+  outline: 'none',
+  outlineOffset: 0,
 });
 
 export const main = style({

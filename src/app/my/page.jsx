@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMyChallenges } from '@/apis/challenges';
 import { deleteChallengeAction } from '@/shared/apis/admin.js';
@@ -71,13 +71,24 @@ function statusChip(status) {
 
 export default function MyChallengesPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const user = useAuthStore((state) => state.user);
 
   const [searchValue, setSearchValue] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [value, setValue] = useState('participating');
+  const tabParam = searchParams.get('tab');
+  const value =
+    tabParam === 'applied' ||
+    tabParam === 'participating' ||
+    tabParam === 'done'
+      ? tabParam
+      : 'participating';
+  const rawPageParam = Number(searchParams.get('page'));
+  const currentPageFromUrl =
+    Number.isFinite(rawPageParam) && rawPageParam >= 1
+      ? Math.floor(rawPageParam)
+      : 1;
   const skipScrollToTopRef = useRef(true);
 
   const [sortValue, setSortValue] = useState('all');
@@ -89,22 +100,29 @@ export default function MyChallengesPage() {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    const t = searchParams.get('tab');
-    if (t === 'applied' || t === 'participating' || t === 'done') {
-      setValue(t);
-    }
-  }, [searchParams]);
+  const replaceSearchParams = useCallback(
+    (mutate) => {
+      const params = new URLSearchParams(searchParams.toString());
+      mutate(params);
+      const qs = params.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
 
   const handleTabChange = (next) => {
-    setValue(next);
-    setCurrentPage(1);
     setSortOpen(false);
+    replaceSearchParams((params) => {
+      params.set('tab', next);
+      params.delete('page');
+    });
   };
 
   const handleSearchChange = (next) => {
     setSearchValue(next);
-    setCurrentPage(1);
+    replaceSearchParams((params) => {
+      params.delete('page');
+    });
   };
 
   const handleEdit = (challenge) => {
@@ -160,14 +178,6 @@ export default function MyChallengesPage() {
     },
     staleTime: 60 * 1000,
   });
-
-  useEffect(() => {
-    if (skipScrollToTopRef.current) {
-      skipScrollToTopRef.current = false;
-      return;
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
 
   const appliedRows = useMemo(() => {
     if (value !== 'applied') return [];
@@ -241,7 +251,47 @@ export default function MyChallengesPage() {
     [filteredChallenges.length],
   );
 
-  const safePage = Math.min(currentPage, totalPages);
+  const safePage = Math.min(currentPageFromUrl, totalPages);
+
+  useEffect(() => {
+    if (totalPages < 1) return;
+    if (currentPageFromUrl > totalPages) {
+      replaceSearchParams((params) => {
+        if (totalPages === 1) {
+          params.delete('page');
+        } else {
+          params.set('page', String(totalPages));
+        }
+      });
+    }
+  }, [currentPageFromUrl, totalPages, replaceSearchParams]);
+
+  useEffect(() => {
+    if (skipScrollToTopRef.current) {
+      skipScrollToTopRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [safePage]);
+
+  const setPage = useCallback(
+    (next) => {
+      const cap = Math.max(1, totalPages);
+      const resolved =
+        typeof next === 'function'
+          ? next(Math.min(currentPageFromUrl, cap))
+          : next;
+      const p = Math.max(1, Math.min(Math.floor(Number(resolved)) || 1, cap));
+      replaceSearchParams((params) => {
+        if (p <= 1) {
+          params.delete('page');
+        } else {
+          params.set('page', String(p));
+        }
+      });
+    },
+    [currentPageFromUrl, replaceSearchParams, totalPages],
+  );
 
   const displayedChallenges = useMemo(() => {
     const start = (safePage - 1) * PAGE_SIZE;
@@ -314,6 +364,9 @@ export default function MyChallengesPage() {
                         onClick={() => {
                           setSortValue(opt.value);
                           setSortOpen(false);
+                          replaceSearchParams((params) => {
+                            params.delete('page');
+                          });
                         }}
                       >
                         {opt.label}
@@ -343,6 +396,7 @@ export default function MyChallengesPage() {
                 study={study}
                 onCtaClick={() => {}}
                 showEditMenu={user?.id != null && study.authorId === user.id}
+                compactEditMenu
                 onEditClick={() => handleEdit(study)}
                 onDeleteClick={() => handleDeleteClick(study)}
               />
@@ -409,7 +463,7 @@ export default function MyChallengesPage() {
               <PageIndicator
                 current={safePage}
                 total={totalPages}
-                onChange={setCurrentPage}
+                onChange={setPage}
               />
             </div>
           )}

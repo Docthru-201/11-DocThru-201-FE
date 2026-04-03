@@ -66,7 +66,14 @@ export function ListRow({
           variant="transparent"
           className={styles.workLink}
           onClick={onWorkClick}
-          icon={<Icon name="arrowRight" width={16} height={16} aria-hidden />}
+          icon={
+            <Icon
+              name="chevronRightActive"
+              width={25}
+              height={25}
+              aria-hidden
+            />
+          }
           iconPosition="right"
         >
           작업물 보기

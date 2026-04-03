@@ -16,6 +16,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'resgqvkfdnaunibowexs.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
     ],
   },
 };

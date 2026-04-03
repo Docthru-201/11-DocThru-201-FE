@@ -1,11 +1,11 @@
 // app/mypage/_components/WorkCard.jsx
-import { useLikes } from '@/features/likes/hooks/useLikes';
+import { Icon } from '@/shared/components/Icon';
 import * as styles from './WorkListSection.css.js';
 import { useRouter } from 'next/navigation';
 
 export default function WorkCard({ work }) {
   const router = useRouter();
-  const { likeCount } = useLikes(work.id);
+  const likeDisplay = Number(work.likeCount ?? 0).toLocaleString('ko-KR');
 
   return (
     <div
@@ -27,7 +27,10 @@ export default function WorkCard({ work }) {
         </span>
       </div>
       <div className={styles.workMeta}>
-        <span className={styles.likeCount}>❤️ {likeCount}</span>
+        <span className={styles.likeCount}>
+          <Icon name="heartActive" width={16} height={16} aria-hidden />
+          {likeDisplay}
+        </span>
         <span className={styles.date}>
           {new Date(work.createdAt).toLocaleDateString('ko-KR')}
         </span>

@@ -87,13 +87,13 @@ export const likeCount = style({
 export const workLink = style({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '2px',
+  gap: '0px',
   fontSize: vars.fontSize['2xs'],
   fontWeight: vars.fontWeight.medium,
   color: vars.color.gray[800],
   background: 'none',
   border: 'none',
-  padding: `${vars.space.xs} ${vars.space.sm}`,
+  padding: `${vars.space.xs} ${vars.space.xs}`,
   borderRadius: '6px',
   cursor: 'pointer',
   transition,
@@ -134,5 +134,5 @@ export const workTitle = style({
 });
 export const titleDivider = style({
   color: vars.color.gray[300],
-  marginRight: vars.space.sm,
+  marginRight: '8px',
 });

@@ -14,7 +14,9 @@ export default function StatsSection({ stats }) {
           <span className={styles.statLabel}>작업물 수</span>
         </div>
         <div className={styles.statItem}>
-          <span className={styles.statValue}>{stats.likeCount}</span>
+          <span className={styles.statValue}>
+            {Number(stats.likeCount ?? 0).toLocaleString('ko-KR')}
+          </span>
           <span className={styles.statLabel}>받은 좋아요</span>
         </div>
       </div>
