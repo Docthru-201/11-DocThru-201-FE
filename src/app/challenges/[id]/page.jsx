@@ -9,7 +9,6 @@ import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
 import { List } from '@/shared/components/List';
-import LineDivider from '@/app/admin/_components/LineDivider';
 
 import ChallengeContent from '@/app/challenges/[id]/_components/ChallengeContent';
 import TopRankedList from '@/app/challenges/[id]/_components/TopRankedList';
@@ -19,7 +18,7 @@ import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.j
 import { useIsSize } from '@/shared/hooks/useIsSize';
 import { ChallengeDetailSkeleton } from '@/shared/components/Skeleton';
 
-import * as styles from './Page.css.js';
+import * as styles from './Page.css';
 import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDetail.js';
 import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
 import { useMyWork } from '@/features/works/hooks/useMyWork.js';
@@ -40,7 +39,7 @@ export default function ChallengeDetailPage() {
   const { rankingData, isPending: isRankingPending } =
     useChallengeRanking(challengeId);
   const { myWork } = useMyWork(challengeId);
-  const { createWork } = useWorkMutation(null, challengeId);
+  const { createWork, isCreatePending } = useWorkMutation(null, challengeId);
 
   const { currentItems, totalPages } = useMemo(() => {
     const rankedData = getRankedList(rankingData);
@@ -120,8 +119,12 @@ export default function ChallengeDetailPage() {
               </span>
             </div>
           </div>
-
-          <div className={styles.rightSidebarArea}>
+          <div
+            style={{
+              background: '#FFFFFF',
+              padding: '24px 0 24px 24px',
+            }}
+          >
             <Container
               size={containerSize}
               deadlineText={dayjs(challenge.deadline).format('YYYY년 M월 D일')}
@@ -135,14 +138,13 @@ export default function ChallengeDetailPage() {
                 if (challenge.originalUrl)
                   window.open(challenge.originalUrl, '_blank');
               }}
-              isDisabled={isDisabled}
+              isDisabled={isDisabled || isCreatePending}
             />
           </div>
         </section>
 
-        <LineDivider />
-
-        {challenge.isClosed && (
+        <div className={styles.dividerWrapper}></div>
+        {challenge?.isClosed === true && (
           <div className={styles.bestWorkWrapper}>
             <TopRankedList rankingData={rankingData} />
           </div>
@@ -184,9 +186,7 @@ export default function ChallengeDetailPage() {
                       router={router}
                     />
                     {index < currentItems.length - 1 && (
-                      <div className={styles.dividerWrapper}>
-                        <LineDivider />
-                      </div>
+                      <div className={styles.dividerWrapper}></div>
                     )}
                   </React.Fragment>
                 ))}

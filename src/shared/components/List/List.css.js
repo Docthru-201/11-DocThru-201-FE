@@ -6,8 +6,7 @@ export const row = style({
   alignItems: 'center',
   gap: vars.space.md,
   width: '100%',
-  minHeight: '47px',
-  padding: `${vars.space.sm} 0`,
+  minHeight: '35px',
   boxSizing: 'border-box',
 });
 
@@ -25,6 +24,7 @@ export const badge = style({
   fontWeight: vars.fontWeight.medium,
   color: vars.color.brand.point,
   flexShrink: 0,
+  marginRight: '14px',
 });
 
 export const badgeIcon = style({
@@ -72,6 +72,7 @@ export const likeCount = style({
   alignItems: 'center',
   gap: vars.space.xs,
   fontSize: vars.fontSize.sm,
+  marginRight: '40px',
   fontWeight: vars.fontWeight.medium,
   color: vars.color.gray[500],
   background: 'none',
