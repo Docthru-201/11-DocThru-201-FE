@@ -232,4 +232,11 @@ export const bestWorkWrapper = style({
   width: '100%',
   marginTop: '32px',
   marginBottom: '8px',
+
+  '@media': {
+    'screen and (max-width: 767px)': {
+      marginTop: '20px',
+      marginBottom: '0',
+    },
+  },
 });

@@ -8,7 +8,7 @@ import { ITEMSPERPAGE } from '@/shared/constants/file';
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
-import { List, ListRow } from '@/shared/components/List';
+import { List } from '@/shared/components/List';
 
 import ChallengeContent from '@/app/challenges/[id]/_components/ChallengeContent';
 import TopRankedList from '@/app/challenges/[id]/_components/TopRankedList';
@@ -18,7 +18,7 @@ import { getRankedList } from '@/app/challenges/[id]/_components/getRankedList.j
 import { useIsSize } from '@/shared/hooks/useIsSize';
 import { ChallengeDetailSkeleton } from '@/shared/components/Skeleton';
 
-import * as styles from './Page.css.js';
+import * as styles from './Page.css';
 import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDetail.js';
 import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
 import { useMyWork } from '@/features/works/hooks/useMyWork.js';
@@ -39,7 +39,7 @@ export default function ChallengeDetailPage() {
   const { rankingData, isPending: isRankingPending } =
     useChallengeRanking(challengeId);
   const { myWork } = useMyWork(challengeId);
-  const { createWork } = useWorkMutation(null, challengeId);
+  const { createWork, isCreatePending } = useWorkMutation(null, challengeId);
 
   const { currentItems, totalPages } = useMemo(() => {
     const rankedData = getRankedList(rankingData);

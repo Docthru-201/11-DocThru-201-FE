@@ -5,6 +5,13 @@ export const container = styleVariants({
   large: {
     width: '285px',
     height: '176px',
+
+    '@media': {
+      'screen and (max-width: 767px)': {
+        width: '100%',
+        height: 'auto',
+      },
+    },
   },
   medium: {
     width: '251px',
@@ -23,6 +30,13 @@ export const baseContainer = style({
   borderRadius: '16px',
   boxSizing: 'border-box',
   overflow: 'hidden',
+
+  '@media': {
+    'screen and (max-width: 767px)': {
+      width: '100%',
+      borderRadius: '20px',
+    },
+  },
 });
 
 export const inner = styleVariants({
@@ -33,8 +47,14 @@ export const inner = styleVariants({
     alignItems: 'center',
     gap: '16px',
     padding: '24px 16px',
-    // paddingLeft: '24px',
-    // paddingRight: '24px',
+
+    '@media': {
+      'screen and (max-width: 767px)': {
+        height: 'auto',
+        padding: '20px 16px',
+        gap: '16px',
+      },
+    },
   },
   medium: {
     height: '100%',
@@ -74,6 +94,14 @@ export const metricsWrap = styleVariants({
     alignItems: 'center',
     gap: '4px',
     width: '100%',
+
+    '@media': {
+      'screen and (max-width: 767px)': {
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        rowGap: '4px',
+      },
+    },
   },
   medium: {
     display: 'flex',
@@ -133,6 +161,13 @@ export const buttonsWrap = styleVariants({
     gap: '8px',
     width: '253px',
     alignSelf: 'center',
+
+    '@media': {
+      'screen and (max-width: 767px)': {
+        width: '100%',
+        alignSelf: 'stretch',
+      },
+    },
   },
 });
 
@@ -169,6 +204,15 @@ export const originalButton = style({
   cursor: 'pointer',
   userSelect: 'none',
   boxSizing: 'border-box',
+
+  '@media': {
+    'screen and (max-width: 767px)': {
+      height: '48px',
+      minHeight: '48px',
+      borderRadius: '16px',
+      fontSize: '16px',
+    },
+  },
 });
 
 export const actionButton = style({
@@ -189,6 +233,15 @@ export const actionButton = style({
   cursor: 'pointer',
   userSelect: 'none',
   boxSizing: 'border-box',
+
+  '@media': {
+    'screen and (max-width: 767px)': {
+      height: '48px',
+      minHeight: '48px',
+      borderRadius: '16px',
+      fontSize: '16px',
+    },
+  },
 });
 
 export const disabled = style({
