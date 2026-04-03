@@ -153,6 +153,30 @@ const originalPaneWrapperBase = {
     'width 0.35s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
 };
 
+export const originalPaneWrapperOpen = style({
+  ...originalPaneWrapperBase,
+  width: '640px',
+  pointerEvents: 'auto',
+  '@media': {
+    [breakpoint.maxSm]: {
+      width: '100%',
+      maxHeight: '100vh',
+    },
+  },
+});
+
+export const originalPaneWrapperClosed = style({
+  ...originalPaneWrapperBase,
+  width: 0,
+  pointerEvents: 'none',
+  '@media': {
+    [breakpoint.maxSm]: {
+      width: '100%',
+      maxHeight: 0,
+    },
+  },
+});
+
 export const originalPane = style({
   position: 'relative',
   width: '640px',

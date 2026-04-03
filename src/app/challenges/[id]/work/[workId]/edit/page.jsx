@@ -21,7 +21,7 @@ export default function WorkEditPage() {
     useWorkMutation(workId, challengeId);
   const { content, resetContent } = useEditorStore();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  const [showOriginal, setShowOriginal] = useState(true);
+  const [showOriginal, setShowOriginal] = useState(false);
   const [workTitle, setWorkTitle] = useState('');
   const isSubmitted = work?.status === 'SUBMITTED';
 
@@ -40,13 +40,20 @@ export default function WorkEditPage() {
 
   const handleSave = () => {
     if (!content) return;
-    updateWork({ content: JSON.stringify(content), title: workTitle });
+    updateWork({
+      content: JSON.stringify(content),
+      title: workTitle || work?.title || '',
+    });
   };
 
   const handleSubmit = () => {
     if (!content) return;
     updateWork(
-      { content: JSON.stringify(content), action: 'SUBMIT', title: workTitle },
+      {
+        content: JSON.stringify(content),
+        action: 'SUBMIT',
+        title: workTitle || work?.title || '',
+      },
       {
         onSuccess: () => {
           resetContent();
