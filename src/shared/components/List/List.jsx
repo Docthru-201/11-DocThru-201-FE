@@ -9,6 +9,7 @@ export function ListRow({
   badgeRank,
   name,
   role,
+  title,
   profileType,
   likeCount: likeCountProp,
   onWorkClick,
@@ -36,6 +37,12 @@ export function ListRow({
         <span className={styles.name}>{name}</span>
         <span className={styles.role}>{role}</span>
       </div>
+      {title && (
+        <span className={styles.workTitle}>
+          <span className={styles.titleDivider}>|</span>
+          {title}
+        </span>
+      )}
       <div className={styles.right}>
         <div className={styles.likeCount}>
           <Icon name="heartActive" width={16} height={16} aria-hidden />

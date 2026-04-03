@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 import { vars } from '@/styles/tokens.css';
 import { breakpoint } from '@/styles/breakpoints.css';
 
@@ -11,7 +11,6 @@ export const pageWrapper = style({
   overflow: 'hidden',
 });
 
-/** 좌측 에디터 / 우측 원문 분할 */
 export const mainRow = style({
   display: 'flex',
   flex: 1,
@@ -34,7 +33,6 @@ export const leftPane = style({
   overflow: 'hidden',
 });
 
-/** Figma: 본문 최대 890px 가운데 정렬 */
 export const leftPaneInner = style({
   display: 'flex',
   flexDirection: 'column',
@@ -77,13 +75,30 @@ export const logoIcon = style({
   height: '28px',
 });
 
+globalStyle(`${logoIcon} img`, {
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+});
+
+export const titleBar = style({
+  backgroundColor: vars.color.white,
+  flexShrink: 0,
+});
+
+export const titleBarInner = style({
+  maxWidth: '960px',
+  margin: '0 auto',
+  padding: '14px 24px',
+  borderBottom: `1px solid ${vars.color.gray[200]}`,
+});
+
 export const headerRight = style({
   display: 'flex',
   alignItems: 'center',
   gap: vars.space.sm,
 });
 
-/** Figma: 임시저장·제출 90×40, 포기는 아이콘 포함 톤 버튼 */
 export const headerButton = style({
   width: '90px !important',
   minWidth: '90px !important',
@@ -103,27 +118,30 @@ export const headerButtonGiveUp = style({
 export const titleBlock = style({
   flexShrink: 0,
   width: '100%',
-  // paddingBottom: vars.space.md,
-  borderBottom: `1px solid ${vars.color.gray[200]}`,
-  marginBottom: vars.space.md,
-});
-
-export const challengeTitle = style({
-  margin: '24px 0',
-  fontSize: '20px',
-  fontWeight: vars.fontWeight.semibold,
-  lineHeight: 1.4,
-  color: vars.color.gray[800],
+  maxWidth: '960px',
+  backgroundColor: vars.color.white,
+  overflowY: 'auto',
+  padding: '0 24px',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 export const editorSection = style({
   flex: 1,
-  minHeight: 0,
-  overflow: 'auto',
-  width: '100%',
+  backgroundColor: vars.color.white,
+  overflowY: 'auto',
+  padding: '0 24px',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
-/** 원문 패널 래퍼 — 열릴 때 가로(세로) 슬라이드 */
+globalStyle(`${editorSection} .ProseMirror`, {
+  minHeight: '600px',
+  height: '100%',
+  outline: 'none',
+  padding: '20px 0',
+});
+
 const originalPaneWrapperBase = {
   flexShrink: 0,
   display: 'flex',
@@ -159,7 +177,6 @@ export const originalPaneWrapperClosed = style({
   },
 });
 
-/** 우측 원문 패널 — Figma 640px, iframe 전체 + 상단 플로팅 툴바 */
 export const originalPane = style({
   position: 'relative',
   width: '640px',
@@ -219,7 +236,6 @@ export const originalCloseBtn = style({
   },
 });
 
-/** Figma BtnTransparent — 링크 열기 */
 export const openLinkBtn = style({
   display: 'inline-flex',
   alignItems: 'center',
@@ -314,4 +330,32 @@ export const showOriginalTabLabel = style({
   lineHeight: 'normal',
   color: vars.color.gray[500],
   textAlign: 'center',
+});
+
+export const giveUpButton = style({
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  cursor: 'pointer',
+  opacity: 1,
+  transition: 'opacity 0.2s',
+  selectors: {
+    '&:hover': {
+      opacity: 0.8,
+    },
+  },
+});
+
+export const challengeSubTitle = style({
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[500],
+});
+
+export const titleInput = style({
+  fontSize: vars.fontSize.xl,
+  fontWeight: vars.fontWeight.bold,
+  border: 'none',
+  outline: 'none',
+  width: '100%',
+  background: 'transparent',
 });

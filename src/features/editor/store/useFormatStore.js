@@ -4,10 +4,12 @@ export const DEFAULT_FORMAT = {
   bold: false,
   italic: false,
   underline: false,
+  strikethrough: false,
   textAlign: null,
   bulletList: false,
   orderedList: false,
   color: '#000000',
+  highlight: '#ffffff',
 };
 
 export const useFormatStore = create((set) => ({

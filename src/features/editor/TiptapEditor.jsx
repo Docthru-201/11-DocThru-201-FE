@@ -5,6 +5,7 @@ import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import { TextStyle } from '@tiptap/extension-text-style';
+import Highlight from '@tiptap/extension-highlight';
 import Color from '@tiptap/extension-color';
 import { useCallback, useEffect, useRef } from 'react';
 import { useEditorStore } from './store/useEditorStore';
@@ -55,6 +56,7 @@ export function TiptapEditor({ initialContent = null, editable = true }) {
       Underline,
       TextStyle,
       Color,
+      Highlight.configure({ multicolor: true }),
     ],
     content: initialContent,
     editable,
