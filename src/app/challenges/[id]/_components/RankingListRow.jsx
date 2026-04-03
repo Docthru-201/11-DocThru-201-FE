@@ -20,6 +20,7 @@ export const RankingListRow = ({ item, challengeId, router }) => {
         router.push(`/challenges/${challengeId}/work/${item.workId}`)
       }
       onLikeClick={toggleLike}
+      profileImage={item.author.image}
     />
   );
 };
