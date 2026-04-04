@@ -32,9 +32,6 @@ function FeedbackItem({
   const canDelete = isOwner || isAdmin;
 
   const isDeleted = !!comment.deletedAt;
-
-  if (isDeleted) return null;
-
   const isEdited =
     comment.updatedAt &&
     new Date(comment.updatedAt).getTime() !==
@@ -52,6 +49,8 @@ function FeedbackItem({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showDropdown]);
+
+  if (isDeleted) return null;
 
   const handleUpdate = () => {
     if (!editContent.trim()) return;
