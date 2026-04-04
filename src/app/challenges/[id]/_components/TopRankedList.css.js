@@ -171,8 +171,8 @@ globalStyle(`${contentTextVariants.expanded} *`, {
 });
 
 export const moreButtonWrapper = style({
-  marginTop: 'auto',
-  marginBottom: '16px',
+  margin: '18px 0',
+  // marginBottom: '16px',
   display: 'flex',
   justifyContent: 'center',
 });

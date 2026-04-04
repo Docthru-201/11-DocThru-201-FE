@@ -45,6 +45,7 @@ export const pageContainer = style({
   backgroundColor: '#ffffff',
   marginBottom: '160px',
   boxSizing: 'border-box',
+  marginTop: '10px',
 });
 
 export const contentWrapper = style({

@@ -33,6 +33,10 @@ export const useWorkMutation = (workId, challengeId) => {
     mutationFn: (body) => updateExistingWork(workId, body),
     onSuccess: (data, variables) => {
       toast.success('작업물이 수정되었습니다.');
+      // PATCH 응답은 상세 GET보다 필드가 적음 → 기존 캐시와 병합해 이동 직후에도 최신 본문/제목/상태 표시
+      queryClient.setQueryData(QUERY_KEYS.work.detail(workId), (old) =>
+        old && typeof old === 'object' ? { ...old, ...data } : data,
+      );
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.work.detail(workId),
       });
