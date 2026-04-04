@@ -17,21 +17,21 @@ export const mainInputRow = style({
   display: 'flex',
   alignItems: 'flex-start',
   gap: 24,
-  marginTop: '24px 0',
+  marginTop: vars.space.xl,
 });
 
 export const textareaMainBox = style({
   flex: 1,
   minWidth: 0,
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   border: `1px solid ${vars.color.gray[200]}`,
   borderRadius: vars.radius.lg,
   padding: vars.space.lg,
   backgroundColor: vars.color.white,
   minHeight: '89px',
   boxSizing: 'border-box',
-  marginTop: '24px',
+  marginTop: vars.space.xl,
 });
 
 export const textareaMain = style({
@@ -57,11 +57,12 @@ export const textareaMain = style({
   },
 });
 
+/** 박스 marginTop + border + padding 과 맞춰, 인풋 첫 줄과 같은 높이에서 시작 */
 export const submitButtonMain = style({
   flexShrink: 0,
   width: '40px',
   height: '40px',
-  marginTop: vars.space.lg,
+  marginTop: `calc(${vars.space.xl} + 1px + ${vars.space.lg})`,
   padding: 0,
   display: 'flex',
   alignItems: 'center',
@@ -123,11 +124,12 @@ export const textarea = style({
   fontFamily: vars.fontFamily.pretendard,
 });
 
+/** inputWrapper 상단 패딩 + 테두리와 맞춤 */
 export const submitButton = style({
   flexShrink: 0,
   width: '40px',
   height: '40px',
-  marginTop: vars.space.sm,
+  marginTop: `calc(${vars.space.sm} + 1px)`,
   padding: 0,
   display: 'flex',
   alignItems: 'center',

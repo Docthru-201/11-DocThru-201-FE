@@ -26,10 +26,16 @@ export default function ChallengeContent({
   isClosed,
   deadline,
   maxParticipants,
+  author,
+  authorId,
 }) {
   const router = useRouter();
 
   const user = useAuthStore((state) => state.user);
+
+  const isAuthor = Boolean(
+    user?.id && (authorId === user.id || author?.id === user.id),
+  );
 
   const adminDropdownRef = useRef(null);
   const userDropdownRef = useRef(null);
@@ -117,7 +123,7 @@ export default function ChallengeContent({
       <div className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
 
-        {status === 'PENDING' && user?.role === 'USER' && (
+        {isAuthor && status === 'PENDING' && user?.role === 'USER' && (
           <div ref={userDropdownRef} style={{ position: 'relative' }}>
             <button
               type="button"
@@ -140,7 +146,7 @@ export default function ChallengeContent({
           </div>
         )}
 
-        {user?.role === 'ADMIN' && (
+        {isAuthor && user?.role === 'ADMIN' && (
           <div ref={adminDropdownRef} style={{ position: 'relative' }}>
             <button
               type="button"
