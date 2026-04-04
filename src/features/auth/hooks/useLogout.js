@@ -3,16 +3,23 @@ import { useRouter } from 'next/navigation';
 import { logoutUser } from '../api/auth.service';
 import { toast } from 'react-toastify';
 import { useAuthStore } from '@/shared/store/useAuthStore';
+import { clearNextAuthCookies } from '@/shared/lib/syncNextAuthCookies';
 
 export const useLogout = () => {
   const router = useRouter();
   const clearUser = useAuthStore((state) => state.clearUser);
 
   const logoutMutation = useMutation({
-    mutationFn: logoutUser,
+    mutationFn: async () => {
+      try {
+        await logoutUser();
+      } finally {
+        await clearNextAuthCookies();
+      }
+    },
 
     onSuccess: () => {
-      clearUser(); // ✅ zustand 상태 초기화
+      clearUser();
       toast.success('로그아웃 되었습니다.');
       router.replace('/');
     },

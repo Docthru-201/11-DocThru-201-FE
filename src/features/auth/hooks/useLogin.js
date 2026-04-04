@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { loginUser } from '../api/auth.service'; // 서비스 함수 임포트
 import { toast } from 'react-toastify'; // 추가
 import { useAuthStore } from '@/shared/store/useAuthStore';
+import { syncNextAuthCookies } from '@/shared/lib/syncNextAuthCookies';
 
 export const useLogin = () => {
   const router = useRouter();
@@ -13,22 +14,24 @@ export const useLogin = () => {
     mutationFn: (loginData) => loginUser(loginData),
 
     // 성공했을 때 실행할 로직
-    onSuccess: (data) => {
-      setUser(data);
-      // 1. 성공 알림
+    onSuccess: async (data) => {
+      const { accessToken, refreshToken, ...user } = data;
+      setUser(user);
+
+      if (accessToken && refreshToken) {
+        await syncNextAuthCookies({ accessToken, refreshToken });
+      }
+
       toast.success('로그인에 성공했습니다!');
-      // 2. 페이지 리다이렉트 (대시보드 또는 메인)
-      const userRole = data.role || data.user?.role;
+
+      const userRole = user.role || user.user?.role;
 
       if (userRole === 'ADMIN') {
-        // 관리자라면 관리 페이지로
         router.push('/admin/management');
       } else {
-        // 일반 사용자라면 메인으로
         router.push('/challenges');
       }
 
-      // 3. 상태 업데이트를 위해 페이지 새로고침 (필요 시)
       router.refresh();
     },
 
