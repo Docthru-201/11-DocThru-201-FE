@@ -10,7 +10,12 @@ export const useWorkMutation = (workId, challengeId) => {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: () => createWorkAction(challengeId),
+    mutationFn: async () => {
+      const result = await createWorkAction(challengeId);
+      if (!result.ok) throw new Error(result.message);
+      return result.data;
+    },
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.challenge.detail(challengeId), // ← 추가
