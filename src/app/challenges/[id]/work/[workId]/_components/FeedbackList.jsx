@@ -32,6 +32,9 @@ function FeedbackItem({
   const canDelete = isOwner || isAdmin;
 
   const isDeleted = !!comment.deletedAt;
+
+  if (isDeleted) return null;
+
   const isEdited =
     comment.updatedAt &&
     new Date(comment.updatedAt).getTime() !==
@@ -128,9 +131,7 @@ function FeedbackItem({
       </div>
 
       {/* 댓글 내용 */}
-      {isDeleted ? (
-        <p className={styles.deletedContent}>삭제된 댓글입니다.</p>
-      ) : isEditing ? (
+      {isEditing ? (
         <div>
           <textarea
             className={styles.editTextarea}
@@ -162,7 +163,7 @@ function FeedbackItem({
       )}
 
       {/* 하단 - 답글 N개 토글 (depth === 0만) */}
-      {!isDeleted && !isEditing && depth === 0 && (
+      {!isEditing && depth === 0 && (
         <div className={styles.actions}>
           <button
             className={styles.replyToggleButton}
@@ -225,7 +226,11 @@ export default function FeedbackList({ workId, onProfileClick }) {
   if (isError) return <div>댓글을 불러오는데 실패했습니다.</div>;
 
   const topLevelComments = comments
-    .filter((c) => !c.parentId)
+    .filter((c) => !c.parentId && !c.deletedAt)
+    .map((c) => ({
+      ...c,
+      replies: (c.replies || []).filter((r) => !r.deletedAt),
+    }))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const visibleComments = topLevelComments.slice(0, visibleCount);
   const hasMore = topLevelComments.length > visibleCount;
