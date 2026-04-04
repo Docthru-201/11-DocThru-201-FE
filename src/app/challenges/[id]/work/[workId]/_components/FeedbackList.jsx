@@ -224,7 +224,9 @@ export default function FeedbackList({ workId, onProfileClick }) {
   if (isPending) return <CommentListSkeleton />;
   if (isError) return <div>댓글을 불러오는데 실패했습니다.</div>;
 
-  const topLevelComments = comments.filter((c) => !c.parentId);
+  const topLevelComments = comments
+    .filter((c) => !c.parentId)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const visibleComments = topLevelComments.slice(0, visibleCount);
   const hasMore = topLevelComments.length > visibleCount;
 
