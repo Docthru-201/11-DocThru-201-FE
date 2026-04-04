@@ -26,7 +26,6 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
       {
         onSuccess: () => {
           setContent('');
-          if (onCancel) onCancel();
         },
       },
     );
@@ -85,24 +84,6 @@ export default function FeedbackForm({ workId, parentId = null, onCancel }) {
         </div>
         <div className={styles.charCount}>
           {content.length} / {MAX_LENGTH}
-        </div>
-        <div className={styles.replyActions}>
-          <button
-            type="button"
-            className={styles.cancelButton}
-            onClick={onCancel}
-            disabled={isCreatePending}
-          >
-            취소
-          </button>
-          <button
-            type="button"
-            className={styles.replyButton}
-            onClick={handleSubmit}
-            disabled={isCreatePending || !content.trim()}
-          >
-            {isCreatePending ? '작성 중...' : '답글 작성'}
-          </button>
         </div>
       </div>
     );

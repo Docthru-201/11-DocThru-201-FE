@@ -23,6 +23,7 @@ export const itemHeader = style({
   alignItems: 'flex-start',
   gap: vars.space.sm,
   marginBottom: '15px',
+  position: 'relative',
 });
 
 export const avatar = style({
@@ -63,8 +64,117 @@ export const content = style({
 
 export const actions = style({
   display: 'flex',
+  alignItems: 'center',
   gap: vars.space.sm,
 });
+
+export const replyCollapseButton = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '4px',
+  marginTop: vars.space.md,
+  padding: `${vars.space.xs} ${vars.space.sm}`,
+  border: 'none',
+  backgroundColor: 'transparent',
+  fontSize: vars.fontSize['2xs'],
+  fontWeight: vars.fontWeight.medium,
+  color: vars.color.gray[400],
+  cursor: 'pointer',
+  borderRadius: vars.radius.sm,
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.color.gray[100],
+      color: vars.color.gray[600],
+    },
+  },
+});
+
+export const replyToggleButton = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '4px',
+  padding: `${vars.space.xs} ${vars.space.sm}`,
+  border: 'none',
+  backgroundColor: 'transparent',
+  fontSize: vars.fontSize['2xs'],
+  fontWeight: vars.fontWeight.medium,
+  color: vars.color.gray[500],
+  cursor: 'pointer',
+  borderRadius: vars.radius.sm,
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.color.gray[100],
+      color: vars.color.gray[700],
+    },
+  },
+});
+
+export const dropdownWrapper = style({
+  position: 'relative',
+  marginLeft: 'auto',
+  flexShrink: 0,
+});
+
+export const dropdownTrigger = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '28px',
+  height: '28px',
+  border: 'none',
+  backgroundColor: 'transparent',
+  color: vars.color.gray[400],
+  cursor: 'pointer',
+  borderRadius: vars.radius.sm,
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.color.gray[100],
+      color: vars.color.gray[600],
+    },
+  },
+});
+
+export const dropdownMenu = style({
+  position: 'absolute',
+  top: 'calc(100% + 4px)',
+  right: 0,
+  zIndex: 10,
+  minWidth: '96px',
+  backgroundColor: '#ffffff',
+  border: `1px solid ${vars.color.gray[200]}`,
+  borderRadius: vars.radius.md,
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  overflow: 'hidden',
+});
+
+export const dropdownItem = style({
+  display: 'block',
+  width: '100%',
+  padding: `${vars.space.sm} ${vars.space.md}`,
+  border: 'none',
+  backgroundColor: 'transparent',
+  fontSize: vars.fontSize.sm,
+  color: vars.color.gray[700],
+  textAlign: 'left',
+  cursor: 'pointer',
+  selectors: {
+    '&:hover': {
+      backgroundColor: vars.color.gray[50],
+    },
+  },
+});
+
+export const dropdownItemDanger = style([
+  dropdownItem,
+  {
+    color: vars.color.semantic.error,
+    selectors: {
+      '&:hover': {
+        backgroundColor: '#fff5f5',
+      },
+    },
+  },
+]);
 
 export const actionButton = style({
   padding: `${vars.space.xs} ${vars.space.sm}`,
@@ -81,17 +191,6 @@ export const actionButton = style({
     },
   },
 });
-
-export const actionButtonDanger = style([
-  actionButton,
-  {
-    selectors: {
-      '&:hover': {
-        color: vars.color.semantic.error,
-      },
-    },
-  },
-]);
 
 export const replies = style({
   marginLeft: vars.space.xl,
