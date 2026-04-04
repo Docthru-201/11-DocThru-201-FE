@@ -46,24 +46,10 @@ pnpm dev
 </a>
 </td>
 <td align="center" valign="middle">
-<a href="https://github.com/yyejin00">
-<img src="https://avatars.githubusercontent.com/u/79955539?v=4" width="100" />
-<br />
-<b>안예진</b>
-</a>
-</td>
-<td align="center" valign="middle">
 <a href="https://github.com/seorinjung">
 <img src="https://avatars.githubusercontent.com/u/244867022?v=4" width="100" />
 <br />
 <b>정서린</b>
-</a>
-</td>
-<td align="center" valign="middle">
-<a href="https://github.com/040l28">
-<img src="https://avatars.githubusercontent.com/u/243091301?v=4" width="100" />
-<br />
-<b>정미주</b>
 </a>
 </td>
 <td align="center" valign="middle">
@@ -90,13 +76,11 @@ pnpm dev
 </tr>
 <tr>
 <td align="center">팀장</td>
-<td align="center">챌린지 목록<br> · 나의 챌린지<br> · AI 자동번역</td>
-<td align="center">번역 에디터<br> · 게시글 피드백</td>
-<td align="center">PM<br> · 공통 UI<br> · 랜딩페이지</td>
-<td align="center">챌린지 상세<br> · 라이브 챌린지</td>
-<td align="center">회원가입<br> · 로그인<br> · 권한/등급 관리</td>
-<td align="center">신청한 챌린지<br> · 알림 기능</td>
-<td align="center">어드민<br> · 챌린지 관리</td>
+<td align="center">· 챌린지 목록<br> · 나의 챌린지</td>
+<td align="center">· PM<br>· 공통 UI<br> · 랜딩페이지</td>
+<td align="center">· 번역 에디터<br> · 게시글 피드백<br>· 회원가입<br> · 로그인<br> · 권한/등급 관리 </td>
+<td align="center">· 신청한 챌린지<br> · 알림 기능</td>
+<td align="center">· 어드민<br> · 챌린지 관리<br> · 챌린지 상세<br> · 라이브 챌린지</td>
 </tr>
 </tbody>
 </table>
@@ -104,8 +88,8 @@ pnpm dev
 
 ## 🔗 배포 주소
 
-- **Frontend**: [ 배포 준비중... ]
-- **Backend**: [ 배포 준비중... ]
+- **Frontend**: [https://11-doc-thru-201-fe-sigma.vercel.app/]
+- **Backend**: [https://one1-docthru-201-be.onrender.com/]
 
 <br>
 
@@ -114,9 +98,9 @@ pnpm dev
 ## ✨ 프로젝트 소개
 
 대다수의 개발 시장 콘텐츠가 영어로 작성되어 있어, 영어를 잘하지 못하는 한국인들이 해당 기술을 습득하는데 어려움을 겪고 있습니다. <br>
-따라서 개발 관련 영어 문서를 함께 번역하는 챌린지를 진행하고, 번역 작업 에디터에서 번역을 진행하며 번역문에 대한 피드백을 주고받을 수 있는 <br>서비스를 제작합니다. <br>
+따라서 개발 관련 영어 문서를 함께 번역하는 챌린지를 진행하고, 번역 작업 에디터에서 번역을 진행하며 번역문에 대한 피드백을 주고받을 수 있는 서비스를 제작합니다. <br>
 
-## 🛠 기술 스택 ( 추가중... )
+## 🛠 기술 스택
 
 <div align=center>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black">
@@ -124,15 +108,11 @@ pnpm dev
 <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white">
 <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=ReactRouter&logoColor=black">
 <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=CSS&logoColor=white">
-
 <img src="https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=Node.js&logoColor=white">
 <img src="https://img.shields.io/badge/Express-black?style=for-the-badge&logo=Express&logoColor=white">
 <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=Prisma&logoColor=white">
-
 <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=white">
-</div>
 
-<div align=center>
 <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
 <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=Github&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-black?style=for-the-badge&logo=Notion&logoColor=white">
@@ -175,16 +155,11 @@ pnpm dev
 
 - 팀장
 
-### 🙆🏻‍♀️ 안예진
-
-- 번역 에디터
-- 게시글 피드백
-
 ### 🙆🏻‍♂️ 김현제
 
+- 요구사항 분석
 - 챌린지 목록
   - 나의 챌린지
-- AI 자동 번역
 
 ### 🙆🏻‍♂️ 정서린
 
@@ -194,9 +169,12 @@ pnpm dev
 
 ### 🙆🏻‍♂️ 최우진
 
+- BE 기술 스택 선정 및 폴더 구조 정의
 - 회원가입
   - 로그인
   - 권한/등급 관리
+- 번역 에디터
+- 게시글 피드백
 
 ### 🙆🏻‍♂️ 홍규량
 
@@ -205,5 +183,5 @@ pnpm dev
 
 ### 🙆🏻‍♂️ 이석우
 
-- 어드민
+- 어드민 신청 관리
 - 챌린지 관리
