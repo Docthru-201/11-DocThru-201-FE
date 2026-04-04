@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { MoreVertical, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 import { useComments } from '@/features/comments/hooks/useComments';
 import { CommentListSkeleton } from '@/shared/components/Skeleton';
@@ -17,9 +18,11 @@ function FeedbackItem({
   isDeletePending,
   onProfileClick,
 }) {
-  const [isReplying, setIsReplying] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const user = useAuthStore((state) => state.user);
 
@@ -28,14 +31,24 @@ function FeedbackItem({
   const canEdit = isOwner;
   const canDelete = isOwner || isAdmin;
 
-  // 삭제된 댓글 여부
   const isDeleted = !!comment.deletedAt;
-
-  // 수정된 댓글 여부 (updatedAt이 createdAt과 다르면 수정됨)
   const isEdited =
     comment.updatedAt &&
     new Date(comment.updatedAt).getTime() !==
       new Date(comment.createdAt).getTime();
+
+  const replyCount = comment.replies?.length ?? 0;
+
+  useEffect(() => {
+    if (!showDropdown) return;
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showDropdown]);
 
   const handleUpdate = () => {
     if (!editContent.trim()) return;
@@ -52,7 +65,7 @@ function FeedbackItem({
 
   return (
     <div className={styles.item}>
-      {/* 작성자 정보 */}
+      {/* 작성자 정보 + 드롭다운 */}
       <div className={styles.itemHeader}>
         {comment.author?.image ? (
           <img
@@ -73,11 +86,49 @@ function FeedbackItem({
           </span>
           <span className={styles.date}>{formatDate(comment.createdAt)}</span>
         </div>
+
+        {/* 드롭다운 - 본인 댓글만 */}
+        {!isDeleted && !isEditing && (canEdit || canDelete) && (
+          <div className={styles.dropdownWrapper} ref={dropdownRef}>
+            <button
+              className={styles.dropdownTrigger}
+              onClick={() => setShowDropdown((v) => !v)}
+            >
+              <MoreVertical size={16} strokeWidth={1.5} />
+            </button>
+            {showDropdown && (
+              <div className={styles.dropdownMenu}>
+                {canEdit && (
+                  <button
+                    className={styles.dropdownItem}
+                    onClick={() => {
+                      setIsEditing(true);
+                      setShowDropdown(false);
+                    }}
+                  >
+                    수정
+                  </button>
+                )}
+                {canDelete && (
+                  <button
+                    className={styles.dropdownItemDanger}
+                    onClick={() => {
+                      onDelete(comment.id);
+                      setShowDropdown(false);
+                    }}
+                    disabled={isDeletePending}
+                  >
+                    {isDeletePending ? '삭제 중...' : '삭제'}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 댓글 내용 */}
       {isDeleted ? (
-        // ✅ 삭제된 댓글 - 답글은 그대로 유지하고 내용만 대체
         <p className={styles.deletedContent}>삭제된 댓글입니다.</p>
       ) : isEditing ? (
         <div>
@@ -106,58 +157,31 @@ function FeedbackItem({
       ) : (
         <p className={styles.content}>
           {comment.content}
-          {/* ✅ 수정됨 표시 */}
           {isEdited && <span className={styles.editedMark}> (수정됨)</span>}
         </p>
       )}
 
-      {/* 액션 버튼 - 삭제된 댓글이거나 수정 중이면 숨김 */}
-      {!isDeleted && !isEditing && (
+      {/* 하단 - 답글 N개 토글 (depth === 0만) */}
+      {!isDeleted && !isEditing && depth === 0 && (
         <div className={styles.actions}>
-          {/* ✅ depth === 0 일 때만 답글 버튼 표시 */}
-          {depth === 0 && user && (
-            <button
-              className={styles.actionButton}
-              onClick={() => setIsReplying((prev) => !prev)}
-            >
-              {isReplying ? '취소' : '답글'}
-            </button>
-          )}
-          {/* ✅ 본인 댓글만 수정 버튼 */}
-          {canEdit && (
-            <button
-              className={styles.actionButton}
-              onClick={() => setIsEditing(true)}
-            >
-              수정
-            </button>
-          )}
-          {/* ✅ 본인 댓글 or 어드민만 삭제 버튼 */}
-          {canDelete && (
-            <button
-              className={styles.actionButtonDanger}
-              onClick={() => onDelete(comment.id)}
-              disabled={isDeletePending}
-            >
-              {isDeletePending ? '삭제 중...' : '삭제'}
-            </button>
-          )}
+          <button
+            className={styles.replyToggleButton}
+            onClick={() => setShowReplies((prev) => !prev)}
+          >
+            답글 {replyCount}개
+            {showReplies ? (
+              <ChevronUp size={14} strokeWidth={1.5} />
+            ) : (
+              <ChevronDown size={14} strokeWidth={1.5} />
+            )}
+          </button>
         </div>
       )}
 
-      {/* 답글 작성 폼 */}
-      {isReplying && (
-        <FeedbackForm
-          workId={workId}
-          parentId={comment.id}
-          onCancel={() => setIsReplying(false)}
-        />
-      )}
-
-      {/* ✅ 답글 목록 - depth + 1로 재귀 호출 */}
-      {comment.replies?.length > 0 && (
+      {/* 답글 목록 + 작성 폼 */}
+      {showReplies && depth === 0 && (
         <div className={styles.replies}>
-          {comment.replies.map((reply) => (
+          {comment.replies?.map((reply) => (
             <FeedbackItem
               key={reply.id}
               comment={reply}
@@ -170,6 +194,14 @@ function FeedbackItem({
               onProfileClick={onProfileClick}
             />
           ))}
+          {user && <FeedbackForm workId={workId} parentId={comment.id} />}
+          <button
+            className={styles.replyCollapseButton}
+            onClick={() => setShowReplies(false)}
+          >
+            답글 접기
+            <ChevronUp size={14} strokeWidth={1.5} />
+          </button>
         </div>
       )}
     </div>
@@ -177,7 +209,6 @@ function FeedbackItem({
 }
 
 export default function FeedbackList({ workId, onProfileClick }) {
-  // ✅ useComments는 여기서 딱 한 번만 호출
   const {
     comments,
     isPending,
@@ -193,7 +224,6 @@ export default function FeedbackList({ workId, onProfileClick }) {
   if (isPending) return <CommentListSkeleton />;
   if (isError) return <div>댓글을 불러오는데 실패했습니다.</div>;
 
-  // ✅ 최상위 댓글만 필터링 (parentId 없는 것)
   const topLevelComments = comments.filter((c) => !c.parentId);
   const visibleComments = topLevelComments.slice(0, visibleCount);
   const hasMore = topLevelComments.length > visibleCount;

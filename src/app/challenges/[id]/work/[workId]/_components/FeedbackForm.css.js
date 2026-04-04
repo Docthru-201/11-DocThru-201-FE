@@ -152,34 +152,6 @@ export const submitButton = style({
   },
 });
 
-export const replyActions = style({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  gap: vars.space.sm,
-  marginTop: vars.space.sm,
-});
-
-export const cancelButton = style({
-  padding: `${vars.space.xs} ${vars.space.md}`,
-  borderRadius: vars.radius.md,
-  border: `1px solid ${vars.color.gray[300]}`,
-  backgroundColor: vars.color.white,
-  fontSize: vars.fontSize.sm,
-  color: vars.color.gray[600],
-  cursor: 'pointer',
-});
-
-export const replyButton = style({
-  padding: `${vars.space.xs} ${vars.space.md}`,
-  borderRadius: vars.radius.md,
-  border: 'none',
-  backgroundColor: vars.color.brand.point,
-  fontSize: vars.fontSize.sm,
-  fontWeight: vars.fontWeight.medium,
-  color: vars.color.gray[900],
-  cursor: 'pointer',
-});
-
 export const disabledTextarea = style([
   textarea,
   {

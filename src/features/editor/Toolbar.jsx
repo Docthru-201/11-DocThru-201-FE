@@ -1,9 +1,29 @@
 'use client';
 import { useRef, useState } from 'react';
-import Image from 'next/image';
 import { useFormatStore } from './store/useFormatStore';
 import * as styles from './Toolbar.css.js';
-import { ImageIcon } from 'lucide-react';
+import {
+  Undo2,
+  Redo2,
+  Bold,
+  Italic,
+  Strikethrough,
+  Underline,
+  Heading1,
+  Heading2,
+  Heading3,
+  ImagePlus,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  List,
+  ListOrdered,
+  Code,
+  SquareCode,
+  Quote,
+  Baseline,
+  Highlighter,
+} from 'lucide-react';
 
 const PRESET_COLORS = [
   '#000000',
@@ -128,33 +148,34 @@ export default function Toolbar({ editor, onImageUpload }) {
         onClick={() => editor.chain().focus().undo().run()}
         title="실행취소"
       >
-        ↩
+        <Undo2 size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
         onClick={() => editor.chain().focus().redo().run()}
         title="다시실행"
       >
-        ↪
+        <Redo2 size={20} strokeWidth={1.5} />
       </button>
 
       <div className={styles.divider} />
 
       {/* bold / italic / strike / underline */}
-      <button className={styles.button} onClick={toggleBold} data-active={bold}>
-        <Image src="/icons/editor-bold.svg" alt="굵게" width={24} height={24} />
+      <button
+        className={styles.button}
+        onClick={toggleBold}
+        data-active={bold}
+        title="굵게"
+      >
+        <Bold size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
         onClick={toggleItalic}
         data-active={italic}
+        title="기울임"
       >
-        <Image
-          src="/icons/editor-italic.svg"
-          alt="기울임"
-          width={24}
-          height={24}
-        />
+        <Italic size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
@@ -162,20 +183,18 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('strike')}
         title="취소선"
       >
-        <s>S</s>
+        <Strikethrough size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
         onClick={toggleUnderline}
         data-active={underline}
+        title="밑줄"
       >
-        <Image
-          src="/icons/editor-underline.svg"
-          alt="밑줄"
-          width={24}
-          height={24}
-        />
+        <Underline size={20} strokeWidth={1.5} />
       </button>
+
+      <div className={styles.divider} />
 
       {/* heading */}
       <button
@@ -184,7 +203,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('heading', { level: 1 })}
         title="제목1"
       >
-        H1
+        <Heading1 size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
@@ -192,7 +211,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('heading', { level: 2 })}
         title="제목2"
       >
-        H2
+        <Heading2 size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
@@ -200,7 +219,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('heading', { level: 3 })}
         title="제목3"
       >
-        H3
+        <Heading3 size={20} strokeWidth={1.5} />
       </button>
 
       <div className={styles.divider} />
@@ -211,7 +230,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         onClick={() => fileInputRef.current?.click()}
         title="이미지 삽입"
       >
-        <ImageIcon size={20} strokeWidth={1.5} />
+        <ImagePlus size={20} strokeWidth={1.5} />
       </button>
       <input
         ref={fileInputRef}
@@ -232,37 +251,25 @@ export default function Toolbar({ editor, onImageUpload }) {
         className={styles.button}
         onClick={() => setAlign('left')}
         data-active={textAlign === 'left'}
+        title="왼쪽 정렬"
       >
-        <Image
-          src="/icons/editor-alignment_left.svg"
-          alt="왼쪽 정렬"
-          width={24}
-          height={24}
-        />
+        <AlignLeft size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
         onClick={() => setAlign('center')}
         data-active={textAlign === 'center'}
+        title="가운데 정렬"
       >
-        <Image
-          src="/icons/editor-alignment_center.svg"
-          alt="가운데 정렬"
-          width={24}
-          height={24}
-        />
+        <AlignCenter size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
         onClick={() => setAlign('right')}
         data-active={textAlign === 'right'}
+        title="오른쪽 정렬"
       >
-        <Image
-          src="/icons/editor-alignment_right.svg"
-          alt="오른쪽 정렬"
-          width={24}
-          height={24}
-        />
+        <AlignRight size={20} strokeWidth={1.5} />
       </button>
 
       <div className={styles.divider} />
@@ -272,25 +279,17 @@ export default function Toolbar({ editor, onImageUpload }) {
         className={styles.button}
         onClick={toggleBulletList}
         data-active={bulletList}
+        title="글머리 기호"
       >
-        <Image
-          src="/icons/editor-bullet.svg"
-          alt="글머리 기호"
-          width={24}
-          height={24}
-        />
+        <List size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
         onClick={toggleOrderedList}
         data-active={orderedList}
+        title="번호 목록"
       >
-        <Image
-          src="/icons/editor-numbering.svg"
-          alt="번호 목록"
-          width={24}
-          height={24}
-        />
+        <ListOrdered size={20} strokeWidth={1.5} />
       </button>
 
       <div className={styles.divider} />
@@ -302,7 +301,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('code')}
         title="인라인 코드"
       >
-        {'<>'}
+        <Code size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
@@ -310,7 +309,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('codeBlock')}
         title="코드 블록"
       >
-        {'</>'}
+        <SquareCode size={20} strokeWidth={1.5} />
       </button>
       <button
         className={styles.button}
@@ -318,7 +317,7 @@ export default function Toolbar({ editor, onImageUpload }) {
         data-active={editor.isActive('blockquote')}
         title="인용구"
       >
-        ❝
+        <Quote size={20} strokeWidth={1.5} />
       </button>
 
       <div className={styles.divider} />
@@ -333,7 +332,7 @@ export default function Toolbar({ editor, onImageUpload }) {
           }}
           title="글자 색상"
         >
-          <span style={{ fontWeight: 'bold', fontSize: '16px' }}>A</span>
+          <Baseline size={20} strokeWidth={1.5} />
         </button>
         {showColorPicker && (
           <div className={styles.colorDropdown}>
@@ -374,12 +373,7 @@ export default function Toolbar({ editor, onImageUpload }) {
           }}
           title="형광펜"
         >
-          <Image
-            src="/icons/editor-coloring.svg"
-            alt="형광펜"
-            width={24}
-            height={24}
-          />
+          <Highlighter size={20} strokeWidth={1.5} />
         </button>
         {showHighlightPicker && (
           <div className={styles.colorDropdown}>
