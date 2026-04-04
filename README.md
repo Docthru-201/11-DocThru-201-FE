@@ -100,26 +100,6 @@ pnpm dev
 대다수의 개발 시장 콘텐츠가 영어로 작성되어 있어, 영어를 잘하지 못하는 한국인들이 해당 기술을 습득하는데 어려움을 겪고 있습니다. <br>
 따라서 개발 관련 영어 문서를 함께 번역하는 챌린지를 진행하고, 번역 작업 에디터에서 번역을 진행하며 번역문에 대한 피드백을 주고받을 수 있는 서비스를 제작합니다. <br>
 
-## 🛠 기술 스택
-
-<div align=center>
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black">
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
-<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white">
-<img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=ReactRouter&logoColor=black">
-<img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=CSS&logoColor=white">
-<img src="https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=Node.js&logoColor=white">
-<img src="https://img.shields.io/badge/Express-black?style=for-the-badge&logo=Express&logoColor=white">
-<img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=Prisma&logoColor=white">
-<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=white">
-
-<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=Github&logoColor=white">
-<img src="https://img.shields.io/badge/Notion-black?style=for-the-badge&logo=Notion&logoColor=white">
-<img src="https://img.shields.io/badge/Vercel-00C7B7?style=for-the-badge&logo=Vercel&logoColor=white">
-<img src="https://img.shields.io/badge/figma-e05a32?style=for-the-badge&logo=Figma&logoColor=white">
-</div>
-
 <br>
 
 ## 📝 커밋 메시지 컨벤션
