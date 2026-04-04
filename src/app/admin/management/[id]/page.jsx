@@ -37,9 +37,11 @@ export default function AdminChallengePage() {
     enabled: !!challengeId,
   });
 
-  /** @type {any} */
   const approveMutation = useMutation({
-    mutationFn: (id) => approveChallengeAction(id),
+    mutationFn: async (id) => {
+      const r = await approveChallengeAction(id);
+      if (!r.ok) throw new Error(r.message);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-challenges'] });
       queryClient.invalidateQueries({
@@ -50,10 +52,11 @@ export default function AdminChallengePage() {
     onError: (err) => alert(err.message || '승인 처리 중 오류가 발생했습니다.'),
   });
 
-  /** @type {any} */
   const declineMutation = useMutation({
-    mutationFn: (/** @type {{ id: string, reason: string }} */ data) =>
-      declineChallengeAction(data.id, data.reason),
+    mutationFn: async (/** @type {{ id: string, reason: string }} */ data) => {
+      const r = await declineChallengeAction(data.id, data.reason);
+      if (!r.ok) throw new Error(r.message);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-challenges'] });
       queryClient.invalidateQueries({

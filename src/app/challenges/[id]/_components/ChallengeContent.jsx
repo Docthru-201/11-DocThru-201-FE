@@ -82,17 +82,15 @@ export default function ChallengeContent({
   };
 
   const handleConfirmDelete = async (declineMessage) => {
-    try {
-      await deleteChallengeAction(challengeId, declineMessage);
-      setIsSuccessModalOpen(true);
-    } catch (error) {
-      console.error('삭제 실패:', error);
-      setIsDeclineModalOpen(false);
-      setErrorMessage('삭제 처리 중 오류가 발생했습니다.');
+    const result = await deleteChallengeAction(challengeId, declineMessage);
+    setIsDeclineModalOpen(false);
+    if (!result.ok) {
+      console.error('삭제 실패:', result.message);
+      setErrorMessage(result.message || '삭제 처리 중 오류가 발생했습니다.');
       setErrorModalOpen(true);
-    } finally {
-      setIsDeclineModalOpen(false);
+      return;
     }
+    setIsSuccessModalOpen(true);
   };
 
   useEffect(() => {
