@@ -2,8 +2,7 @@
 import { requestWithAuth } from './base';
 import { cookies } from 'next/headers';
 import { ITEM_COUNT } from '@/shared/constants/file.js';
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+import { getServerApiBaseUrl } from '@/shared/lib/serverApiUrl';
 
 // 챌린지 상세 조회
 export async function getChallengeDetail(challengeId) {
@@ -64,7 +63,8 @@ export async function getMyWorkAction(challengeId) {
     throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요.');
   }
 
-  const res = await fetch(`${BASE_URL}/challenges/${challengeId}/works/my`, {
+  const baseUrl = getServerApiBaseUrl();
+  const res = await fetch(`${baseUrl}/challenges/${challengeId}/works/my`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

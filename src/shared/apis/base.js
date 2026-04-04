@@ -1,5 +1,15 @@
 import { cookies } from 'next/headers';
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+import { getServerApiBaseUrl } from '@/shared/lib/serverApiUrl';
+
+async function parseJsonBody(res) {
+  const text = await res.text();
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
 
 export async function requestWithAuth(url, options = {}) {
   const cookieStore = await cookies();
@@ -9,13 +19,15 @@ export async function requestWithAuth(url, options = {}) {
     throw new Error('인증 정보가 없습니다. 다시 로그인해 주세요');
   }
 
+  const baseUrl = getServerApiBaseUrl();
+
   const defaultHeaders = {
     'Content-Type': 'application/json',
     Cookie: `accessToken=${accessToken}`,
   };
 
   try {
-    const res = await fetch(`${BASE_URL}${url}`, {
+    const res = await fetch(`${baseUrl}${url}`, {
       ...options,
       headers: {
         ...defaultHeaders,
@@ -23,10 +35,10 @@ export async function requestWithAuth(url, options = {}) {
       },
     });
 
-    const data = await res.json();
+    const data = await parseJsonBody(res);
 
     if (!res.ok) {
-      throw new Error(data.message || '요청 처리에 실패했습니다.');
+      throw new Error((data && data.message) || '요청 처리에 실패했습니다.');
     }
 
     return data;

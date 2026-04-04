@@ -32,7 +32,12 @@ export async function logoutAll() {
 }
 
 export async function getMe() {
-  return fetchClient('/auth/me');
+  const res = await fetch('/api/auth/me', { credentials: 'include' });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || '요청에 실패했습니다.');
+  }
+  return res.json();
 }
 
 export async function refreshToken() {

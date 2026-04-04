@@ -1,7 +1,5 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
-
 export async function getMyNotifications() {
-  const res = await fetch(`${BASE_URL}/notifications/me`, {
+  const res = await fetch('/api/notifications/me', {
     method: 'GET',
     credentials: 'include',
   });
@@ -15,7 +13,7 @@ export async function getMyNotifications() {
 }
 
 export async function markNotificationAsRead(id, isRead = true) {
-  const res = await fetch(`${BASE_URL}/notifications/me/${id}`, {
+  const res = await fetch(`/api/notifications/me/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -32,7 +30,7 @@ export async function markNotificationAsRead(id, isRead = true) {
 }
 
 export async function deleteMyNotification(id) {
-  const res = await fetch(`${BASE_URL}/notifications/me/${id}`, {
+  const res = await fetch(`/api/notifications/me/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   });
