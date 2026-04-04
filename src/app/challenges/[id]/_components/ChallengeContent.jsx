@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 
@@ -46,19 +46,13 @@ export default function ChallengeContent({
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [challengeStatus, setChallengeStatus] = useState('');
 
-  useEffect(() => {
+  const recruitmentChipStatus = useMemo(() => {
     const now = new Date();
     const deadlineDate = new Date(deadline);
-
-    if (now > deadlineDate) {
-      setChallengeStatus('dateEnd');
-    } else if (participants >= maxParticipants) {
-      setChallengeStatus('recruitEnd');
-    } else {
-      setChallengeStatus('');
-    }
+    if (now > deadlineDate) return 'dateEnd';
+    if (participants >= maxParticipants) return 'recruitEnd';
+    return '';
   }, [deadline, maxParticipants, participants]);
 
   const handleEdit = () => {
@@ -82,17 +76,15 @@ export default function ChallengeContent({
   };
 
   const handleConfirmDelete = async (declineMessage) => {
-    try {
-      await deleteChallengeAction(challengeId, declineMessage);
-      setIsSuccessModalOpen(true);
-    } catch (error) {
-      console.error('삭제 실패:', error);
-      setIsDeclineModalOpen(false);
-      setErrorMessage('삭제 처리 중 오류가 발생했습니다.');
+    const result = await deleteChallengeAction(challengeId, declineMessage);
+    setIsDeclineModalOpen(false);
+    if (!result.ok) {
+      console.error('삭제 실패:', result.message);
+      setErrorMessage(result.message || '삭제 처리 중 오류가 발생했습니다.');
       setErrorModalOpen(true);
-    } finally {
-      setIsDeclineModalOpen(false);
+      return;
     }
+    setIsSuccessModalOpen(true);
   };
 
   useEffect(() => {
@@ -119,7 +111,7 @@ export default function ChallengeContent({
 
   return (
     <article className={styles.articleContainer}>
-      {challengeStatus && <ChipCard status={challengeStatus} />}
+      {recruitmentChipStatus && <ChipCard status={recruitmentChipStatus} />}
       <div className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
 

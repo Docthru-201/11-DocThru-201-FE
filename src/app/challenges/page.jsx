@@ -108,17 +108,19 @@ export default function ChallengesPage({ hideNewChallengeButton = false }) {
 
   const handleConfirmDelete = async (declineMessage) => {
     if (!targetChallenge) return;
-    try {
-      await deleteChallengeAction(targetChallenge.id, declineMessage);
-      setIsSuccessModalOpen(true);
-      queryClient.invalidateQueries({ queryKey: ['challenges', 'list'] });
-    } catch (error) {
-      console.error('삭제 실패 상세 원인:', error);
-      setErrorMessage('삭제 처리 중 오류가 발생했습니다.');
+    const result = await deleteChallengeAction(
+      targetChallenge.id,
+      declineMessage,
+    );
+    setIsDeclineModalOpen(false);
+    if (!result.ok) {
+      console.error('삭제 실패:', result.message);
+      setErrorMessage(result.message || '삭제 처리 중 오류가 발생했습니다.');
       setErrorModalOpen(true);
-    } finally {
-      setIsDeclineModalOpen(false);
+      return;
     }
+    setIsSuccessModalOpen(true);
+    queryClient.invalidateQueries({ queryKey: ['challenges', 'list'] });
   };
 
   useEffect(() => {
