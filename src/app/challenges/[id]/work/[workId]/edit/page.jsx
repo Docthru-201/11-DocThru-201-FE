@@ -105,7 +105,7 @@ export default function WorkEditPage() {
                   }
                   iconPosition="right"
                 >
-                  {isDeletePending ? '삭제 중...' : '포기'}
+                  {isDeletePending ? '삭제 중' : '포기'}
                 </Button>
                 <Button
                   variant="outline"
@@ -122,7 +122,7 @@ export default function WorkEditPage() {
                   disabled={isSubmitDisabled}
                 >
                   {isUpdatePending
-                    ? '저장 중...'
+                    ? '저장 중'
                     : isSubmitted
                       ? '수정하기'
                       : '제출하기'}
@@ -186,14 +186,20 @@ export default function WorkEditPage() {
                 >
                   <Icon name="outCircle" width={32} height={32} aria-hidden />
                 </button>
-                <button
-                  type="button"
-                  className={styles.openLinkBtn}
-                  onClick={openOriginalInNewTab}
+                <Button
+                  variant="transparent"
+                  icon={
+                    <Icon
+                      name="arrowClick"
+                      width={24}
+                      height={24}
+                      aria-hidden
+                    />
+                  }
+                  iconPosition="right"
                 >
                   링크 열기
-                  <Icon name="outCircle" width={24} height={24} aria-hidden />
-                </button>
+                </Button>
               </div>
             </aside>
           </div>

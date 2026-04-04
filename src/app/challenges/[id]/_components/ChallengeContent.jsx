@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/shared/store/useAuthStore';
 
@@ -46,19 +46,13 @@ export default function ChallengeContent({
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [challengeStatus, setChallengeStatus] = useState('');
 
-  useEffect(() => {
+  const recruitmentChipStatus = useMemo(() => {
     const now = new Date();
     const deadlineDate = new Date(deadline);
-
-    if (now > deadlineDate) {
-      setChallengeStatus('dateEnd');
-    } else if (participants >= maxParticipants) {
-      setChallengeStatus('recruitEnd');
-    } else {
-      setChallengeStatus('');
-    }
+    if (now > deadlineDate) return 'dateEnd';
+    if (participants >= maxParticipants) return 'recruitEnd';
+    return '';
   }, [deadline, maxParticipants, participants]);
 
   const handleEdit = () => {
@@ -117,7 +111,7 @@ export default function ChallengeContent({
 
   return (
     <article className={styles.articleContainer}>
-      {challengeStatus && <ChipCard status={challengeStatus} />}
+      {recruitmentChipStatus && <ChipCard status={recruitmentChipStatus} />}
       <div className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
 
