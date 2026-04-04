@@ -32,11 +32,13 @@ export const layout = style({
   display: 'flex',
   flexDirection: 'row',
   gap: '32px',
-  alignItems: 'flex-start',
+  // 오른쪽 패널 높이만큼 왼쪽 열도 늘려야 프로필 박스(sticky)가 스크롤 중 고정됨
+  alignItems: 'stretch',
 
   '@media': {
     'screen and (max-width: 743px)': {
       flexDirection: 'column',
+      alignItems: 'stretch',
     },
   },
 });
@@ -44,8 +46,6 @@ export const layout = style({
 export const leftPanel = style({
   width: '280px',
   flexShrink: 0,
-  position: 'sticky',
-  top: '24px',
 
   '@media': {
     'screen and (max-width: 1199px)': {
@@ -53,7 +53,6 @@ export const leftPanel = style({
     },
     'screen and (max-width: 743px)': {
       width: '100%',
-      position: 'static',
     },
   },
 });

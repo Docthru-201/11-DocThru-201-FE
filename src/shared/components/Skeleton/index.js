@@ -1,4 +1,6 @@
 export { default as MyPageSkeleton } from './MyPageSkeleton.jsx';
+export { default as MyChallengesSkeleton } from './MyChallengesSkeleton.jsx';
+export { default as AppliedTableSkeleton } from './AppliedTableSkeleton.jsx';
 export { default as ChallengeListSkeleton } from './ChallengeListSkeleton.jsx';
 export { default as ChallengeDetailSkeleton } from './ChallengeDetailSkeleton.jsx';
 export { default as ChallengeFormSkeleton } from './ChallengeFormSkeleton.jsx';

@@ -9,6 +9,15 @@ export const container = style({
   borderRadius: '12px',
   border: '2px solid #1f2937',
   backgroundColor: '#ffffff',
+  position: 'sticky',
+  top: '80px',
+  alignSelf: 'flex-start',
+  zIndex: 1,
+  '@media': {
+    'screen and (max-width: 743px)': {
+      position: 'static',
+    },
+  },
 });
 
 export const imageWrapper = style({

@@ -39,6 +39,8 @@ export function Card({
   onCtaClick = () => {},
   showCta = true,
   showEditMenu = false,
+  /** 마이페이지 등: 더보기(⋯) 버튼만 살짝 작게 */
+  compactEditMenu = false,
   onEditClick = () => {},
   onDeleteClick = () => {}, // 삭제 핸들러 추가
 }) {
@@ -122,7 +124,7 @@ export function Card({
             <div className={styles.menuContainer} ref={menuRef}>
               <button
                 type="button"
-                className={styles.editButton}
+                className={`${styles.editButton}${compactEditMenu ? ` ${styles.editButtonCompact}` : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -130,11 +132,18 @@ export function Card({
                 }}
                 aria-label="더보기 메뉴"
               >
-                <Icon name="meatballsMenu" aria-hidden width={24} height={24} />
+                <Icon
+                  name="meatballsMenu"
+                  aria-hidden
+                  width={compactEditMenu ? 20 : 24}
+                  height={compactEditMenu ? 20 : 24}
+                />
               </button>
 
               {isMenuOpen && (
-                <div className={styles.adminDropdownMenu}>
+                <div
+                  className={`${styles.adminDropdownMenu}${compactEditMenu ? ` ${styles.adminDropdownMenuCompact}` : ''}`}
+                >
                   <button
                     type="button"
                     onClick={(e) => {

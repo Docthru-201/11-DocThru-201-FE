@@ -115,9 +115,20 @@ export function TiptapEditor({ initialContent = null, editable = true }) {
 
   const handleDragOver = (e) => e.preventDefault();
 
-  const isEmpty = useEditorState({
+  /** isEmpty만 쓰면 초기 로드·구조에 따라 실제 글이 있는데도 빈 것으로 나오는 경우가 있음 */
+  const showPlaceholder = useEditorState({
     editor,
-    selector: (ctx) => ctx.editor?.isEmpty ?? true,
+    selector: ({ editor: ed }) => {
+      if (!ed) return false;
+      const text = ed.getText().trim();
+      if (text.length > 0) return false;
+      let hasImage = false;
+      ed.state.doc.descendants((node) => {
+        if (node.type.name === 'image') hasImage = true;
+      });
+      if (hasImage) return false;
+      return ed.isEmpty;
+    },
   });
 
   if (!editor) return null;
@@ -133,7 +144,7 @@ export function TiptapEditor({ initialContent = null, editable = true }) {
         className={editorStyles.editorBody}
         onClick={() => editor.chain().focus().run()}
       >
-        {isEmpty && (
+        {showPlaceholder && (
           <p className={editorStyles.editorPlaceholder} aria-hidden>
             번역 내용을 적어주세요
           </p>

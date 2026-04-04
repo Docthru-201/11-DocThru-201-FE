@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useMyWorks } from '@/features/users/hooks/useMyWorks';
 import * as styles from './WorkListSection.css.js';
 import WorkCard from './WorkCard.jsx';
@@ -12,14 +11,24 @@ const STATUS_FILTER = [
   { label: '제출완료', value: 'SUBMITTED' },
 ];
 
+const PAGE_SIZE = 10;
+
 export default function WorkListSection() {
-  const router = useRouter();
   const { works, isPending } = useMyWorks();
   const [filter, setFilter] = useState('ALL');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filteredWorks = works.filter((work) =>
     filter === 'ALL' ? true : work.status === filter,
   );
+
+  const handleFilterChange = (next) => {
+    setFilter(next);
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const visibleWorks = filteredWorks.slice(0, visibleCount);
+  const hasMore = filteredWorks.length > visibleCount;
 
   if (isPending) return <div className={styles.loading}>불러오는 중...</div>;
 
@@ -36,7 +45,7 @@ export default function WorkListSection() {
                   ? styles.filterButtonActive
                   : styles.filterButton
               }
-              onClick={() => setFilter(f.value)}
+              onClick={() => handleFilterChange(f.value)}
             >
               {f.label}
             </button>
@@ -45,11 +54,22 @@ export default function WorkListSection() {
       </div>
 
       {filteredWorks.length > 0 ? (
-        <div className={styles.workList}>
-          {filteredWorks.map((work) => (
-            <WorkCard key={work.id} work={work} />
-          ))}
-        </div>
+        <>
+          <div className={styles.workList}>
+            {visibleWorks.map((work) => (
+              <WorkCard key={work.id} work={work} />
+            ))}
+          </div>
+          {hasMore && (
+            <button
+              type="button"
+              className={styles.moreButton}
+              onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+            >
+              더 보기
+            </button>
+          )}
+        </>
       ) : (
         <p className={styles.emptyText}>
           아직 작업물이 없어요.

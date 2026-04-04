@@ -10,7 +10,6 @@ import * as styles from './ProfileSection.css.js';
 export default function ProfileSection({ me }) {
   const fileInputRef = useRef(null);
   const queryClient = useQueryClient();
-  console.log('me.image:', me.image);
   const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -52,7 +51,7 @@ export default function ProfileSection({ me }) {
       <div className={styles.info}>
         <span className={styles.nickname}>{me.nickname}</span>
         <span className={styles.grade}>
-          {me.grade === 'EXPERT' ? '⭐ 전문가' : '일반'}
+          {me.grade === 'EXPERT' ? '🏆 전문가' : '일반'}
         </span>
         {me.profile?.introduction && (
           <p className={styles.introduction}>{me.profile.introduction}</p>

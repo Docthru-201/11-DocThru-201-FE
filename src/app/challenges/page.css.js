@@ -80,6 +80,19 @@ export const feedback = style({
   textAlign: 'center',
 });
 
+export const emptyState = style({
+  margin: 0,
+  padding: `${vars.space['2xl']} 0`,
+  fontSize: vars.fontSize.base,
+  fontWeight: vars.fontWeight.medium,
+  color: vars.color.gray[600],
+  textAlign: 'center',
+});
+
+export const listSkeletonWrap = style({
+  marginBottom: 40,
+});
+
 export const cardList = style({
   display: 'flex',
   flexDirection: 'column',

@@ -44,6 +44,7 @@ export function Container({
             className={clsx(styles.actionButton, {
               [styles.disabled]: isDisabled,
             })}
+            disabled={isDisabled}
             onClick={onActionClick}
           >
             {actionLabel}

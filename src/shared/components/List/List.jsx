@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import * as styles from './List.css.js';
@@ -33,12 +34,13 @@ export function ListRow({
       )}
       <div className={styles.profile}>
         {profileImage ? (
-          <img
+          <Image
             src={profileImage}
             alt="프로필"
             width={24}
             height={24}
             style={{ borderRadius: '50%', objectFit: 'cover' }}
+            unoptimized={profileImage.startsWith('data:')}
           />
         ) : (
           <Icon name={profileIconName} width={24} height={24} aria-hidden />
@@ -66,7 +68,14 @@ export function ListRow({
           variant="transparent"
           className={styles.workLink}
           onClick={onWorkClick}
-          icon={<Icon name="arrowRight" width={16} height={16} aria-hidden />}
+          icon={
+            <Icon
+              name="chevronRightActive"
+              width={25}
+              height={25}
+              aria-hidden
+            />
+          }
           iconPosition="right"
         >
           작업물 보기

@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMyChallenges } from '@/apis/challenges';
 import { deleteChallengeAction } from '@/shared/apis/admin.js';
@@ -18,6 +18,10 @@ import {
   Sort,
   Chip,
 } from '@/shared/components';
+import {
+  ChallengeListSkeleton,
+  AppliedTableSkeleton,
+} from '@/shared/components/Skeleton';
 import ModalDecline from '@/app/challenges/[id]/_components/ModalDecline';
 import ModalSuccess from '@/app/challenges/[id]/_components/ModalSuccess';
 import ModalError from '@/app/challenges/[id]/_components/ModalError';
@@ -25,6 +29,12 @@ import * as styles from '../challenges/page.css.js';
 import * as appliedStyles from './appliedTable.css.js';
 
 const PAGE_SIZE = 5;
+
+const EMPTY_TAB_COPY = {
+  participating: '참여중인 챌린지가 없습니다.',
+  done: '완료한 챌린지가 없습니다.',
+  applied: '신청한 챌린지가 없습니다.',
+};
 
 const SORT_OPTIONS = [
   { value: 'all', label: '승인 대기' },
@@ -71,13 +81,24 @@ function statusChip(status) {
 
 export default function MyChallengesPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const user = useAuthStore((state) => state.user);
 
   const [searchValue, setSearchValue] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [value, setValue] = useState('participating');
+  const tabParam = searchParams.get('tab');
+  const value =
+    tabParam === 'applied' ||
+    tabParam === 'participating' ||
+    tabParam === 'done'
+      ? tabParam
+      : 'participating';
+  const rawPageParam = Number(searchParams.get('page'));
+  const currentPageFromUrl =
+    Number.isFinite(rawPageParam) && rawPageParam >= 1
+      ? Math.floor(rawPageParam)
+      : 1;
   const skipScrollToTopRef = useRef(true);
 
   const [sortValue, setSortValue] = useState('all');
@@ -89,22 +110,29 @@ export default function MyChallengesPage() {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    const t = searchParams.get('tab');
-    if (t === 'applied' || t === 'participating' || t === 'done') {
-      setValue(t);
-    }
-  }, [searchParams]);
+  const replaceSearchParams = useCallback(
+    (mutate) => {
+      const params = new URLSearchParams(searchParams.toString());
+      mutate(params);
+      const qs = params.toString();
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
 
   const handleTabChange = (next) => {
-    setValue(next);
-    setCurrentPage(1);
     setSortOpen(false);
+    replaceSearchParams((params) => {
+      params.set('tab', next);
+      params.delete('page');
+    });
   };
 
   const handleSearchChange = (next) => {
     setSearchValue(next);
-    setCurrentPage(1);
+    replaceSearchParams((params) => {
+      params.delete('page');
+    });
   };
 
   const handleEdit = (challenge) => {
@@ -160,14 +188,6 @@ export default function MyChallengesPage() {
     },
     staleTime: 60 * 1000,
   });
-
-  useEffect(() => {
-    if (skipScrollToTopRef.current) {
-      skipScrollToTopRef.current = false;
-      return;
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
 
   const appliedRows = useMemo(() => {
     if (value !== 'applied') return [];
@@ -241,7 +261,47 @@ export default function MyChallengesPage() {
     [filteredChallenges.length],
   );
 
-  const safePage = Math.min(currentPage, totalPages);
+  const safePage = Math.min(currentPageFromUrl, totalPages);
+
+  useEffect(() => {
+    if (totalPages < 1) return;
+    if (currentPageFromUrl > totalPages) {
+      replaceSearchParams((params) => {
+        if (totalPages === 1) {
+          params.delete('page');
+        } else {
+          params.set('page', String(totalPages));
+        }
+      });
+    }
+  }, [currentPageFromUrl, totalPages, replaceSearchParams]);
+
+  useEffect(() => {
+    if (skipScrollToTopRef.current) {
+      skipScrollToTopRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [safePage]);
+
+  const setPage = useCallback(
+    (next) => {
+      const cap = Math.max(1, totalPages);
+      const resolved =
+        typeof next === 'function'
+          ? next(Math.min(currentPageFromUrl, cap))
+          : next;
+      const p = Math.max(1, Math.min(Math.floor(Number(resolved)) || 1, cap));
+      replaceSearchParams((params) => {
+        if (p <= 1) {
+          params.delete('page');
+        } else {
+          params.set('page', String(p));
+        }
+      });
+    },
+    [currentPageFromUrl, replaceSearchParams, totalPages],
+  );
 
   const displayedChallenges = useMemo(() => {
     const start = (safePage - 1) * PAGE_SIZE;
@@ -314,6 +374,9 @@ export default function MyChallengesPage() {
                         onClick={() => {
                           setSortValue(opt.value);
                           setSortOpen(false);
+                          replaceSearchParams((params) => {
+                            params.delete('page');
+                          });
                         }}
                       >
                         {opt.label}
@@ -327,7 +390,18 @@ export default function MyChallengesPage() {
         )}
 
         {isPending && (
-          <p className={styles.feedback}>챌린지 목록을 불러오는 중…</p>
+          <div
+            className={styles.listSkeletonWrap}
+            role="status"
+            aria-live="polite"
+            aria-label="나의 챌린지 목록 로딩 중"
+          >
+            {value === 'applied' ? (
+              <AppliedTableSkeleton />
+            ) : (
+              <ChallengeListSkeleton count={5} />
+            )}
+          </div>
         )}
         {isError && (
           <p className={styles.feedback} role="alert">
@@ -336,68 +410,92 @@ export default function MyChallengesPage() {
         )}
 
         {!isPending && !isError && showCardList && (
-          <div className={styles.cardList}>
-            {displayedChallenges.map((study) => (
-              <Card
-                key={study.id}
-                study={study}
-                onCtaClick={() => {}}
-                showEditMenu={user?.id != null && study.authorId === user.id}
-                onEditClick={() => handleEdit(study)}
-                onDeleteClick={() => handleDeleteClick(study)}
-              />
-            ))}
-          </div>
+          <>
+            {challengeItems.length === 0 ? (
+              <p className={styles.emptyState}>{EMPTY_TAB_COPY[value]}</p>
+            ) : filteredChallenges.length === 0 ? (
+              <p className={styles.emptyState}>검색 결과가 없습니다.</p>
+            ) : (
+              <div className={styles.cardList}>
+                {displayedChallenges.map((study) => (
+                  <Card
+                    key={study.id}
+                    study={study}
+                    onCtaClick={() => {}}
+                    showEditMenu={
+                      user?.id != null && study.authorId === user.id
+                    }
+                    compactEditMenu
+                    onEditClick={() => handleEdit(study)}
+                    onDeleteClick={() => handleDeleteClick(study)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
 
         {!isPending && !isError && value === 'applied' && (
           <div className={appliedStyles.tableSection}>
-            <table className={appliedStyles.table}>
-              <thead>
-                <tr>
-                  <th
-                    className={`${appliedStyles.headerCell} ${appliedStyles.headerFirst}`}
-                  >
-                    No.
-                  </th>
-                  <th className={appliedStyles.headerCell}>분야</th>
-                  <th className={appliedStyles.headerCell}>카테고리</th>
-                  <th className={appliedStyles.headerCell}>챌린지 제목</th>
-                  <th className={appliedStyles.headerCell}>모집 인원</th>
-                  <th className={appliedStyles.headerCell}>신청일</th>
-                  <th className={appliedStyles.headerCell}>마감 기한</th>
-                  <th
-                    className={`${appliedStyles.headerCell} ${appliedStyles.headerLast}`}
-                  >
-                    상태
-                  </th>
-                </tr>
-                <tr>
-                  <th colSpan={8} className={appliedStyles.headerGapCell}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAppliedRows.map((row) => (
-                  <tr
-                    key={row.id ?? String(row.no)}
-                    className={appliedStyles.row}
-                  >
-                    <td className={appliedStyles.bodyCell}>{row.no}</td>
-                    <td className={appliedStyles.bodyCell}>{row.field}</td>
-                    <td className={appliedStyles.bodyCell}>{row.category}</td>
-                    <td className={appliedStyles.bodyTitleCell}>{row.title}</td>
-                    <td className={appliedStyles.bodyCell}>
-                      {row.maxParticipants}
-                    </td>
-                    <td className={appliedStyles.bodyCell}>{row.appliedAt}</td>
-                    <td className={appliedStyles.bodyCell}>{row.deadline}</td>
-                    <td className={appliedStyles.bodyCell}>
-                      <Chip status={statusChip(row.status)} />
-                    </td>
+            {challengeItems.length === 0 ? (
+              <p className={styles.emptyState}>{EMPTY_TAB_COPY.applied}</p>
+            ) : filteredAppliedRows.length === 0 ? (
+              <p className={styles.emptyState}>검색 결과가 없습니다.</p>
+            ) : (
+              <table className={appliedStyles.table}>
+                <thead>
+                  <tr>
+                    <th
+                      className={`${appliedStyles.headerCell} ${appliedStyles.headerFirst}`}
+                    >
+                      No.
+                    </th>
+                    <th className={appliedStyles.headerCell}>분야</th>
+                    <th className={appliedStyles.headerCell}>카테고리</th>
+                    <th className={appliedStyles.headerCell}>챌린지 제목</th>
+                    <th className={appliedStyles.headerCell}>모집 인원</th>
+                    <th className={appliedStyles.headerCell}>신청일</th>
+                    <th className={appliedStyles.headerCell}>마감 기한</th>
+                    <th
+                      className={`${appliedStyles.headerCell} ${appliedStyles.headerLast}`}
+                    >
+                      상태
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                  <tr>
+                    <th
+                      colSpan={8}
+                      className={appliedStyles.headerGapCell}
+                    ></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredAppliedRows.map((row) => (
+                    <tr
+                      key={row.id ?? String(row.no)}
+                      className={appliedStyles.row}
+                    >
+                      <td className={appliedStyles.bodyCell}>{row.no}</td>
+                      <td className={appliedStyles.bodyCell}>{row.field}</td>
+                      <td className={appliedStyles.bodyCell}>{row.category}</td>
+                      <td className={appliedStyles.bodyTitleCell}>
+                        {row.title}
+                      </td>
+                      <td className={appliedStyles.bodyCell}>
+                        {row.maxParticipants}
+                      </td>
+                      <td className={appliedStyles.bodyCell}>
+                        {row.appliedAt}
+                      </td>
+                      <td className={appliedStyles.bodyCell}>{row.deadline}</td>
+                      <td className={appliedStyles.bodyCell}>
+                        <Chip status={statusChip(row.status)} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 
@@ -409,7 +507,7 @@ export default function MyChallengesPage() {
               <PageIndicator
                 current={safePage}
                 total={totalPages}
-                onChange={setCurrentPage}
+                onChange={setPage}
               />
             </div>
           )}
