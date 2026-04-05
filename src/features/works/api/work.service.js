@@ -1,5 +1,23 @@
 // src/features/works/api/work.service.js
-import { getWorkById, updateWork, deleteWork } from '@/apis/works';
+import {
+  getWorkById,
+  updateWork,
+  deleteWork,
+  createWorkForChallenge,
+} from '@/apis/works';
+
+export const createNewWork = async (challengeId) => {
+  if (challengeId == null || challengeId === '') {
+    throw new Error('챌린지 정보가 없습니다.');
+  }
+  try {
+    return await createWorkForChallenge(challengeId);
+  } catch (error) {
+    throw new Error(error.message || '작업물 생성에 실패했습니다.', {
+      cause: error,
+    });
+  }
+};
 
 export const getWorkDetail = async (workId) => {
   try {
