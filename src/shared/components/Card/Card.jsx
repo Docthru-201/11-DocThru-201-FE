@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChipCard, Chip, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
+import { useMyWork } from '@/features/works/hooks/useMyWork'; // 추가
 import * as styles from './Card.css.js';
 
 const TYPE = {
@@ -42,7 +43,8 @@ export function Card({
   /** 마이페이지 등: 더보기(⋯) 버튼만 살짝 작게 */
   compactEditMenu = false,
   onEditClick = () => {},
-  onDeleteClick = () => {}, // 삭제 핸들러 추가
+  onDeleteClick = () => {},
+  tab = undefined, // ← 추가
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -58,6 +60,8 @@ export function Card({
   }, []);
 
   const router = useRouter();
+  const isDoneTab = tab === 'done'; // ← 추가
+
   let status = statusProp;
   let title = titleProp;
   let chipType = chipTypeProp;
@@ -88,15 +92,31 @@ export function Card({
           ? `${study.currentParticipants}/${study.maxParticipants} 참여 완료`
           : `${study.currentParticipants}/${study.maxParticipants} 참여중`
         : '');
-    showCtaResolved = study.isParticipating === true;
+    // done 탭은 항상 버튼 표시, participating은 기존 로직 유지
+    showCtaResolved = isDoneTab ? true : study.isParticipating === true;
   }
 
   const challengeId = challengeIdProp ?? study?.id;
   const isCardNavigable = challengeId != null && challengeId !== '';
 
+  // done 탭일 때만 myWork 조회 (참여중 탭에서는 호출 안 함)
+  const { myWork } = useMyWork(isDoneTab ? challengeId : null); // ← 추가
+  const workId = myWork?.data?.id ?? myWork?.id ?? null; // ← 추가
+
   const goToChallenge = () => {
     if (!isCardNavigable) return;
     router.push(`/challenges/${challengeId}`);
+  };
+
+  // 내 작업물 보기 클릭 핸들러 (done 탭 전용)
+  const goToMyWork = () => {
+    if (!challengeId) return;
+    if (workId) {
+      router.push(`/challenges/${challengeId}/work/${workId}`);
+    } else {
+      // workId를 못 가져온 경우 챌린지 상세로 fallback
+      router.push(`/challenges/${challengeId}`);
+    }
   };
 
   return (
@@ -203,22 +223,45 @@ export function Card({
               </span>
             )}
           </div>
-          {showCtaResolved && (
-            <Button
-              variant="outlineIcon"
-              icon={<Icon name="arrowRight" />}
-              iconPosition="right"
-              onClick={(e) => {
-                e.stopPropagation();
-                onCtaClick();
-                if (isCardNavigable) {
-                  goToChallenge();
+
+          {showCtaResolved &&
+            (isDoneTab ? (
+              // 완료한 챌린지: 내 작업물 보기 버튼
+              <Button
+                variant="outlineIcon"
+                icon={
+                  <Icon
+                    name="documentMyWork"
+                    width={20}
+                    height={20}
+                    aria-hidden
+                  />
                 }
-              }}
-            >
-              도전 계속하기
-            </Button>
-          )}
+                iconPosition="right"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goToMyWork();
+                }}
+              >
+                내 작업물 보기
+              </Button>
+            ) : (
+              // 참여중인 챌린지: 기존 도전 계속하기 버튼
+              <Button
+                variant="outlineIcon"
+                icon={<Icon name="arrowRight" />}
+                iconPosition="right"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCtaClick();
+                  if (isCardNavigable) {
+                    goToChallenge();
+                  }
+                }}
+              >
+                도전 계속하기
+              </Button>
+            ))}
         </div>
       </div>
     </article>
