@@ -430,6 +430,7 @@ export default function MyChallengesPage() {
                     compactEditMenu
                     onEditClick={() => handleEdit(study)}
                     onDeleteClick={() => handleDeleteClick(study)}
+                    tab={value}
                   />
                 ))}
               </div>
