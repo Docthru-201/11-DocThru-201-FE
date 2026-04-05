@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Icon } from '@/shared/components/Icon';
@@ -6,10 +8,12 @@ import { updateMe } from '@/features/users/api/user.service';
 import { QUERY_KEYS } from '@/shared/constants/queryKeys';
 import Image from 'next/image';
 import * as styles from './ProfileSection.css.js';
+import { Camera } from 'lucide-react';
 
 export default function ProfileSection({ me }) {
   const fileInputRef = useRef(null);
   const queryClient = useQueryClient();
+
   const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -27,7 +31,6 @@ export default function ProfileSection({ me }) {
       <div
         className={styles.imageWrapper}
         onClick={() => fileInputRef.current?.click()}
-        style={{ cursor: 'pointer' }}
       >
         {me.image ? (
           <Image
@@ -40,6 +43,11 @@ export default function ProfileSection({ me }) {
         ) : (
           <Icon name="profileMember" width={80} height={80} />
         )}
+
+        <div className={styles.cameraOverlay}>
+          <Camera width={14} height={14} stroke="#6b7280" strokeWidth={1.5} />
+        </div>
+
         <input
           ref={fileInputRef}
           type="file"
@@ -48,6 +56,7 @@ export default function ProfileSection({ me }) {
           onChange={handleImageChange}
         />
       </div>
+
       <div className={styles.info}>
         <span className={styles.nickname}>{me.nickname}</span>
         <span className={styles.grade}>
