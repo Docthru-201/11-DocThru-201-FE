@@ -41,7 +41,11 @@ export default function ChallengeDetailPage() {
   const { rankingData, isPending: isRankingPending } =
     useChallengeRanking(challengeId);
   const { myWork, isPending: isMyWorkPending } = useMyWork(challengeId);
-  const { createWork, isCreatePending } = useWorkMutation(null, challengeId);
+  const { createWork, isCreatePending, isCreateSuccess } = useWorkMutation(
+    null,
+    challengeId,
+  );
+  const [isEditorNavPending, setIsEditorNavPending] = useState(false);
 
   const { currentItems, totalPages } = useMemo(() => {
     const rankedData = getRankedList(rankingData);
@@ -78,6 +82,8 @@ export default function ChallengeDetailPage() {
   const isActionDisabled =
     isDisabled ||
     isCreatePending ||
+    isCreateSuccess ||
+    isEditorNavPending ||
     isMyWorkPending ||
     myWorkStatusUpper === 'SUBMITTED';
 
@@ -86,6 +92,7 @@ export default function ChallengeDetailPage() {
 
     if (myWork?.id) {
       if (myWorkStatusUpper === 'DRAFT' || myWorkStatusUpper == null) {
+        setIsEditorNavPending(true);
         markWorkEditorForwardIntent(String(challengeId), String(myWork.id));
         router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
         return;

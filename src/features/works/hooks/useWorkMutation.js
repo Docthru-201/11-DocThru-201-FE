@@ -83,6 +83,8 @@ export const useWorkMutation = (workId, challengeId) => {
   return {
     createWork: createMutation.mutate,
     isCreatePending: createMutation.isPending,
+    /** 생성 성공 후 라우팅 전까지 버튼 비활성 유지용 */
+    isCreateSuccess: createMutation.isSuccess,
     updateWork: updateMutation.mutate,
     isUpdatePending: updateMutation.isPending,
     deleteWork: deleteMutation.mutate,
