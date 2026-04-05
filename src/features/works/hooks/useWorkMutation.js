@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateExistingWork, deleteExistingWork } from '../api/work.service';
-import { createWorkAction } from '@/shared/apis/user';
+import {
+  createNewWork,
+  updateExistingWork,
+  deleteExistingWork,
+} from '../api/work.service';
 import { QUERY_KEYS } from '@/shared/constants/queryKeys';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -10,11 +13,7 @@ export const useWorkMutation = (workId, challengeId) => {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: async () => {
-      const result = await createWorkAction(challengeId);
-      if (!result.ok) throw new Error(result.message);
-      return result.data;
-    },
+    mutationFn: async () => createNewWork(challengeId),
     retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({

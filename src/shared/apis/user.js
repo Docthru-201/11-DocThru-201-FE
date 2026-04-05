@@ -46,39 +46,6 @@ export async function getRankingAction(challengeId) {
   return allWorks;
 }
 
-// 챌린지 상세에서 작업물 도전하기로 진입 (throw 대신 직렬화 가능한 객체 반환 → 액션 500 완화)
-export async function createWorkAction(challengeId) {
-  try {
-    const id =
-      typeof challengeId === 'string'
-        ? challengeId
-        : challengeId != null
-          ? String(challengeId)
-          : '';
-    if (!id) {
-      return { ok: false, message: '챌린지 정보가 없습니다.' };
-    }
-
-    const payload = await requestWithAuth(`/challenges/${id}/works`, {
-      method: 'POST',
-      cache: 'no-store',
-      body: '{}',
-    });
-
-    const work = payload?.data ?? payload;
-    if (!work?.id) {
-      return { ok: false, message: '작업물 정보를 받지 못했습니다.' };
-    }
-
-    return { ok: true, data: work };
-  } catch (e) {
-    return {
-      ok: false,
-      message: e?.message || '작업물 생성에 실패했습니다.',
-    };
-  }
-}
-
 export async function getMyWorkAction(challengeId) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
