@@ -122,6 +122,8 @@ export const authorNickname = style({
 export const authorImage = style({
   borderRadius: '50%',
   overflow: 'hidden',
+  objectFit: 'cover',
+  flexShrink: 0,
 });
 
 export const rightSidebarArea = style({

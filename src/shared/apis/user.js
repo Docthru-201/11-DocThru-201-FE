@@ -103,5 +103,7 @@ export async function getMyWorkAction(challengeId) {
     throw new Error(errorBody.message || '내 작업물 조회 실패');
   }
 
-  return await res.json();
+  const data = await res.json().catch(() => null);
+  if (data == null) return null;
+  return data;
 }

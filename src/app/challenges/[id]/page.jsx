@@ -5,6 +5,7 @@ import React, { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 
 import { ITEMSPERPAGE } from '@/shared/constants/file';
+import Image from 'next/image';
 import { Icon } from '@/shared/components/Icon';
 import { Chip } from '@/shared/components/Chip';
 import { Container } from '@/shared/components/Container';
@@ -23,6 +24,7 @@ import { useChallengeDetail } from '@/features/challenges/hooks/useChallengeDeta
 import { useChallengeRanking } from '@/features/challenges/hooks/useChallengeRanking.js';
 import { useMyWork } from '@/features/works/hooks/useMyWork.js';
 import { useWorkMutation } from '@/features/works/hooks/useWorkMutation.js';
+import { markWorkEditorForwardIntent } from '@/shared/lib/workEditorNavigation';
 import { RankingListRow } from './_components/RankingListRow.jsx';
 
 export default function ChallengeDetailPage() {
@@ -38,7 +40,7 @@ export default function ChallengeDetailPage() {
     useChallengeDetail(challengeId);
   const { rankingData, isPending: isRankingPending } =
     useChallengeRanking(challengeId);
-  const { myWork } = useMyWork(challengeId);
+  const { myWork, isPending: isMyWorkPending } = useMyWork(challengeId);
   const { createWork, isCreatePending } = useWorkMutation(null, challengeId);
 
   const { currentItems, totalPages } = useMemo(() => {
@@ -61,35 +63,54 @@ export default function ChallengeDetailPage() {
     return isFull || challenge.isClosed || isInactiveStatus;
   }, [challenge]);
 
+  /** API/직렬화 차이 대비 (대문자 기준) */
+  const myWorkStatusUpper = useMemo(
+    () => (myWork?.status != null ? String(myWork.status).toUpperCase() : null),
+    [myWork],
+  );
+
   const actionLabel = useMemo(() => {
-    if (myWork?.status === 'DRAFT') return '도전 계속하기';
-    if (myWork?.status === 'SUBMITTED') return '제출 완료';
-    return '작업 도전하기';
-  }, [myWork?.status]);
+    if (!myWork?.id) return '작업 도전하기';
+    if (myWorkStatusUpper === 'SUBMITTED') return '제출 완료';
+    return '도전 계속하기';
+  }, [myWork?.id, myWorkStatusUpper]);
 
   const isActionDisabled =
-    isDisabled || isCreatePending || myWork?.status === 'SUBMITTED';
+    isDisabled ||
+    isCreatePending ||
+    isMyWorkPending ||
+    myWorkStatusUpper === 'SUBMITTED';
 
   const handleChallenge = () => {
-    if (myWork?.status === 'SUBMITTED') return;
-    if (myWork?.status === 'DRAFT') {
-      router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
-      return;
-    }
-    if (myWork && myWork.status !== 'DRAFT') {
+    if (myWorkStatusUpper === 'SUBMITTED') return;
+
+    if (myWork?.id) {
+      if (myWorkStatusUpper === 'DRAFT' || myWorkStatusUpper == null) {
+        markWorkEditorForwardIntent(String(challengeId), String(myWork.id));
+        router.push(`/challenges/${challengeId}/work/${myWork.id}/edit`);
+        return;
+      }
       setModalMessage(
         `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
       );
       setIsModalOpen(true);
       return;
     }
+
     createWork(undefined, {
       onSuccess: (data) => {
+        markWorkEditorForwardIntent(String(challengeId), String(data.id));
         router.push(`/challenges/${challengeId}/work/${data.id}/edit`);
       },
-      onError: () => {
+      onError: (error) => {
+        const msg = error?.message || '';
+        const isDuplicate = /이미|중복|CONFLICT|409|ALREADY_SUBMITTED/i.test(
+          msg,
+        );
         setModalMessage(
-          `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`,
+          isDuplicate
+            ? `이미 작성한 작업물이 있어요!\n작업물은 1인 1개만 작성할 수 있어요.`
+            : msg || '작업물을 만들 수 없습니다. 잠시 후 다시 시도해 주세요.',
         );
         setIsModalOpen(true);
       },
@@ -118,12 +139,24 @@ export default function ChallengeDetailPage() {
               {...challenge}
             />
             <div className={styles.authorInfo}>
-              <Icon
-                name="profileMember"
-                width={24}
-                height={24}
-                className={styles.authorImage}
-              />
+              {challenge.author?.image ? (
+                <Image
+                  src={challenge.author.image}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className={styles.authorImage}
+                  unoptimized
+                />
+              ) : (
+                <Icon
+                  name="profileMember"
+                  width={32}
+                  height={32}
+                  className={styles.authorImage}
+                  aria-hidden
+                />
+              )}
               <span className={styles.authorNickname}>
                 {challenge.author?.nickname || '작성자 없음'}
               </span>

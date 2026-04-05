@@ -11,6 +11,7 @@ import FeedbackList from './_components/FeedbackList';
 import FeedbackForm from './_components/FeedbackForm';
 import ProfileModal from '../../_components/ProfileModal';
 import { WorkDetailSkeleton } from '@/shared/components/Skeleton';
+import { markWorkEditorForwardIntent } from '@/shared/lib/workEditorNavigation';
 
 import * as styles from './page.css';
 
@@ -44,9 +45,10 @@ export default function WorkPage() {
           headerActions={
             <WorkActionButtons
               work={work}
-              onEdit={() =>
-                router.push(`/challenges/${id}/work/${workId}/edit`)
-              }
+              onEdit={() => {
+                markWorkEditorForwardIntent(String(id), String(workId));
+                router.push(`/challenges/${id}/work/${workId}/edit`);
+              }}
               onDelete={() => setIsDeleteModalOpen(true)}
               isDeletePending={isDeletePending}
             />
