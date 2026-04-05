@@ -37,13 +37,22 @@ export const inner = style({
   boxSizing: 'border-box',
   maxWidth: 1200,
   margin: '0 auto',
+  minWidth: 0,
 });
 
 export const left = style({
   display: 'flex',
   alignItems: 'center',
   gap: 24,
-  flexShrink: 0,
+  flexShrink: 1,
+  minWidth: 0,
+
+  '@media': {
+    'screen and (max-width: 743px)': {
+      gap: 12,
+      flex: 1,
+    },
+  },
 });
 
 export const right = style({
@@ -51,6 +60,12 @@ export const right = style({
   alignItems: 'center',
   gap: 16,
   flexShrink: 0,
+
+  '@media': {
+    'screen and (max-width: 743px)': {
+      gap: 8,
+    },
+  },
 });
 
 export const logo = style({
@@ -92,6 +107,8 @@ export const tabs = style({
   display: 'flex',
   alignItems: 'stretch',
   gap: 0,
+  minWidth: 0,
+  flexShrink: 1,
 });
 
 const tabTransition = `color ${vars.transition.duration.normal} ${vars.transition.timing.ease}, background-color ${vars.transition.duration.normal} ${vars.transition.timing.ease}`;
@@ -111,6 +128,16 @@ const tabBase = style({
   textDecoration: 'none',
   transition: tabTransition,
   outline: 'none',
+  whiteSpace: 'nowrap',
+  minWidth: 0,
+
+  '@media': {
+    'screen and (max-width: 743px)': {
+      padding: '18px 8px',
+      fontSize: '13px',
+    },
+  },
+
   selectors: {
     '&:hover': {
       color: vars.color.gray[700],

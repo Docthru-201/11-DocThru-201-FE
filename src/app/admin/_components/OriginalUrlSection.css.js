@@ -13,7 +13,19 @@ export const title = style({
 });
 
 export const relativeWrapper = style({
-  position: 'relative',
+  width: '100%',
+  margin: '0 auto',
+  overflow: 'hidden',
+  height: 'auto',
+  objectFit: 'cover',
+  '@media': {
+    'screen and (max-width: 743px)': {
+      width: '375px',
+      height: '206px',
+      maxWidth: '100%',
+      margin: '0 auto',
+    },
+  },
 });
 
 export const buttonPos = style({
