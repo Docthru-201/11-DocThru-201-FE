@@ -26,15 +26,16 @@ export const innerWrapper = style({
   flexDirection: 'column',
   boxSizing: 'border-box',
   padding: '32px',
+  gap: '16px',
 
   '@media': {
     'screen and (max-width: 1199px)': {
       maxWidth: '744px',
-      padding: '32px 24px',
+      padding: 0,
     },
     'screen and (max-width: 743px)': {
       maxWidth: '375px',
-      padding: '24px 16px',
+      padding: 0,
     },
   },
 });

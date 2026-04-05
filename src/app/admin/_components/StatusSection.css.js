@@ -6,7 +6,6 @@ export const commonBtnStyle = style({
   alignItems: 'center',
   width: '100%',
   height: '35px',
-  margin: '24px 0',
   borderRadius: '17.5px',
   fontSize: '14px',
   fontWeight: 600,
