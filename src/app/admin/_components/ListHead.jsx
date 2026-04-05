@@ -14,7 +14,11 @@ export default function ListHead() {
       <div className={`${styles.headerCell} ${styles.colSmall}`}>모집 인원</div>
       <div className={`${styles.headerCell} ${styles.colSmall}`}>신청일</div>
       <div className={`${styles.headerCell} ${styles.colSmall}`}>마감 기한</div>
-      <div className={`${styles.headerCell} ${styles.colSmall}`}>상태</div>
+      <div
+        className={`${styles.headerCell} ${styles.colSmall} ${styles.colStatus}`}
+      >
+        상태
+      </div>
     </div>
   );
 }
