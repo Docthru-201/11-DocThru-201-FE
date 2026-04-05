@@ -93,9 +93,10 @@ function NotificationBell() {
 
     try {
       await deleteMyNotification(notificationId);
-      await loadNotifications();
     } catch (err) {
       console.error('알림 삭제 실패:', err);
+    } finally {
+      await loadNotifications();
     }
   }
 
