@@ -13,7 +13,7 @@ export const page = style({
 export const main = style({
   flex: 1,
   width: '100%',
-  maxWidth: '996px',
+  maxWidth: '1044px',
   margin: '0 auto',
   padding: `0 16px ${vars.space['2xl']}`,
   boxSizing: 'border-box',

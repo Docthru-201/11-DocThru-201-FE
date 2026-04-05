@@ -49,14 +49,15 @@ export const pageContainer = style({
 });
 
 export const contentWrapper = style({
-  width: '900px',
+  width: '100%',
+  maxWidth: '900px',
   display: 'flex',
   flexDirection: 'column',
 
   '@media': {
     'screen and (max-width: 1199px)': {
       width: '744px',
-      padding: '0 24px',
+      padding: '0 8px',
       boxSizing: 'border-box',
     },
     'screen and (max-width: 743px)': {
@@ -109,6 +110,7 @@ export const authorInfo = style({
   alignItems: 'center',
   gap: '8px',
   marginTop: '12px',
+  marginBottom: '6px',
 });
 
 export const authorNickname = style({
@@ -238,6 +240,37 @@ export const bestWorkWrapper = style({
     'screen and (max-width: 767px)': {
       marginTop: '20px',
       marginBottom: '0',
+    },
+  },
+});
+
+export const nowPage = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '62px',
+  height: '24px',
+  backgroundColor: '#FAFAFA',
+  borderRadius: '13px',
+  boxSizing: 'border-box',
+  padding: '0 8px',
+});
+
+export const slashSpace = style({
+  display: 'inline-block',
+  width: '4px',
+  flexShrink: 0,
+});
+
+export const containerWrap = style({
+  background: '#FFFFFF',
+  padding: '24px 0 24px 24px',
+  boxSizing: 'border-box',
+
+  '@media': {
+    'screen and (max-width: 743px)': {
+      width: '100%',
+      padding: 0,
     },
   },
 });
