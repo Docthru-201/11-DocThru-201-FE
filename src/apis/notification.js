@@ -35,9 +35,14 @@ export async function deleteMyNotification(id) {
     credentials: 'include',
   });
 
-  if (!res.ok) {
-    throw new Error('알림 삭제에 실패했습니다');
+  if (res.status >= 200 && res.status < 300) {
+    return true;
   }
 
-  return true;
+  const errorText = await res.text().catch(() => '');
+  console.warn(
+    `알림 삭제 응답 비정상 (${res.status}): ${errorText || '본문 없음'}`,
+  );
+
+  return false;
 }
