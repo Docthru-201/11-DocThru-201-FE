@@ -25,7 +25,8 @@ export const imageWrapper = style({
   width: '80px',
   height: '80px',
   borderRadius: '50%',
-  overflow: 'hidden',
+  overflow: 'visible',
+  cursor: 'pointer',
 });
 
 export const image = style({
@@ -63,4 +64,19 @@ export const introduction = style({
   wordBreak: 'break-all',
   overflowWrap: 'break-word',
   width: '100%',
+});
+export const cameraOverlay = style({
+  position: 'absolute',
+  bottom: 0,
+  right: 0,
+  width: '24px',
+  height: '24px',
+  borderRadius: '50%',
+  backgroundColor: '#ffffff',
+  border: '1.5px solid #e5e7eb',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+  zIndex: 1,
 });
