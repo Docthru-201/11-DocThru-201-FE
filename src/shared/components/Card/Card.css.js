@@ -19,7 +19,7 @@ export const card = style({
   maxWidth: '343px',
   '@media': {
     [breakpoint.md]: {
-      maxWidth: '696px',
+      maxWidth: '720px',
     },
     [breakpoint.lg]: {
       maxWidth: '996px',

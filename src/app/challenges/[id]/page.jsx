@@ -120,8 +120,8 @@ export default function ChallengeDetailPage() {
             <div className={styles.authorInfo}>
               <Icon
                 name="profileMember"
-                width={32}
-                height={32}
+                width={24}
+                height={24}
                 className={styles.authorImage}
               />
               <span className={styles.authorNickname}>
@@ -129,12 +129,7 @@ export default function ChallengeDetailPage() {
               </span>
             </div>
           </div>
-          <div
-            style={{
-              background: '#FFFFFF',
-              padding: '24px 0 24px 24px',
-            }}
-          >
+          <div className={styles.containerWrap}>
             <Container
               size={containerSize}
               deadlineText={dayjs(challenge.deadline).format('YYYY년 M월 D일')}
@@ -163,8 +158,11 @@ export default function ChallengeDetailPage() {
             <h3 className={styles.rankingTitle}>참여현황</h3>
             {rankingData.length > 0 && (
               <div className={styles.paginationGroup}>
-                <span className={styles.currentPageText}>{currentPage}</span>
-                <span className={styles.totalPageText}>/ {totalPages}</span>
+                <div className={styles.nowPage}>
+                  <span className={styles.currentPageText}>{currentPage}</span>
+                  <span className={styles.slashSpace}> </span>
+                  <span className={styles.totalPageText}>/ {totalPages}</span>
+                </div>
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                   disabled={currentPage === 1}
