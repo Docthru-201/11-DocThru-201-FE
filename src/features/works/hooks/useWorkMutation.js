@@ -18,10 +18,13 @@ export const useWorkMutation = (workId, challengeId) => {
     retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.challenge.detail(challengeId), // ← 추가
+        queryKey: QUERY_KEYS.challenge.detail(challengeId),
       });
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.myWork(challengeId),
       });
     },
     onError: (error) => {
@@ -66,6 +69,9 @@ export const useWorkMutation = (workId, challengeId) => {
       });
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.challenge.ranking(challengeId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.challenge.myWork(challengeId),
       });
 
       router.push(`/challenges/${challengeId}`);

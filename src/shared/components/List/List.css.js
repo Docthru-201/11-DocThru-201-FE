@@ -99,9 +99,12 @@ export const workLink = style({
   transition,
   outline: 'none',
   selectors: {
-    '&:hover': {
-      color: vars.color.gray[900],
-      backgroundColor: vars.color.gray[100],
+    /* hover 시 색·배경 유지, 포인터만 손가락 (Button transparent variant 덮어씀) */
+    '&:hover:not(:disabled)': {
+      color: `${vars.color.gray[800]} !important`,
+      backgroundColor: 'transparent !important',
+      background: 'transparent !important',
+      boxShadow: 'none !important',
     },
     '&:focus-visible': {
       boxShadow: `0 0 0 2px ${vars.color.gray[900]}26`,

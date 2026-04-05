@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -11,14 +11,54 @@ import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icon';
 import { Modal } from '@/shared/components/Modal';
 import { WorkEditSkeleton } from '@/shared/components/Skeleton';
+import {
+  consumeWorkEditorForwardIntent,
+  peekWorkEditorForwardIntent,
+} from '@/shared/lib/workEditorNavigation';
 import * as styles from './page.css.js';
+
+function normalizeParam(v) {
+  if (v == null) return '';
+  return Array.isArray(v) ? v[0] : v;
+}
 
 export default function WorkEditPage() {
   const { id: challengeId, workId } = useParams();
   const router = useRouter();
-  const { work, isPending } = useWork(workId);
+  const cid = normalizeParam(challengeId);
+  const wid = normalizeParam(workId);
+
+  useLayoutEffect(() => {
+    if (!cid || !wid) return;
+
+    const nav =
+      typeof performance !== 'undefined'
+        ? performance.getEntriesByType('navigation')[0]
+        : undefined;
+    if (nav?.type === 'reload') return;
+
+    if (!peekWorkEditorForwardIntent(cid, wid)) {
+      router.replace(`/challenges/${cid}`);
+      return;
+    }
+  }, [router, cid, wid]);
+
+  useEffect(() => {
+    if (!cid || !wid) return;
+    const nav =
+      typeof performance !== 'undefined'
+        ? performance.getEntriesByType('navigation')[0]
+        : undefined;
+    if (nav?.type === 'reload') return;
+
+    const t = window.setTimeout(() => {
+      consumeWorkEditorForwardIntent(cid, wid);
+    }, 400);
+    return () => window.clearTimeout(t);
+  }, [cid, wid]);
+  const { work, isPending } = useWork(wid);
   const { updateWork, deleteWork, isUpdatePending, isDeletePending } =
-    useWorkMutation(workId, challengeId);
+    useWorkMutation(wid, cid);
   const { content, resetContent } = useEditorStore();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [showOriginal, setShowOriginal] = useState(false);
@@ -35,7 +75,7 @@ export default function WorkEditPage() {
     deleteWork(undefined, {
       onSuccess: () => {
         resetContent();
-        router.push(`/challenges/${challengeId}`);
+        router.push(`/challenges/${cid}`);
       },
     });
     setIsCancelModalOpen(false);
@@ -60,7 +100,7 @@ export default function WorkEditPage() {
       {
         onSuccess: () => {
           resetContent();
-          router.push(`/challenges/${challengeId}/work/${workId}`);
+          router.push(`/challenges/${cid}/work/${wid}`);
         },
       },
     );
@@ -78,7 +118,7 @@ export default function WorkEditPage() {
         <div className={styles.leftPane}>
           <div className={styles.leftPaneInner}>
             <header className={styles.headerRow}>
-              <Link href={`/challenges/${challengeId}`} className={styles.logo}>
+              <Link href={`/challenges/${cid}`} className={styles.logo}>
                 <span className={styles.logoIcon}>
                   <Icon
                     name="docthruLogo"
