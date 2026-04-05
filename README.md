@@ -39,17 +39,10 @@ pnpm dev
 </a>
 </td>
 <td align="center" valign="middle">
-<a href="https://github.com/ranflir">
-<img src="https://avatars.githubusercontent.com/u/243709414?v=4" width="100" />
+<a href="https://github.com/dolby527">
+<img src="https://avatars.githubusercontent.com/u/243248161?v=4" width="100" />
 <br />
-<b>김현제</b>
-</a>
-</td>
-<td align="center" valign="middle">
-<a href="https://github.com/seorinjung">
-<img src="https://avatars.githubusercontent.com/u/244867022?v=4" width="100" />
-<br />
-<b>정서린</b>
+<b>이석우</b>
 </a>
 </td>
 <td align="center" valign="middle">
@@ -67,20 +60,27 @@ pnpm dev
 </a>
 </td>
 <td align="center" valign="middle">
-<a href="https://github.com/dolby527">
-<img src="https://avatars.githubusercontent.com/u/243248161?v=4" width="100" />
+<a href="https://github.com/ranflir">
+<img src="https://avatars.githubusercontent.com/u/243709414?v=4" width="100" />
 <br />
-<b>이석우</b>
+<b>김현제</b>
+</a>
+</td>
+<td align="center" valign="middle">
+<a href="https://github.com/seorinjung">
+<img src="https://avatars.githubusercontent.com/u/244867022?v=4" width="100" />
+<br />
+<b>정서린</b>
 </a>
 </td>
 </tr>
 <tr>
 <td align="center">팀장</td>
+<td align="center">· 어드민<br> · 챌린지 관리<br> · 챌린지 상세<br> · 라이브 챌린지</td>
+<td align="center">· 번역 에디터<br> · 게시글 피드백<br>· 회원가입<br> · 로그인<br> · 권한/등급 관리</td>
+<td align="center">· 신청한 챌린지<br> · 알림 기능</td>
 <td align="center">· 챌린지 목록<br> · 나의 챌린지</td>
 <td align="center">· PM<br>· 공통 UI<br> · 랜딩페이지</td>
-<td align="center">· 번역 에디터<br> · 게시글 피드백<br>· 회원가입<br> · 로그인<br> · 권한/등급 관리 </td>
-<td align="center">· 신청한 챌린지<br> · 알림 기능</td>
-<td align="center">· 어드민<br> · 챌린지 관리<br> · 챌린지 상세<br> · 라이브 챌린지</td>
 </tr>
 </tbody>
 </table>
